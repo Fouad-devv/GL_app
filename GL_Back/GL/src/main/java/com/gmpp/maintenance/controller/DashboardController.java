@@ -4,15 +4,16 @@ import com.gmpp.maintenance.dto.KPIResponse;
 import com.gmpp.maintenance.service.DashboardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/dashboard")
 @RequiredArgsConstructor
+@PreAuthorize("isAuthenticated()")
 public class DashboardController {
 
     private final DashboardService dashboardService;
@@ -109,20 +110,7 @@ public class DashboardController {
 
     @GetMapping("/intervention-stats")
     public ResponseEntity<Map<String, Object>> getInterventionStats() {
-
-        Map<String, Object> stats = new HashMap<>();
-
-        stats.put("PLANIFIEE", dashboardService.getPlannedInterventions());
-        stats.put("EN_COURS", dashboardService.getOngoingInterventions());
-        stats.put("TERMINEE", dashboardService.getCompletedInterventions());
-        stats.put("ANNULEE", dashboardService.getCancelledInterventions());
-        stats.put("EN_RETARD", dashboardService.getOverdueInterventions());
-
-        stats.put("totalInterventions", dashboardService.getCompletedInterventions()
-                + dashboardService.getOngoingInterventions()
-                + dashboardService.getPlannedInterventions());
-
-        return ResponseEntity.ok(stats);
+        return ResponseEntity.ok(dashboardService.getInterventionStats());
     }
 
 

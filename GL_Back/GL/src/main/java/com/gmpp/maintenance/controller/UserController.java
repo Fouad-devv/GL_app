@@ -6,6 +6,9 @@ import com.gmpp.maintenance.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,9 +16,19 @@ import java.util.List;
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
+@PreAuthorize("hasRole('admin')")
 public class UserController {
 
     private final UserService userService;
+
+    @GetMapping("/me")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<UserDTO> getCurrentUser(@AuthenticationPrincipal Jwt jwt) {
+        String email = jwt.getClaimAsString("email");
+        if (email == null) email = jwt.getClaimAsString("preferred_username");
+        UserDTO user = userService.getUserByEmail(email);
+        return ResponseEntity.ok(user);
+    }
 
     @GetMapping
     public ResponseEntity<List<UserDTO>> getAllUsers() {

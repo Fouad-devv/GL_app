@@ -5,9 +5,11 @@ import com.gmpp.maintenance.entity.Intervention;
 import com.gmpp.maintenance.entity.Machine;
 import com.gmpp.maintenance.enums.InterventionStatus;
 import com.gmpp.maintenance.enums.MachineStatus;
+import com.gmpp.maintenance.enums.UserRole;
 import com.gmpp.maintenance.repository.InterventionRepository;
 import com.gmpp.maintenance.repository.MachineRepository;
 import com.gmpp.maintenance.repository.MaintenancePointRepository;
+import com.gmpp.maintenance.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,7 @@ public class DashboardService {
     private final MachineRepository machineRepository;
     private final InterventionRepository interventionRepository;
     private final MaintenancePointRepository maintenancePointRepository;
+    private final UserRepository userRepository;
 
     // ===================== KPI METRICS =====================
     public KPIResponse getKPIMetrics() {
@@ -127,7 +130,7 @@ public class DashboardService {
         stats.put("byStatus", byStatus);
         stats.put("totalInterventions", interventionRepository.count());
         stats.put("activeMachines", machineRepository.countByStatus(MachineStatus.EN_SERVICE));
-        stats.put("technicians", 5); // placeholder until you add a technician table
+        stats.put("technicians", userRepository.countByRole(UserRole.TECHNICIEN));
 
         return stats;
     }
