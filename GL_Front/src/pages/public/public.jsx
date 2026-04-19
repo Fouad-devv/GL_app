@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useKeycloak } from '@react-keycloak/web';
 import { useEffect, useRef, useState } from 'react';
-import { FiCheckCircle, FiBarChart2, FiCalendar, FiUsers, FiArrowRight, FiShield, FiActivity } from 'react-icons/fi';
+import { FiCheckCircle, FiBarChart2, FiCalendar, FiUsers, FiArrowRight, FiShield, FiActivity, FiZap, FiCpu } from 'react-icons/fi';
 import './public.css';
 
 /* ─── Counter hook ───────────────────────────────────────────────────────── */
@@ -23,15 +23,48 @@ function useCounter(target, duration = 1800, active = false) {
   return val;
 }
 
+/* ─── Typewriter hook ────────────────────────────────────────────────────── */
+function useTypewriter(words, speed = 80, pause = 2200) {
+  const [display, setDisplay] = useState('');
+  const [wordIdx, setWordIdx] = useState(0);
+  const [charIdx, setCharIdx] = useState(0);
+  const [deleting, setDeleting] = useState(false);
+  useEffect(() => {
+    const current = words[wordIdx];
+    const delay = deleting ? speed / 2 : speed;
+    const timer = setTimeout(() => {
+      if (!deleting) {
+        setDisplay(current.substring(0, charIdx + 1));
+        if (charIdx + 1 === current.length) {
+          setTimeout(() => setDeleting(true), pause);
+        } else {
+          setCharIdx(c => c + 1);
+        }
+      } else {
+        setDisplay(current.substring(0, charIdx - 1));
+        if (charIdx - 1 === 0) {
+          setDeleting(false);
+          setWordIdx(w => (w + 1) % words.length);
+          setCharIdx(0);
+        } else {
+          setCharIdx(c => c - 1);
+        }
+      }
+    }, delay);
+    return () => clearTimeout(timer);
+  }, [charIdx, deleting, wordIdx, words, speed, pause]);
+  return display;
+}
+
 /* ─── Particles (stable, generated once) ────────────────────────────────── */
-const PARTICLES = Array.from({ length: 16 }, (_, i) => ({
+const PARTICLES = Array.from({ length: 20 }, (_, i) => ({
   id:       i,
   left:     `${8 + (i * 5.8) % 84}%`,
   bottom:   `${(i * 7.3) % 35}%`,
   delay:    `${(i * 1.3) % 11}s`,
   duration: `${7 + (i * 0.9) % 7}s`,
-  size:     i % 3 === 0 ? '3px' : '2px',
-  opacity:  0.25 + (i % 5) * 0.1,
+  size:     i % 3 === 0 ? '3px' : i % 5 === 0 ? '4px' : '2px',
+  opacity:  0.2 + (i % 5) * 0.08,
 }));
 
 /* ─── Static data ────────────────────────────────────────────────────────── */
@@ -68,11 +101,233 @@ const PILLS = [
   { icon: <FiUsers />,       color: '#06b6d4', text: 'Gestion techniciens & interventions' },
 ];
 
+const TYPEWRITER_WORDS = ['maintenance', 'performance', 'fiabilité', 'productivité'];
 
+/* ─── Inline SVG: Industrial Gear Machine ───────────────────────────────── */
+const IndustrialSVG = () => (
+  <svg viewBox="0 0 480 420" fill="none" xmlns="http://www.w3.org/2000/svg" className="hero-svg" aria-hidden="true">
+    {/* Grid background lines */}
+    {Array.from({ length: 9 }, (_, i) => (
+      <line key={`hg-${i}`} x1="20" y1={40 + i * 40} x2="460" y2={40 + i * 40}
+        stroke="rgba(59,130,246,0.06)" strokeWidth="1" />
+    ))}
+    {Array.from({ length: 12 }, (_, i) => (
+      <line key={`vg-${i}`} x1={20 + i * 40} y1="20" x2={20 + i * 40} y2="400"
+        stroke="rgba(59,130,246,0.06)" strokeWidth="1" />
+    ))}
+
+    {/* Main machine body */}
+    <rect x="120" y="160" width="240" height="160" rx="8" fill="rgba(13,18,37,0.9)"
+      stroke="rgba(59,130,246,0.35)" strokeWidth="1.5" />
+    {/* Machine top panel */}
+    <rect x="130" y="140" width="220" height="28" rx="4" fill="rgba(29,78,216,0.2)"
+      stroke="rgba(59,130,246,0.4)" strokeWidth="1" />
+    {/* Panel label */}
+    <text x="240" y="159" textAnchor="middle" fill="rgba(96,165,250,0.8)"
+      fontFamily="monospace" fontSize="9" letterSpacing="3">GMPP CONTROL</text>
+
+    {/* Screen */}
+    <rect x="145" y="178" width="140" height="90" rx="4" fill="rgba(3,7,18,0.8)"
+      stroke="rgba(59,130,246,0.4)" strokeWidth="1" />
+    {/* Screen grid lines */}
+    {Array.from({length:4},(_,i)=>(
+      <line key={`sg-${i}`} x1="145" y1={193+i*22} x2="285" y2={193+i*22}
+        stroke="rgba(59,130,246,0.08)" strokeWidth="0.5"/>
+    ))}
+    {/* Animated bar chart on screen */}
+    <rect x="155" y="230" width="10" height="30" rx="2" fill="rgba(59,130,246,0.7)" className="svg-bar svg-bar-1"/>
+    <rect x="170" y="220" width="10" height="40" rx="2" fill="rgba(96,165,250,0.7)" className="svg-bar svg-bar-2"/>
+    <rect x="185" y="210" width="10" height="50" rx="2" fill="rgba(6,182,212,0.7)" className="svg-bar svg-bar-3"/>
+    <rect x="200" y="225" width="10" height="35" rx="2" fill="rgba(59,130,246,0.7)" className="svg-bar svg-bar-4"/>
+    <rect x="215" y="215" width="10" height="45" rx="2" fill="rgba(96,165,250,0.7)" className="svg-bar svg-bar-5"/>
+    <rect x="230" y="205" width="10" height="55" rx="2" fill="rgba(6,182,212,0.7)" className="svg-bar svg-bar-6"/>
+    <rect x="245" y="220" width="10" height="40" rx="2" fill="rgba(59,130,246,0.7)" className="svg-bar svg-bar-7"/>
+    <rect x="260" y="210" width="10" height="50" rx="2" fill="rgba(96,165,250,0.7)" className="svg-bar svg-bar-8"/>
+    {/* Screen line graph */}
+    <polyline points="155,215 172,204 189,210 206,196 223,200 240,188 257,193 274,185"
+      stroke="rgba(52,211,153,0.8)" strokeWidth="1.5" fill="none" className="svg-line-anim"/>
+
+    {/* Big gear (left) */}
+    <g className="gear-rotate-slow" style={{ transformOrigin: '100px 240px' }}>
+      <circle cx="100" cy="240" r="38" stroke="rgba(59,130,246,0.5)" strokeWidth="2" fill="rgba(13,18,37,0.6)" />
+      <circle cx="100" cy="240" r="24" stroke="rgba(59,130,246,0.3)" strokeWidth="1.5" fill="rgba(13,18,37,0.8)" />
+      <circle cx="100" cy="240" r="8"  fill="rgba(96,165,250,0.4)" />
+      {Array.from({length:12},(_,i)=>{
+        const angle = (i/12)*Math.PI*2;
+        const ix = 100 + Math.cos(angle)*35;
+        const iy = 240 + Math.sin(angle)*35;
+        const ox = 100 + Math.cos(angle)*42;
+        const oy = 240 + Math.sin(angle)*42;
+        const nx = 100 + Math.cos(angle + 0.22)*38;
+        const ny = 240 + Math.sin(angle + 0.22)*38;
+        const mx = 100 + Math.cos(angle - 0.22)*38;
+        const my = 240 + Math.sin(angle - 0.22)*38;
+        return (
+          <polygon key={i}
+            points={`${ix},${iy} ${nx},${ny} ${ox},${oy} ${mx},${my}`}
+            fill="rgba(59,130,246,0.6)" stroke="rgba(59,130,246,0.3)" strokeWidth="0.5"/>
+        );
+      })}
+      {/* Spokes */}
+      {Array.from({length:4},(_,i)=>{
+        const angle = (i/4)*Math.PI*2;
+        return <line key={`sp-${i}`}
+          x1={100+Math.cos(angle)*9} y1={240+Math.sin(angle)*9}
+          x2={100+Math.cos(angle)*22} y2={240+Math.sin(angle)*22}
+          stroke="rgba(96,165,250,0.5)" strokeWidth="2"/>;
+      })}
+    </g>
+
+    {/* Small gear (top-left, counter-rotate) */}
+    <g className="gear-rotate-fast" style={{ transformOrigin: '62px 197px' }}>
+      <circle cx="62" cy="197" r="22" stroke="rgba(6,182,212,0.5)" strokeWidth="1.5" fill="rgba(13,18,37,0.6)" />
+      <circle cx="62" cy="197" r="13" stroke="rgba(6,182,212,0.3)" strokeWidth="1" fill="rgba(13,18,37,0.8)" />
+      <circle cx="62" cy="197" r="5"  fill="rgba(6,182,212,0.4)" />
+      {Array.from({length:8},(_,i)=>{
+        const angle = (i/8)*Math.PI*2;
+        const ix = 62 + Math.cos(angle)*20;
+        const iy = 197 + Math.sin(angle)*20;
+        const ox = 62 + Math.cos(angle)*25;
+        const oy = 197 + Math.sin(angle)*25;
+        const nx = 62 + Math.cos(angle+0.28)*22;
+        const ny = 197 + Math.sin(angle+0.28)*22;
+        const mx = 62 + Math.cos(angle-0.28)*22;
+        const my = 197 + Math.sin(angle-0.28)*22;
+        return <polygon key={i} points={`${ix},${iy} ${nx},${ny} ${ox},${oy} ${mx},${my}`}
+          fill="rgba(6,182,212,0.6)" stroke="rgba(6,182,212,0.2)" strokeWidth="0.5"/>;
+      })}
+    </g>
+
+    {/* Medium gear (right) */}
+    <g className="gear-rotate-medium" style={{ transformOrigin: '388px 250px' }}>
+      <circle cx="388" cy="250" r="30" stroke="rgba(139,92,246,0.5)" strokeWidth="1.5" fill="rgba(13,18,37,0.6)" />
+      <circle cx="388" cy="250" r="18" stroke="rgba(139,92,246,0.3)" strokeWidth="1" fill="rgba(13,18,37,0.8)" />
+      <circle cx="388" cy="250" r="6"  fill="rgba(167,139,250,0.4)" />
+      {Array.from({length:10},(_,i)=>{
+        const angle = (i/10)*Math.PI*2;
+        const ix = 388 + Math.cos(angle)*27;
+        const iy = 250 + Math.sin(angle)*27;
+        const ox = 388 + Math.cos(angle)*33;
+        const oy = 250 + Math.sin(angle)*33;
+        const nx = 388 + Math.cos(angle+0.24)*30;
+        const ny = 250 + Math.sin(angle+0.24)*30;
+        const mx = 388 + Math.cos(angle-0.24)*30;
+        const my = 250 + Math.sin(angle-0.24)*30;
+        return <polygon key={i} points={`${ix},${iy} ${nx},${ny} ${ox},${oy} ${mx},${my}`}
+          fill="rgba(139,92,246,0.6)" stroke="rgba(139,92,246,0.2)" strokeWidth="0.5"/>;
+      })}
+    </g>
+
+    {/* Connecting pipes */}
+    <line x1="138" y1="240" x2="120" y2="240" stroke="rgba(59,130,246,0.4)" strokeWidth="3" strokeLinecap="round"/>
+    <line x1="360" y1="240" x2="360" y2="250" stroke="rgba(139,92,246,0.4)" strokeWidth="3" strokeLinecap="round"/>
+    <path d="M360,250 Q370,250 370,240" stroke="rgba(139,92,246,0.4)" strokeWidth="3" fill="none" strokeLinecap="round"/>
+
+    {/* Data flow line top */}
+    <path d="M100,202 Q100,160 140,140" stroke="rgba(6,182,212,0.25)" strokeWidth="1" fill="none" strokeDasharray="4 3"/>
+
+    {/* Indicators / LEDs on machine */}
+    <circle cx="305" cy="188" r="5" fill="#34d399" className="svg-led-pulse"/>
+    <circle cx="320" cy="188" r="5" fill="#60a5fa" className="svg-led-pulse" style={{animationDelay:'0.4s'}}/>
+    <circle cx="335" cy="188" r="5" fill="#f59e0b" className="svg-led-pulse" style={{animationDelay:'0.8s'}}/>
+
+    {/* Panel buttons */}
+    <rect x="300" y="202" width="46" height="14" rx="3" fill="rgba(59,130,246,0.15)" stroke="rgba(59,130,246,0.3)" strokeWidth="1"/>
+    <text x="323" y="213" textAnchor="middle" fill="rgba(96,165,250,0.7)" fontFamily="monospace" fontSize="7">START</text>
+    <rect x="300" y="222" width="46" height="14" rx="3" fill="rgba(6,182,212,0.1)" stroke="rgba(6,182,212,0.25)" strokeWidth="1"/>
+    <text x="323" y="233" textAnchor="middle" fill="rgba(6,182,212,0.7)" fontFamily="monospace" fontSize="7">REPORT</text>
+    <rect x="300" y="242" width="46" height="14" rx="3" fill="rgba(139,92,246,0.1)" stroke="rgba(139,92,246,0.25)" strokeWidth="1"/>
+    <text x="323" y="253" textAnchor="middle" fill="rgba(167,139,250,0.7)" fontFamily="monospace" fontSize="7">CONFIG</text>
+
+    {/* Bottom base */}
+    <rect x="100" y="320" width="280" height="12" rx="4" fill="rgba(29,78,216,0.15)" stroke="rgba(59,130,246,0.2)" strokeWidth="1"/>
+    <rect x="140" y="332" width="200" height="6" rx="3" fill="rgba(59,130,246,0.1)"/>
+
+    {/* Animated data stream packets */}
+    <circle r="3" fill="rgba(52,211,153,0.9)" className="svg-packet-1">
+      <animateMotion dur="3s" repeatCount="indefinite"
+        path="M145,268 L285,268"/>
+    </circle>
+    <circle r="2.5" fill="rgba(96,165,250,0.9)" className="svg-packet-2">
+      <animateMotion dur="4s" repeatCount="indefinite" begin="-1.5s"
+        path="M285,220 L145,220"/>
+    </circle>
+
+    {/* Corner decorations */}
+    <path d="M20,30 L40,30 L40,50" stroke="rgba(59,130,246,0.3)" strokeWidth="1" fill="none"/>
+    <path d="M460,30 L440,30 L440,50" stroke="rgba(59,130,246,0.3)" strokeWidth="1" fill="none"/>
+    <path d="M20,390 L40,390 L40,370" stroke="rgba(59,130,246,0.3)" strokeWidth="1" fill="none"/>
+    <path d="M460,390 L440,390 L440,370" stroke="rgba(59,130,246,0.3)" strokeWidth="1" fill="none"/>
+
+    {/* Floating KPI chips */}
+    <g className="svg-float-1">
+      <rect x="310" y="100" width="100" height="28" rx="6" fill="rgba(13,18,37,0.9)" stroke="rgba(52,211,153,0.4)" strokeWidth="1"/>
+      <circle cx="324" cy="114" r="4" fill="#34d399" className="svg-led-pulse"/>
+      <text x="334" y="118" fill="rgba(52,211,153,0.9)" fontFamily="monospace" fontSize="9">98% uptime</text>
+    </g>
+    <g className="svg-float-2">
+      <rect x="30" y="290" width="90" height="28" rx="6" fill="rgba(13,18,37,0.9)" stroke="rgba(59,130,246,0.4)" strokeWidth="1"/>
+      <circle cx="44" cy="304" r="4" fill="#3b82f6" className="svg-led-pulse" style={{animationDelay:'0.5s'}}/>
+      <text x="53" y="308" fill="rgba(96,165,250,0.9)" fontFamily="monospace" fontSize="9">Live KPIs</text>
+    </g>
+    <g className="svg-float-3">
+      <rect x="330" y="355" width="108" height="28" rx="6" fill="rgba(13,18,37,0.9)" stroke="rgba(139,92,246,0.4)" strokeWidth="1"/>
+      <circle cx="344" cy="369" r="4" fill="#8b5cf6" className="svg-led-pulse" style={{animationDelay:'1s'}}/>
+      <text x="354" y="373" fill="rgba(167,139,250,0.9)" fontFamily="monospace" fontSize="9">AI Planning</text>
+    </g>
+  </svg>
+);
+
+/* ─── SVG: Animated network topology ────────────────────────────────────── */
+const NetworkSVG = () => (
+  <svg viewBox="0 0 900 500" fill="none" xmlns="http://www.w3.org/2000/svg"
+    className="network-svg" aria-hidden="true">
+    {/* Nodes */}
+    {[
+      [100,80],[300,60],[500,90],[700,75],[850,110],
+      [50,200],[200,230],[400,210],[600,240],[800,220],
+      [150,350],[350,380],[550,360],[750,340],
+      [80,440],[450,460],[820,430]
+    ].map(([cx,cy],i)=>(
+      <g key={i}>
+        <circle cx={cx} cy={cy} r="4" fill="rgba(59,130,246,0.6)" className="net-node"/>
+        <circle cx={cx} cy={cy} r="10" fill="none" stroke="rgba(59,130,246,0.15)"
+          strokeWidth="1" className="net-ring"/>
+      </g>
+    ))}
+    {/* Connecting lines */}
+    {[
+      [[100,80],[300,60]],[[300,60],[500,90]],[[500,90],[700,75]],[[700,75],[850,110]],
+      [[100,80],[50,200]],[[300,60],[200,230]],[[500,90],[400,210]],
+      [[700,75],[600,240]],[[850,110],[800,220]],
+      [[50,200],[200,230]],[[200,230],[400,210]],[[400,210],[600,240]],[[600,240],[800,220]],
+      [[200,230],[150,350]],[[400,210],[350,380]],[[600,240],[550,360]],[[800,220],[750,340]],
+      [[150,350],[350,380]],[[350,380],[550,360]],[[550,360],[750,340]],
+      [[150,350],[80,440]],[[350,380],[450,460]],[[750,340],[820,430]],
+    ].map(([[x1,y1],[x2,y2]],i)=>(
+      <line key={i} x1={x1} y1={y1} x2={x2} y2={y2}
+        stroke="rgba(59,130,246,0.08)" strokeWidth="1"/>
+    ))}
+    {/* Traveling pulses on key paths */}
+    <circle r="3" fill="rgba(96,165,250,0.8)">
+      <animateMotion dur="4s" repeatCount="indefinite"
+        path="M100,80 L300,60 L500,90 L700,75 L850,110"/>
+    </circle>
+    <circle r="2.5" fill="rgba(6,182,212,0.8)">
+      <animateMotion dur="5s" repeatCount="indefinite" begin="-2s"
+        path="M50,200 L200,230 L400,210 L600,240 L800,220"/>
+    </circle>
+    <circle r="2" fill="rgba(52,211,153,0.8)">
+      <animateMotion dur="6s" repeatCount="indefinite" begin="-1s"
+        path="M150,350 L350,380 L550,360 L750,340"/>
+    </circle>
+  </svg>
+);
 
 
 /* ─── Component ──────────────────────────────────────────────────────────── */
 export const Public = () => {
+  // ── Keycloak – NE PAS MODIFIER ──────────────────────────────────────────
   const { keycloak, initialized } = useKeycloak();
   const navigate = useNavigate();
   const [ready, setReady] = useState(false);
@@ -93,14 +348,18 @@ export const Public = () => {
 
   const handleLogin = () =>
     keycloak.login({ redirectUri: window.location.origin + '/dashboard' });
+  // ── Fin zone Keycloak ────────────────────────────────────────────────────
+
+  const typewriterText = useTypewriter(TYPEWRITER_WORDS);
+  const [hoveredMod, setHoveredMod] = useState(null);
 
   /* ── Loading state ── */
   if (!initialized) {
     return (
       <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#060810' }}>
         <div style={{ textAlign: 'center' }}>
-          <div className="animate-spin" style={{ width: 40, height: 40, border: '2px solid rgba(59,130,246,0.18)', borderTop: '2px solid #3b82f6', borderRadius: '50%', margin: '0 auto 16px' }} />
-          <p style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 12, color: '#4b5563' }}>Chargement…</p>
+          <div className="p-loading-spinner" />
+          <p style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 12, color: '#4b5563' }}>Initialisation…</p>
         </div>
       </div>
     );
@@ -108,6 +367,11 @@ export const Public = () => {
 
   return (
     <div className="p-root">
+
+      {/* ── Network SVG background ── */}
+      <div className="network-bg">
+        <NetworkSVG />
+      </div>
 
       {/* ── Background layers ── */}
       <div className="bg-dots" />
@@ -132,13 +396,29 @@ export const Public = () => {
       <nav className="p-nav">
         <div className="nav-inner">
           <div className="nav-logo">
-            <div className="nav-logo-mark">G</div>
+            <div className="nav-logo-mark">
+              {/* Gear SVG in logo */}
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                <circle cx="9" cy="9" r="3" fill="white"/>
+                {Array.from({length:6},(_,i)=>{
+                  const a=(i/6)*Math.PI*2;
+                  return <rect key={i} x="8.2" y="1" width="1.6" height="3" rx="0.8" fill="white"
+                    transform={`rotate(${a*(180/Math.PI)} 9 9)`}/>;
+                })}
+              </svg>
+            </div>
             <span className="nav-logo-text">GMPP</span>
             <span className="nav-badge">v2.0</span>
           </div>
-          <button className="nav-btn" onClick={handleLogin}>
-            Connexion <FiArrowRight size={13} />
-          </button>
+          <div style={{display:'flex',alignItems:'center',gap:16}}>
+            <div className="nav-status">
+              <div className="nav-status-dot"/>
+              <span>Système actif</span>
+            </div>
+            <button className="nav-btn" onClick={handleLogin}>
+              Connexion <FiArrowRight size={13} />
+            </button>
+          </div>
         </div>
       </nav>
 
@@ -159,8 +439,12 @@ export const Public = () => {
 
               <h1 className="hero-h1 anim-up" style={{ animationDelay: '0.15s' }}>
                 Maîtrisez votre<br />
-                <span className="h1-blue">maintenance</span><br />
-                préventive
+                <span className="h1-blue h1-typewriter">
+                  {typewriterText}
+                  <span className="typewriter-cursor">|</span>
+                </span>
+                <br />
+                <span className="h1-dim">préventive</span>
               </h1>
 
               <p className="hero-desc anim-up" style={{ animationDelay: '0.27s' }}>
@@ -185,39 +469,41 @@ export const Public = () => {
                 </button>
                 <div className="cta-hint">
                   <FiShield style={{ color: '#3b82f6', fontSize: 13 }} />
-                  <span className="cta-hint-text">Accès sécurisé via SSO</span>
+                  <span className="cta-hint-text">Accès sécurisé via SSO · Keycloak</span>
                 </div>
+              </div>
+
+              {/* Mini KPI row */}
+              <div className="mini-kpi-row anim-up" style={{ animationDelay: '0.65s' }}>
+                {STATS.map((s, i) => (
+                  <div key={i} className="mini-kpi">
+                    <div className="mini-kpi-num">{counts[i]}{s.suffix}</div>
+                    <div className="mini-kpi-label">{s.label}</div>
+                  </div>
+                ))}
               </div>
             </div>
 
-            {/* Right col */}
+            {/* Right col — Industrial SVG */}
             <div className="right-panel anim-right" style={{ animationDelay: '0.28s' }}>
-
-              <div className="stat-grid">
-                {STATS.map((s, i) => (
-                  <div key={i} className="stat-card">
-                    <div className="stat-num">{counts[i]}{s.suffix}</div>
-                    <div className="stat-label">{s.label}</div>
+              <div className="svg-panel">
+                <div className="svg-panel-header">
+                  <span className="svg-panel-title">
+                    <FiCpu size={12}/> Tableau de contrôle interactif
+                  </span>
+                  <div className="svg-panel-dots">
+                    <span className="svg-dot red"/>
+                    <span className="svg-dot yellow"/>
+                    <span className="svg-dot green"/>
                   </div>
-                ))}
+                </div>
+                <IndustrialSVG />
+                <div className="svg-panel-footer">
+                  <FiActivity size={11} style={{color:'#34d399'}}/>
+                  <span>Tous les systèmes opérationnels</span>
+                  <div className="status-live" style={{marginLeft:'auto'}}/>
+                </div>
               </div>
-
-              <div className="feat-panel">
-                <div className="feat-panel-title">Fonctionnalités incluses</div>
-                {FEATURES.map((f, i) => (
-                  <div key={i} className="feat-item">
-                    <div className="feat-dot" />
-                    {f}
-                  </div>
-                ))}
-              </div>
-
-              <div className="status-bar">
-                <FiActivity style={{ color: '#60a5fa', fontSize: 15, flexShrink: 0 }} />
-                <span className="status-text">Système opérationnel · Tous modules actifs</span>
-                <div className="status-live" />
-              </div>
-
             </div>
           </div>
         </section>
@@ -237,14 +523,25 @@ export const Public = () => {
 
           <div className="modules-grid">
             {MODULES.map((m, i) => (
-              <div key={i} className="mod-card">
-                <div className="mod-icon-wrap" style={{ background: m.bg }}>{m.icon}</div>
+              <div
+                key={i}
+                className="mod-card"
+                onMouseEnter={() => setHoveredMod(i)}
+                onMouseLeave={() => setHoveredMod(null)}
+              >
+                {/* Glow border on hover */}
+                <div className="mod-glow" style={{ '--mod-color': m.color }} />
+                <div className="mod-icon-wrap" style={{ background: m.bg }}>
+                  <span className="mod-icon-inner">{m.icon}</span>
+                </div>
                 <div className="mod-title">{m.title}</div>
                 <div className="mod-desc">{m.desc}</div>
                 <div className="mod-link" style={{ color: m.color }}>
                   <span>Explorer</span>
                   <FiArrowRight size={12} />
                 </div>
+                {/* Shimmer line at top */}
+                <div className="mod-shimmer" style={{ background: m.color }}/>
               </div>
             ))}
           </div>
@@ -253,6 +550,9 @@ export const Public = () => {
         {/* ══ CTA ════════════════════════════════════════════════════════════ */}
         <div className="cta-band">
           <div className="cta-band-inner">
+            <div className="cta-band-icon">
+              <FiZap size={28} />
+            </div>
             <h3>Prêt à optimiser votre maintenance ?</h3>
             <p>Accédez à toutes les fonctionnalités de GMPP et prenez le contrôle total de votre parc industriel.</p>
             <button className="btn-primary" onClick={handleLogin} style={{ fontSize: 16, padding: '17px 42px' }}>
@@ -260,6 +560,14 @@ export const Public = () => {
                 Accéder à la plateforme <FiArrowRight className="btn-arrow" />
               </span>
             </button>
+            <div className="cta-features-row">
+              {FEATURES.slice(0,4).map((f,i) => (
+                <div key={i} className="cta-feature-chip">
+                  <FiCheckCircle size={11} style={{color:'#34d399'}}/>
+                  {f}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -268,7 +576,16 @@ export const Public = () => {
       {/* ══ FOOTER ════════════════════════════════════════════════════════════ */}
       <footer className="p-footer">
         <div className="footer-logo">
-          <div className="footer-mark">G</div>
+          <div className="footer-mark">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <circle cx="6" cy="6" r="2.5" fill="white"/>
+              {Array.from({length:6},(_,i)=>{
+                const a=(i/6)*Math.PI*2;
+                return <rect key={i} x="5.5" y="0.5" width="1" height="2" rx="0.5" fill="white"
+                  transform={`rotate(${a*(180/Math.PI)} 6 6)`}/>;
+              })}
+            </svg>
+          </div>
           <span style={{ fontWeight: 700, fontSize: 14 }}>GMPP</span>
         </div>
         <p className="footer-copy">© 2026 GMPP — Système de Gestion de Maintenance Préventive Planifiée</p>
