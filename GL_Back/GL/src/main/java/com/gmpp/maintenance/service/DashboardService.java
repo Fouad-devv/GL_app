@@ -38,13 +38,18 @@ public class DashboardService {
         Double machineAvailability = totalMachines > 0 ? (operationalMachines.doubleValue() / totalMachines) * 100 : 0.0;
         Double implementationRate = totalInterventions > 0 ? (completedInterventions.doubleValue() / totalInterventions) * 100 : 0.0;
 
+        int year  = LocalDate.now().getYear();
+        int month = LocalDate.now().getMonthValue();
+        Double monthlyCost = interventionRepository.sumCostByYearAndMonth(year, month);
+        Double avgDuration = interventionRepository.avgDurationMinutes();
+
         return KPIResponse.builder()
                 .implementationRate(implementationRate)
                 .preventedFailures(totalInterventions)
-                .avgInterventionTime(120)
+                .avgInterventionTime(avgDuration != null ? avgDuration.intValue() : 0)
                 .overdueCount(overdueCount)
                 .machineAvailability(machineAvailability)
-                .monthlyCost(5000.0)
+                .monthlyCost(monthlyCost)
                 .totalInterventions(totalInterventions)
                 .completedInterventions(completedInterventions)
                 .delayedInterventions(delayedInterventions)

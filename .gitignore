@@ -1,0 +1,28 @@
+# ── Frontend ──────────────────────────────
+GL_Front/node_modules/
+GL_Front/dist/
+GL_Front/.env
+GL_Front/.env.local
+GL_Front/.env.*.local
+
+# ── Backend ───────────────────────────────
+GL_Back/**/target/
+GL_Back/**/.mvn/wrapper/maven-wrapper.jar
+GL_Back/**/*.class
+GL_Back/**/*.jar
+GL_Back/**/*.war
+GL_Back/**/application-local.properties
+GL_Back/**/application-secret.properties
+GL_Back/**/application.properties
+
+# ── Keycloak / Docker ─────────────────────
+**/keycloak/data/
+docker-compose.override.yml
+.env
+
+# ── IDE / OS ──────────────────────────────
+.idea/
+*.iml
+.vscode/
+.DS_Store
+Thumbs.db

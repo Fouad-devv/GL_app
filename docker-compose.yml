@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: postgres-GL-Project
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: GLProject
+      POSTGRES_PASSWORD: GLProject
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - gmpp-network
+
+  keycloak:
+    image: keycloak-backup
+    container_name: GL_Keycloak
+    command: start-dev
+    environment:
+      KEYCLOAK_ADMIN: fouad
+      KEYCLOAK_ADMIN_PASSWORD: fouad
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres:5432/postgres
+      KC_DB_USERNAME: GLProject
+      KC_DB_PASSWORD: GLProject
+    ports:
+      - "8081:8080"
+    depends_on:
+      - postgres
+    networks:
+      - gmpp-network
+
+volumes:
+  postgres_data:
+
+networks:
+  gmpp-network:
+    driver: bridge

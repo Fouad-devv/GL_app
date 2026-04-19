@@ -39,4 +39,10 @@ public interface InterventionRepository extends JpaRepository<Intervention, Long
 
     @Query("SELECT COUNT(i) FROM Intervention i WHERE i.status = :status")
     Long countByStatusQuery(@Param("status") InterventionStatus status);
+
+    @Query("SELECT COALESCE(SUM(i.cost), 0) FROM Intervention i WHERE YEAR(i.plannedDate) = :year AND MONTH(i.plannedDate) = :month AND i.cost IS NOT NULL")
+    Double sumCostByYearAndMonth(@Param("year") int year, @Param("month") int month);
+
+    @Query("SELECT COALESCE(AVG(i.durationMinutes), 0) FROM Intervention i WHERE i.durationMinutes IS NOT NULL AND i.durationMinutes > 0")
+    Double avgDurationMinutes();
 }
