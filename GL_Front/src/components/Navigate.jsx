@@ -29,6 +29,7 @@ export const Sidebar = ({ isOpen, setIsOpen, openProfile, setOpenProfile }) => {
   // user info
   const raw      = keycloak.tokenParsed?.preferred_username || "User";
   const username = raw.includes("@") ? raw.split("@")[0] : raw;
+  const email    = keycloak.tokenParsed?.email || (raw.includes("@") ? raw : null);
   const initial  = username.charAt(0).toUpperCase();
 
   // roles
@@ -297,7 +298,10 @@ export const Sidebar = ({ isOpen, setIsOpen, openProfile, setOpenProfile }) => {
               </div>
               <div className="min-w-0">
                 <p className="text-sm font-semibold text-white truncate">{username}</p>
-                <span className={`inline-flex items-center gap-1.5 text-[10px] font-semibold px-2 py-0.5 rounded-full ${roleStyle.badge}`}>
+                {email && (
+                  <p className="text-[11px] text-gray-400 truncate max-w-[140px] mt-0.5">{email}</p>
+                )}
+                <span className={`inline-flex items-center gap-1.5 text-[10px] font-semibold px-2 py-0.5 rounded-full mt-1 ${roleStyle.badge}`}>
                   <span className={`role-dot w-1.5 h-1.5 rounded-full ${roleStyle.dot}`} />
                   {roleLabel}
                 </span>
