@@ -19,6 +19,7 @@ public class MaintenancePointDTO {
 
     private Long id;
     private Long machineId;
+    private String machineName;
     private MaintenanceOperationType operationType;
     private String description;
     private String location;

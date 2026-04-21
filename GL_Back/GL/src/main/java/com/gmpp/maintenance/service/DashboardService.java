@@ -186,7 +186,10 @@ public class DashboardService {
                     MaintenancePoint mp = intervention.getMaintenancePoint();
                     if (mp != null) {
                         map.put("maintenancePointId", mp.getId());
-                        map.put("maintenancePointName", mp.getName());
+                        String mpName = (mp.getName() != null && !mp.getName().isBlank())
+                                ? mp.getName()
+                                : buildPointLabel(mp);
+                        map.put("maintenancePointName", mpName);
                     }
 
                     map.put("plannedDate", intervention.getPlannedDate());
@@ -211,5 +214,14 @@ public class DashboardService {
         Long interventions = interventionRepository.count();
         double averageCost = 500; // example cost per intervention
         return interventions * averageCost;
+    }
+
+    private String buildPointLabel(MaintenancePoint mp) {
+        String type = mp.getOperationType() != null ? mp.getOperationType().toString() : null;
+        String loc  = mp.getLocation();
+        if (type != null && loc != null && !loc.isBlank()) return type + " — " + loc;
+        if (type != null) return type;
+        if (loc  != null && !loc.isBlank()) return loc;
+        return "Point #" + mp.getId();
     }
 }

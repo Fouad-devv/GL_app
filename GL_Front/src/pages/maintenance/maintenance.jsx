@@ -10,7 +10,8 @@ import { MaintenanceToolbar } from './components/MaintenanceToolbar';
 import { MaintenanceForm } from './components/MaintenanceForm';
 
 const COLUMNS = [
-  { key: 'operationType',  label: 'Type',            width: '130px' },
+  { key: 'machineName',    label: 'Machine',          width: '150px', render: (val) => val ?? '—' },
+  { key: 'operationType',  label: 'Type',             width: '130px' },
   { key: 'description',    label: 'Description',      width: '200px' },
   { key: 'location',       label: 'Localisation',     width: '150px' },
   { key: 'frequency',      label: 'Fréquence',        width: '120px' },

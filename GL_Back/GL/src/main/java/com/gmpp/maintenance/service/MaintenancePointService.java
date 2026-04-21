@@ -115,6 +115,7 @@ public class MaintenancePointService {
         return MaintenancePointDTO.builder()
                 .id(point.getId())
                 .machineId(point.getMachine() != null ? point.getMachine().getId() : null)
+                .machineName(point.getMachine() != null ? point.getMachine().getName() : null)
                 .operationType(point.getOperationType())
                 .description(point.getDescription())
                 .location(point.getLocation())

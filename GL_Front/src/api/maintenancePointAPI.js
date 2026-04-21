@@ -12,7 +12,7 @@ const useMaintenancePointAPI = () => {
       axiosPrivate.get(`/api/maintenance-points/${pointId}`),
 
     getPointsByMachine: (machineId) =>
-      axiosPrivate.get(`/api/machines/${machineId}/maintenance-points`),
+      axiosPrivate.get(`/api/maintenance-points/machine/${machineId}`),
 
     createPoint: (pointData) =>
       axiosPrivate.post('/api/maintenance-points', pointData),

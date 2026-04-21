@@ -1,6 +1,7 @@
 import { Button, ButtonGroup } from '../../../components/Button';
 import { Input, Select, TextArea } from '../../../components/Form';
 import { INTERVENTION_STATUS, EQUIPMENT_STATE } from '../../../utils/constants';
+import { MaintenancePointPicker } from './MaintenancePointPicker';
 
 export const InterventionForm = ({ formData, machines, technicians, maintenancePoints = [], editingIntervention, onChange, onSubmit, onCancel }) => (
   <form onSubmit={onSubmit} className="space-y-4">
@@ -22,27 +23,11 @@ export const InterventionForm = ({ formData, machines, technicians, maintenanceP
       />
     </div>
 
-    <Select
-      label="Point de maintenance"
-      name="maintenancePointId"
-      value={formData.maintenancePointId ?? ''}
+    <MaintenancePointPicker
+      points={maintenancePoints}
+      value={formData.maintenancePointId}
       onChange={onChange}
-      options={[
-        { value: '', label: '— Aucun (intervention corrective) —' },
-        ...maintenancePoints.map((p) => ({
-          value: p.id,
-          label: p.name
-            ? `${p.name}${p.operationType ? ` · ${p.operationType}` : ''}`
-            : `Point #${p.id}`,
-        })),
-      ]}
-      hint={
-        formData.machineId
-          ? maintenancePoints.length === 0
-            ? 'Aucun point de maintenance défini pour cette machine'
-            : `${maintenancePoints.length} point(s) disponible(s)`
-          : 'Sélectionnez d\'abord une machine'
-      }
+      machineSelected={!!formData.machineId}
     />
 
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
