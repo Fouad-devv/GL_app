@@ -84,6 +84,7 @@ export const Select = ({
   placeholder,
   required = false,
   error = null,
+  hint = null,
   disabled = false,
   className = '',
   name,
@@ -114,6 +115,7 @@ export const Select = ({
           </option>
         ))}
       </select>
+      {hint  && !error && <p className="text-gray-400 text-xs mt-1">{hint}</p>}
       {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
     </div>
   );

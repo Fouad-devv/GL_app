@@ -8,6 +8,7 @@ import { LoadingOverlay } from '../../components/LoadingSpinner';
 import useInterventionAPI from '../../api/interventionAPI.js';
 import useMachineAPI from '../../api/machineAPI';
 import useUserAPI from '../../api/userAPI';
+import useMaintenancePointAPI from '../../api/maintenancePointAPI';
 import { formatDate } from '../../utils/dateUtils';
 import { InterventionsToolbar } from './components/InterventionsToolbar';
 import { InterventionForm } from './components/InterventionForm';
@@ -37,13 +38,15 @@ export const Interventions = () => {
   const isAdmin      = roles.includes('admin');
   const isTechnicien = roles.includes('technicien');
 
-  const interventionAPI = useInterventionAPI();
-  const machineAPI      = useMachineAPI();
-  const userAPI         = useUserAPI();
+  const interventionAPI    = useInterventionAPI();
+  const machineAPI         = useMachineAPI();
+  const userAPI            = useUserAPI();
+  const maintenancePointAPI = useMaintenancePointAPI();
 
   const [interventions, setInterventions]             = useState([]);
   const [machines, setMachines]                       = useState([]);
   const [technicians, setTechnicians]                 = useState([]);
+  const [maintenancePoints, setMaintenancePoints]     = useState([]);
   const [loading, setLoading]                         = useState(false);
   const [error, setError]                             = useState(null);
   const [success, setSuccess]                         = useState(null);
@@ -53,9 +56,10 @@ export const Interventions = () => {
   const [currentPage, setCurrentPage]                 = useState(0);
   const [totalPages, setTotalPages]                   = useState(0);
   const [formData, setFormData] = useState({
-    machineId: null, technicianId: null, plannedDate: '', plannedTime: '',
-    actualDate: '', actualTime: '', durationMinutes: 0,
-    status: 'PLANIFIEE', observations: '', equipmentState: 'NORMAL', cost: '',
+    machineId: null, technicianId: null, maintenancePointId: null,
+    plannedDate: '', plannedTime: '', actualDate: '', actualTime: '',
+    durationMinutes: 0, status: 'PLANIFIEE', observations: '',
+    equipmentState: 'NORMAL', cost: '',
   });
 
   useEffect(() => {
@@ -95,24 +99,44 @@ export const Interventions = () => {
     }
   };
 
-  const loadMachines    = async () => { try { const r = await machineAPI.getAllMachines();    setMachines(r.data || []);    } catch (err) { console.error(err); } };
-  const loadTechnicians = async () => { try { const r = await userAPI.getTechnicians();       setTechnicians(r.data || []); } catch (err) { console.error(err); } };
+  const loadMachines    = async () => { try { const r = await machineAPI.getAllMachines(); setMachines(r.data || []); } catch (err) { console.error(err); } };
+  const loadTechnicians = async () => { try { const r = await userAPI.getTechnicians();   setTechnicians(r.data || []); } catch (err) { console.error(err); } };
+
+  const loadMaintenancePoints = async (machineId) => {
+    if (!machineId) { setMaintenancePoints([]); return; }
+    try {
+      const r = await maintenancePointAPI.getPointsByMachine(machineId);
+      setMaintenancePoints(r.data || []);
+    } catch (err) {
+      setMaintenancePoints([]);
+    }
+  };
 
   const handleOpenModal = (intervention = null) => {
     if (intervention) {
       setEditingIntervention(intervention);
+      const mid = intervention.machineId ? Number(intervention.machineId) : null;
       setFormData({
-        machineId: intervention.machineId ? Number(intervention.machineId) : null,
+        machineId: mid,
         technicianId: intervention.technicianId ? Number(intervention.technicianId) : null,
+        maintenancePointId: intervention.maintenancePointId ? Number(intervention.maintenancePointId) : null,
         plannedDate: intervention.plannedDate || '', plannedTime: intervention.plannedTime || '',
         actualDate: intervention.actualDate || '', actualTime: intervention.actualTime || '',
         durationMinutes: intervention.durationMinutes || 0, status: intervention.status || 'PLANIFIEE',
         observations: intervention.observations || '', equipmentState: intervention.equipmentState || 'NORMAL',
         cost: intervention.cost ?? '',
       });
+      loadMaintenancePoints(mid);
     } else {
       setEditingIntervention(null);
-      setFormData({ machineId: machines[0] ? Number(machines[0].id) : null, technicianId: technicians[0] ? Number(technicians[0].id) : null, plannedDate: '', plannedTime: '', actualDate: '', actualTime: '', durationMinutes: 0, status: 'PLANIFIEE', observations: '', equipmentState: 'NORMAL', cost: '' });
+      const mid = machines[0] ? Number(machines[0].id) : null;
+      setFormData({
+        machineId: mid, technicianId: technicians[0] ? Number(technicians[0].id) : null,
+        maintenancePointId: null, plannedDate: '', plannedTime: '',
+        actualDate: '', actualTime: '', durationMinutes: 0,
+        status: 'PLANIFIEE', observations: '', equipmentState: 'NORMAL', cost: '',
+      });
+      loadMaintenancePoints(mid);
     }
     setIsModalOpen(true);
   };
@@ -121,9 +145,18 @@ export const Interventions = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    const idFields = ['machineId', 'technicianId', 'maintenancePointId'];
+    const idFields      = ['machineId', 'technicianId', 'maintenancePointId'];
     const numericFields = ['durationMinutes', 'cost'];
-    setFormData((prev) => ({ ...prev, [name]: idFields.includes(name) ? (value === '' ? null : Number(value)) : numericFields.includes(name) ? (value === '' ? '' : parseFloat(value) || 0) : value }));
+    const parsed = idFields.includes(name)
+      ? (value === '' ? null : Number(value))
+      : numericFields.includes(name)
+        ? (value === '' ? '' : parseFloat(value) || 0)
+        : value;
+    setFormData(prev => ({ ...prev, [name]: parsed }));
+    if (name === 'machineId') {
+      setFormData(prev => ({ ...prev, machineId: parsed, maintenancePointId: null }));
+      loadMaintenancePoints(parsed);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -179,7 +212,7 @@ export const Interventions = () => {
       </Card>
 
       <Modal isOpen={isModalOpen} onClose={handleCloseModal} title={editingIntervention ? 'Éditer Intervention' : 'Nouvelle Intervention'} size="xl">
-        <InterventionForm formData={formData} machines={machines} technicians={technicians} editingIntervention={editingIntervention} onChange={handleInputChange} onSubmit={handleSubmit} onCancel={handleCloseModal} />
+        <InterventionForm formData={formData} machines={machines} technicians={technicians} maintenancePoints={maintenancePoints} editingIntervention={editingIntervention} onChange={handleInputChange} onSubmit={handleSubmit} onCancel={handleCloseModal} />
       </Modal>
     </div>
   );
