@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useKeycloak } from '@react-keycloak/web';
 import { useEffect, useRef, useState } from 'react';
-import { FiCheckCircle, FiBarChart2, FiCalendar, FiUsers, FiArrowRight, FiShield, FiActivity } from 'react-icons/fi';
+import { FiCheckCircle, FiBarChart2, FiCalendar, FiUsers, FiArrowRight, FiShield, FiActivity, FiSun, FiMoon } from 'react-icons/fi';
 import './public.css';
 
 /* ─── Counter hook ───────────────────────────────────────────────────────── */
@@ -76,6 +76,7 @@ export const Public = () => {
   const { keycloak, initialized } = useKeycloak();
   const navigate = useNavigate();
   const [ready, setReady] = useState(false);
+  const [lightMode, setLightMode] = useState(false);
 
   const c0 = useCounter(STATS[0].value, 1600, ready);
   const c1 = useCounter(STATS[1].value, 1900, ready);
@@ -107,7 +108,7 @@ export const Public = () => {
   }
 
   return (
-    <div className="p-root">
+    <div className={`p-root${lightMode ? ' light' : ''}`}>
 
       {/* ── Background layers ── */}
       <div className="bg-dots" />
@@ -136,9 +137,14 @@ export const Public = () => {
             <span className="nav-logo-text">GMPP</span>
             <span className="nav-badge">v2.0</span>
           </div>
-          <button className="nav-btn" onClick={handleLogin}>
-            Connexion <FiArrowRight size={13} />
-          </button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <button className="theme-toggle" onClick={() => setLightMode(m => !m)} title={lightMode ? 'Mode sombre' : 'Mode clair'}>
+              {lightMode ? <FiMoon size={16} /> : <FiSun size={16} />}
+            </button>
+            <button className="nav-btn" onClick={handleLogin}>
+              Connexion <FiArrowRight size={13} />
+            </button>
+          </div>
         </div>
       </nav>
 
