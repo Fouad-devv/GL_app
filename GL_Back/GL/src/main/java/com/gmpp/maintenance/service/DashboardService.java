@@ -3,6 +3,7 @@ package com.gmpp.maintenance.service;
 import com.gmpp.maintenance.dto.KPIResponse;
 import com.gmpp.maintenance.entity.Intervention;
 import com.gmpp.maintenance.entity.Machine;
+import com.gmpp.maintenance.entity.MaintenancePoint;
 import com.gmpp.maintenance.enums.InterventionStatus;
 import com.gmpp.maintenance.enums.MachineStatus;
 import com.gmpp.maintenance.enums.UserRole;
@@ -12,6 +13,7 @@ import com.gmpp.maintenance.repository.MaintenancePointRepository;
 import com.gmpp.maintenance.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -165,24 +167,26 @@ public class DashboardService {
     }
 
     // ===================== UPCOMING INTERVENTIONS =====================
+    @Transactional(readOnly = true)
     public List<Map<String, Object>> getUpcomingInterventions(int days) {
 
         LocalDate now = LocalDate.now();
         LocalDate limit = now.plusDays(days);
 
-        return interventionRepository.findByPlannedDateBetween(now, limit)
+        return interventionRepository.findUpcomingWithRelations(now, limit)
                 .stream()
                 .map(intervention -> {
 
                     Map<String, Object> map = new HashMap<>();
 
-                    Machine machine = intervention.getMachine(); // ✅ directly get Machine
+                    Machine machine = intervention.getMachine();
                     map.put("machineName", machine != null ? machine.getName() : "Unknown");
                     map.put("machineId", machine != null ? machine.getId() : null);
 
-                    if (intervention.getMaintenancePoint() != null) {
-                        map.put("maintenancePointId", intervention.getMaintenancePoint().getId());
-                        map.put("maintenancePointName", intervention.getMaintenancePoint().getName());
+                    MaintenancePoint mp = intervention.getMaintenancePoint();
+                    if (mp != null) {
+                        map.put("maintenancePointId", mp.getId());
+                        map.put("maintenancePointName", mp.getName());
                     }
 
                     map.put("plannedDate", intervention.getPlannedDate());

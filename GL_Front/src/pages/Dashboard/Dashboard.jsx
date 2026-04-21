@@ -1,56 +1,95 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useKeycloak } from '@react-keycloak/web';
 import { Alert } from '../../components/Alert';
 import { LoadingOverlay } from '../../components/LoadingSpinner';
 import useDashboardAPI from '../../api/dashboardAPI.js';
-import { DashboardHeader } from './components/DashboardHeader';
-import { KpiGrid } from './components/KpiGrid';
-import { AlertsSection } from './components/AlertsSection';
+import { DashboardHeader }            from './components/DashboardHeader';
+import { KpiGrid }                    from './components/KpiGrid';
+import { AlertsSection }              from './components/AlertsSection';
+import { InterventionStatusChart }    from './components/InterventionStatusChart';
+import { MachineStatusChart }         from './components/MachineStatusChart';
+import { PerformanceGauges }          from './components/PerformanceGauges';
+import { InterventionStats }          from './components/InterventionStats';
 import { UpcomingInterventionsTable } from './components/UpcomingInterventionsTable';
-import { InterventionStats } from './components/InterventionStats';
+
+const settle = r => r.status === 'fulfilled' ? r.value.data : null;
 
 export const Dashboard = () => {
   const { keycloak } = useKeycloak();
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [kpis, setKpis] = useState(null);
-  const [stats, setStats] = useState(null);
-  const [alerts, setAlerts] = useState([]);
-  const [upcomingInterventions, setUpcomingInterventions] = useState([]);
-  const dashboardAPI = useDashboardAPI();
+  const [loading, setLoading]   = useState(true);
+  const [error, setError]       = useState(null);
+  const [kpis, setKpis]         = useState(null);
+  const [stats, setStats]       = useState(null);
+  const [alerts, setAlerts]     = useState([]);
+  const [upcoming, setUpcoming] = useState([]);
+  const [machines, setMachines] = useState(null);
+  const api = useDashboardAPI();
 
-  useEffect(() => { loadDashboardData(); }, []);
-
-  const loadDashboardData = async () => {
+  const load = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
-      const kpiRes      = await dashboardAPI.getKPIs();
-      const statsRes    = await dashboardAPI.getInterventionStats();
-      const alertRes    = await dashboardAPI.getAlerts();
-      const upcomingRes = await dashboardAPI.getUpcomingInterventions(7);
-      setKpis(kpiRes.data);
-      setStats(statsRes.data);
-      setAlerts(alertRes.data || []);
-      setUpcomingInterventions(upcomingRes.data || []);
-    } catch (err) {
-      console.error('Error loading dashboard:', err);
+      const [kpiR, statsR, alertR, upR, opR, maintR, repR, oosR] =
+        await Promise.allSettled([
+          api.getKPIs(),
+          api.getInterventionStats(),
+          api.getAlerts(),
+          api.getUpcomingInterventions(7),
+          api.getMachineOperational(),
+          api.getMachineMaintenance(),
+          api.getMachineRepair(),
+          api.getMachineOutOfService(),
+        ]);
+
+      if (settle(kpiR))   setKpis(settle(kpiR));
+      if (settle(statsR)) setStats(settle(statsR));
+      setAlerts(settle(alertR) ?? []);
+      setUpcoming(settle(upR) ?? []);
+      setMachines({
+        operational:  settle(opR)   ?? 0,
+        maintenance:  settle(maintR) ?? 0,
+        repair:       settle(repR)  ?? 0,
+        outOfService: settle(oosR)  ?? 0,
+      });
+    } catch (e) {
+      console.error(e);
       setError('Erreur lors du chargement du tableau de bord');
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => { load(); }, [load]);
 
   if (loading) return <LoadingOverlay visible={true} />;
 
   return (
-    <div className="p-4 md:p-6 mt-15 md:mt-0">
-      <DashboardHeader username={keycloak?.tokenParsed?.preferred_username} />
+    <div className="p-4 md:p-6 mt-15 md:mt-0 max-w-[1600px] mx-auto">
+      <DashboardHeader
+        username={keycloak?.tokenParsed?.preferred_username}
+        onRefresh={load}
+      />
+
       {error && <Alert type="error" message={error} closeable={false} />}
+
+      {/* KPI row */}
       <KpiGrid kpis={kpis} />
+
+      {/* Alerts */}
       <AlertsSection alerts={alerts} />
-      <UpcomingInterventionsTable interventions={upcomingInterventions} />
+
+      {/* 3-column charts */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 mb-8">
+        <MachineStatusChart machines={machines} />
+        <InterventionStatusChart stats={stats} />
+        <PerformanceGauges kpis={kpis} stats={stats} />
+      </div>
+
+      {/* Summary stats */}
       <InterventionStats stats={stats} />
+
+      {/* Upcoming table */}
+      <UpcomingInterventionsTable interventions={upcoming} />
     </div>
   );
 };

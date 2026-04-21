@@ -28,6 +28,9 @@ public interface InterventionRepository extends JpaRepository<Intervention, Long
 
     List<Intervention> findByPlannedDateBetween(LocalDate startDate, LocalDate endDate);
 
+    @Query("SELECT i FROM Intervention i LEFT JOIN FETCH i.machine LEFT JOIN FETCH i.maintenancePoint WHERE i.plannedDate BETWEEN :startDate AND :endDate ORDER BY i.plannedDate ASC, i.plannedTime ASC")
+    List<Intervention> findUpcomingWithRelations(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
+
     List<Intervention> findByStatusAndPlannedDateBetween(InterventionStatus status, LocalDate startDate, LocalDate endDate);
 
     @Query("SELECT i FROM Intervention i WHERE i.status = :status AND i.plannedDate <= :date")
