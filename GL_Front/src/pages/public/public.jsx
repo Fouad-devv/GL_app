@@ -451,6 +451,28 @@ export const Public = () => {
                 <span className="h1-dim">préventive</span>
               </h1>
 
+              {/* Floating SVG panel beside heading on wide screens */}
+              <div className="right-panel svg-panel-floating anim-right" style={{ animationDelay: '0.28s' }}>
+                <div className="svg-panel">
+                  <div className="svg-panel-header">
+                    <span className="svg-panel-title">
+                      <FiCpu size={12}/> Tableau de contrôle interactif
+                    </span>
+                    <div className="svg-panel-dots">
+                      <span className="svg-dot red"/>
+                      <span className="svg-dot yellow"/>
+                      <span className="svg-dot green"/>
+                    </div>
+                  </div>
+                  <IndustrialSVG />
+                  <div className="svg-panel-footer">
+                    <FiActivity size={11} style={{color:'#34d399'}}/>
+                    <span>Tous les systèmes opérationnels</span>
+                    <div className="status-live" style={{marginLeft:'auto'}}/>
+                  </div>
+                </div>
+              </div>
+
               <p className="hero-desc anim-up" style={{ animationDelay: '0.27s' }}>
                 Solution complète pour gérer votre parc de machines, planifier vos interventions
                 et piloter la performance en temps réel.
@@ -488,27 +510,7 @@ export const Public = () => {
               </div>
             </div>
 
-            {/* Right col — Industrial SVG */}
-            <div className="right-panel anim-right" style={{ animationDelay: '0.28s' }}>
-              <div className="svg-panel">
-                <div className="svg-panel-header">
-                  <span className="svg-panel-title">
-                    <FiCpu size={12}/> Tableau de contrôle interactif
-                  </span>
-                  <div className="svg-panel-dots">
-                    <span className="svg-dot red"/>
-                    <span className="svg-dot yellow"/>
-                    <span className="svg-dot green"/>
-                  </div>
-                </div>
-                <IndustrialSVG />
-                <div className="svg-panel-footer">
-                  <FiActivity size={11} style={{color:'#34d399'}}/>
-                  <span>Tous les systèmes opérationnels</span>
-                  <div className="status-live" style={{marginLeft:'auto'}}/>
-                </div>
-              </div>
-            </div>
+            
           </div>
         </section>
 
