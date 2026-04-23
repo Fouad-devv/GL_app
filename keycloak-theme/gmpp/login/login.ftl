@@ -9,6 +9,9 @@
         <style>
             @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
 
+            /* ── Box sizing reset ── */
+            *, *::before, *::after { box-sizing: border-box; }
+
             /* ── Override KC defaults ── */
             html { background: #060810 !important; }
             body.gmpp { background: #060810 !important; font-family: 'Outfit',sans-serif !important; margin:0; padding:0; min-height:100vh; overflow-x:hidden; }
@@ -45,7 +48,33 @@
 
             /* ── Layout ── */
             .g-page { position:relative;z-index:1;min-height:100vh;display:grid;grid-template-columns:1fr 1fr; }
-            @media(max-width:900px){ .g-page{grid-template-columns:1fr;} .g-left{display:none!important;} }
+
+            /* ── Responsive ── */
+            @media(max-width:900px){
+                .g-page { grid-template-columns:1fr; }
+                .g-left { display:none!important; }
+            }
+            @media(max-width:600px){
+                .g-right { padding:32px 20px; align-items:flex-start; padding-top:48px; }
+                .g-card  { max-width:100%; }
+                .g-ctitle { font-size:24px; }
+                .g-csub   { font-size:13px; }
+                .g-inp    { font-size:16px; padding:14px 14px 14px 42px; } /* 16px prevents iOS zoom */
+                .g-btn    { padding:15px 20px; font-size:15px; }
+                .g-chdr   { margin-bottom:22px; }
+                .g-chips  { gap:6px; }
+                .g-chip   { font-size:9px; padding:4px 10px; }
+                .g-sec    { font-size:9px; }
+                .g-div    { margin-top:18px; }
+                .g-reg    { font-size:13px; }
+                .g-form   { gap:14px; }
+            }
+            @media(max-width:400px){
+                .g-right  { padding:28px 16px; padding-top:40px; }
+                .g-ctitle { font-size:21px; }
+                .g-opts   { flex-direction:column; align-items:flex-start; gap:10px; }
+                .g-chips  { flex-direction:column; align-items:center; }
+            }
 
             /* ── Left panel ── */
             .g-left { display:flex;flex-direction:column;justify-content:space-between;padding:48px 52px;border-right:1px solid rgba(59,130,246,.1);animation:fadeIn .8s ease both; }
@@ -90,7 +119,7 @@
             .g-form  { display:flex;flex-direction:column;gap:17px; }
             .g-group { display:flex;flex-direction:column;gap:6px; }
             .g-lbl   { font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:#94a3b8;font-weight:500; }
-            .g-wrap  { position:relative; }
+            .g-wrap  { position:relative; width:100%; }
             .g-icon  { position:absolute;left:13px;top:50%;transform:translateY(-50%);color:#4b5563;pointer-events:none;display:flex;align-items:center;transition:color .2s; }
             .g-inp   { width:100%;padding:13px 13px 13px 43px;background:rgba(13,18,37,.85);border:1px solid rgba(59,130,246,.18);border-radius:10px;font-family:'Outfit',sans-serif;font-size:15px;color:#e2e8f0;outline:none;transition:border-color .25s,box-shadow .25s;-webkit-appearance:none; }
             .g-inp::placeholder { color:#374151; }
