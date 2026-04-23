@@ -160,6 +160,12 @@ public class InterventionService {
                 .collect(Collectors.toList());
     }
 
+    public List<InterventionDTO> getInterventionsByMaintenancePoint(Long maintenancePointId) {
+        return interventionRepository.findByMaintenancePointId(maintenancePointId).stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
     // ---------- DTO CONVERSION ----------
     private InterventionDTO convertToDTO(Intervention i) {
         return InterventionDTO.builder()

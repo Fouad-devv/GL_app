@@ -1,15 +1,16 @@
 import React from 'react';
 import { FiChevronLeft, FiChevronRight, FiChevronsLeft, FiChevronsRight } from 'react-icons/fi';
 
-export const Table = ({ 
-  columns, 
-  data, 
-  onEdit, 
+export const Table = ({
+  columns,
+  data,
+  onEdit,
   onDelete,
+  onRowClick,
   loading = false,
   pagination = null,
   onPageChange = null,
-  responsive = true 
+  responsive = true
 }) => {
   return (
     <div className="overflow-x-auto">
@@ -49,7 +50,8 @@ export const Table = ({
             data.map((row, idx) => (
               <tr
                 key={idx}
-                className="border-b border-gray-200 hover:bg-gray-50 transition"
+                onClick={() => onRowClick?.(row)}
+                className={`border-b border-gray-200 hover:bg-gray-50 transition ${onRowClick ? 'cursor-pointer' : ''}`}
               >
                 {columns.map((col) => (
                   <td key={col.key} className="px-4 py-3 text-sm text-gray-700">
@@ -61,7 +63,7 @@ export const Table = ({
                     <div className="flex gap-2">
                       {onEdit && (
                         <button
-                          onClick={() => onEdit(row)}
+                          onClick={(e) => { e.stopPropagation(); onEdit(row); }}
                           className="px-2 py-1 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition text-xs font-medium"
                         >
                           Éditer
@@ -69,7 +71,7 @@ export const Table = ({
                       )}
                       {onDelete && (
                         <button
-                          onClick={() => onDelete(row)}
+                          onClick={(e) => { e.stopPropagation(); onDelete(row); }}
                           className="px-2 py-1 bg-red-100 text-red-700 rounded hover:bg-red-200 transition text-xs font-medium"
                         >
                           Supprimer

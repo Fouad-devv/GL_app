@@ -69,6 +69,12 @@ public class InterventionController {
         return ResponseEntity.ok(interventions);
     }
 
+    @GetMapping("/maintenance-point/{maintenancePointId}")
+    public ResponseEntity<List<InterventionDTO>> getInterventionsByMaintenancePoint(@PathVariable Long maintenancePointId) {
+        List<InterventionDTO> interventions = interventionService.getInterventionsByMaintenancePoint(maintenancePointId);
+        return ResponseEntity.ok(interventions);
+    }
+
     @GetMapping("/technician/{technicianId}")
     public ResponseEntity<List<InterventionDTO>> getInterventionsByTechnician(@PathVariable Long technicianId) {
         List<InterventionDTO> interventions = interventionService.getInterventionsByTechnician(technicianId);

@@ -10,6 +10,7 @@ import { Public } from './pages/public/public';
 import { Dashboard } from './pages/dashboard/dashboard';
 import { AddUser } from './pages/user/Adduser';
 import { Maintenance } from './pages/maintenance/maintenance';
+import { MaintenancePointDetail } from './pages/maintenance/components/MaintenancePointDetail';
 import { Users } from './pages/user/Users';
 import { Machines } from './pages/machines/machines';
 import { Interventions } from './pages/interventions/interventions';
@@ -32,7 +33,8 @@ function App() {
       <Route element={<Layout {...layoutProps}><Outlet /></Layout>}>
         <Route path="/dashboard"     element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
         <Route path="/machines"      element={<ProtectedRoute><Machines /></ProtectedRoute>} />
-        <Route path="/maintenance"   element={<ProtectedRoute><Maintenance /></ProtectedRoute>} />
+        <Route path="/maintenance"      element={<ProtectedRoute><Maintenance /></ProtectedRoute>} />
+        <Route path="/maintenance/:id"  element={<ProtectedRoute><MaintenancePointDetail /></ProtectedRoute>} />
         <Route path="/interventions" element={<ProtectedRoute><Interventions /></ProtectedRoute>} />
         <Route path="/planning"      element={<ProtectedRoute><Planning /></ProtectedRoute>} />
         <Route path="/reports"       element={<ProtectedRoute><Reports /></ProtectedRoute>} />

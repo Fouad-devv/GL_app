@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card } from '../../components/Card';
 import { Table } from '../../components/Table';
 import { Modal } from '../../components/Modal';
@@ -12,14 +13,13 @@ import { MaintenanceForm } from './components/MaintenanceForm';
 const COLUMNS = [
   { key: 'machineName',    label: 'Machine',          width: '150px', render: (val) => val ?? '—' },
   { key: 'operationType',  label: 'Type',             width: '130px' },
-  { key: 'description',    label: 'Description',      width: '200px' },
-  { key: 'location',       label: 'Localisation',     width: '150px' },
   { key: 'frequency',      label: 'Fréquence',        width: '120px' },
   { key: 'consumableType', label: 'Type consommable', width: '120px' },
   { key: 'quantity',       label: 'Quantité',         width: '80px'  },
 ];
 
 export const Maintenance = () => {
+  const navigate       = useNavigate();
   const maintenanceAPI = useMaintenancePointAPI();
   const machineAPI     = useMachineAPI();
 
@@ -156,7 +156,7 @@ export const Maintenance = () => {
       <MaintenanceToolbar searchTerm={searchTerm} onSearchChange={(e) => setSearchTerm(e.target.value)} onSearch={handleSearch} onNew={() => handleOpenModal()} />
 
       <Card>
-        <Table columns={COLUMNS} data={points} onEdit={handleOpenModal} onDelete={handleDelete} loading={loading} pagination={{ currentPage, totalPages }} onPageChange={setCurrentPage} />
+        <Table columns={COLUMNS} data={points} onEdit={handleOpenModal} onDelete={handleDelete} onRowClick={(point) => navigate(`/maintenance/${point.id}`)} loading={loading} pagination={{ currentPage, totalPages }} onPageChange={setCurrentPage} />
       </Card>
 
       <Modal isOpen={isModalOpen} onClose={handleCloseModal} title={editingPoint ? 'Éditer Point' : 'Nouveau Point de Maintenance'} size="lg">
