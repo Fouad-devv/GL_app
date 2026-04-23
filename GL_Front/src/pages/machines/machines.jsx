@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card } from '../../components/Card';
 import { Table } from '../../components/Table';
 import { Modal } from '../../components/Modal';
@@ -37,6 +38,7 @@ const DEFAULT_FORM = {
 };
 
 export const Machines = () => {
+  const navigate   = useNavigate();
   const machineAPI = useMachineAPI();
 
   const [machines, setMachines]           = useState([]);
@@ -151,7 +153,7 @@ export const Machines = () => {
       <MachinesToolbar searchTerm={searchTerm} onSearchChange={(e) => setSearchTerm(e.target.value)} filterStatus={filterStatus} onFilterStatusChange={(e) => setFilterStatus(e.target.value)} onSearch={handleSearch} onNew={() => handleOpenModal()} />
 
       <Card>
-        <Table columns={COLUMNS} data={machines} onEdit={handleOpenModal} onDelete={handleDelete} loading={loading} />
+        <Table columns={COLUMNS} data={machines} onEdit={handleOpenModal} onDelete={handleDelete} onRowClick={(m) => navigate(`/machines/${m.id}`)} loading={loading} />
       </Card>
 
       <Modal isOpen={isModalOpen} onClose={handleCloseModal} title={editingMachine ? 'Éditer Machine' : 'Nouvelle Machine'} size="lg">

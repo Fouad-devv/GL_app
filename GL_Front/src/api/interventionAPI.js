@@ -24,7 +24,7 @@ const useInterventionAPI = () => {
       axiosPrivate.get(`/api/interventions/status/${status}`),
 
     getInterventionsByMachine: (machineId) =>
-      axiosPrivate.get(`/api/machines/${machineId}/interventions`),
+      axiosPrivate.get(`/api/interventions/machine/${machineId}`),
 
     getInterventionsByMaintenancePoint: (maintenancePointId) =>
       axiosPrivate.get(`/api/interventions/maintenance-point/${maintenancePointId}`),
