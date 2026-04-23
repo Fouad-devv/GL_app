@@ -14,6 +14,7 @@ import { MaintenancePointDetail } from './pages/maintenance/components/Maintenan
 import { Users } from './pages/user/Users';
 import { Machines } from './pages/machines/machines';
 import { Interventions } from './pages/interventions/interventions';
+import { InterventionDetail } from './pages/interventions/components/InterventionDetail';
 import { Planning } from './pages/planning/planning';
 import { Reports } from './pages/reports/reports';
 
@@ -35,7 +36,8 @@ function App() {
         <Route path="/machines"      element={<ProtectedRoute><Machines /></ProtectedRoute>} />
         <Route path="/maintenance"      element={<ProtectedRoute><Maintenance /></ProtectedRoute>} />
         <Route path="/maintenance/:id"  element={<ProtectedRoute><MaintenancePointDetail /></ProtectedRoute>} />
-        <Route path="/interventions" element={<ProtectedRoute><Interventions /></ProtectedRoute>} />
+        <Route path="/interventions"      element={<ProtectedRoute><Interventions /></ProtectedRoute>} />
+        <Route path="/interventions/:id"  element={<ProtectedRoute><InterventionDetail /></ProtectedRoute>} />
         <Route path="/planning"      element={<ProtectedRoute><Planning /></ProtectedRoute>} />
         <Route path="/reports"       element={<ProtectedRoute><Reports /></ProtectedRoute>} />
         <Route path="/users"         element={<AdminRouteProtector><Users /></AdminRouteProtector>} />

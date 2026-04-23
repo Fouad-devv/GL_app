@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useKeycloak } from '@react-keycloak/web';
 import { Card } from '../../components/Card';
 import { Table } from '../../components/Table';
@@ -33,6 +34,7 @@ const COLUMNS = [
 ];
 
 export const Interventions = () => {
+  const navigate      = useNavigate();
   const { keycloak } = useKeycloak();
   const roles        = keycloak.tokenParsed?.realm_access?.roles || [];
   const isAdmin      = roles.includes('admin');
@@ -208,7 +210,7 @@ export const Interventions = () => {
       <InterventionsToolbar statusFilter={statusFilter} onStatusFilterChange={(e) => setStatusFilter(e.target.value)} onReset={() => setStatusFilter('')} onNew={() => handleOpenModal()} isAdmin={isAdmin} />
 
       <Card>
-        <Table columns={COLUMNS} data={displayedInterventions} onEdit={handleOpenModal} onDelete={handleDelete} loading={loading} pagination={{ currentPage, totalPages }} onPageChange={setCurrentPage} />
+        <Table columns={COLUMNS} data={displayedInterventions} onEdit={handleOpenModal} onDelete={handleDelete} onRowClick={(inv) => navigate(`/interventions/${inv.id}`)} loading={loading} pagination={{ currentPage, totalPages }} onPageChange={setCurrentPage} />
       </Card>
 
       <Modal isOpen={isModalOpen} onClose={handleCloseModal} title={editingIntervention ? 'Éditer Intervention' : 'Nouvelle Intervention'} size="xl">
