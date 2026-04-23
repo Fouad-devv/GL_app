@@ -72,17 +72,21 @@ export const Dashboard = () => {
 
       {error && <Alert type="error" message={error} closeable={false} />}
 
-      {/* KPI row */}
-      <KpiGrid kpis={kpis} />
+      {/* KPI + Performance row */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5 mb-8">
+        <div className="lg:col-span-2">
+          <KpiGrid kpis={kpis} />
+        </div>
+        <PerformanceGauges kpis={kpis} stats={stats} />
+      </div>
 
       {/* Alerts */}
       <AlertsSection alerts={alerts} />
 
-      {/* 3-column charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 mb-8">
+      {/* 2-column charts */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-8">
         <MachineStatusChart machines={machines} />
         <InterventionStatusChart stats={stats} />
-        <PerformanceGauges kpis={kpis} stats={stats} />
       </div>
 
       {/* Summary stats */}

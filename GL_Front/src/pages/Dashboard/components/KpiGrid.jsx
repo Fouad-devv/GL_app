@@ -1,16 +1,6 @@
-import {
-  FiTrendingUp, FiCheckCircle, FiClock,
-  FiAlertTriangle, FiActivity, FiDollarSign,
-} from 'react-icons/fi';
+import { FiCheckCircle, FiClock, FiAlertTriangle, FiDollarSign } from 'react-icons/fi';
 
 const CARDS = [
-  {
-    key: 'implementationRate',
-    title: 'Taux de réalisation',
-    fmt: v => v != null ? `${Math.round(v)}%` : '—',
-    icon: FiTrendingUp,
-    theme: { border: '#3b82f6', icon: '#3b82f6', bg: '#eff6ff', val: '#1d4ed8' },
-  },
   {
     key: 'completedInterventions',
     title: 'Interventions terminées',
@@ -31,13 +21,6 @@ const CARDS = [
     fmt: v => v ?? 0,
     icon: FiAlertTriangle,
     theme: { border: '#ef4444', icon: '#ef4444', bg: '#fef2f2', val: '#991b1b' },
-  },
-  {
-    key: 'machineAvailability',
-    title: 'Disponibilité machines',
-    fmt: v => v != null ? `${Math.round(v)}%` : '—',
-    icon: FiActivity,
-    theme: { border: '#f59e0b', icon: '#f59e0b', bg: '#fffbeb', val: '#92400e' },
   },
   {
     key: 'monthlyCost',
@@ -72,7 +55,7 @@ const KpiCard = ({ card, kpis }) => {
 };
 
 export const KpiGrid = ({ kpis }) => (
-  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-8">
+  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 md:gap-y-15 gap-x-7">
     {CARDS.map(card => <KpiCard key={card.key} card={card} kpis={kpis} />)}
   </div>
 );
