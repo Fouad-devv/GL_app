@@ -15,7 +15,7 @@ const COLUMNS = [
   { key: 'type',     label: 'Type',         width: '120px' },
   { key: 'brand',    label: 'Marque',       width: '120px' },
   { key: 'model',    label: 'Modèle',       width: '120px' },
-  { key: 'location', label: 'Localisation', width: '150px' },
+  
   {
     key: 'status', label: 'Statut', width: '120px',
     render: (status) => (
