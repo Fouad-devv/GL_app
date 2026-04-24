@@ -60,7 +60,7 @@ export const Sidebar = ({ isOpen, setIsOpen, openProfile, setOpenProfile }) => {
 
       {/* ── mobile top bar ── */}
       <div className="fixed flex items-center gap-3 w-full z-50 md:hidden px-4 py-3"
-           style={{ background:'rgba(13,8,0,0.97)', borderBottom:'1px solid rgba(249,115,22,0.12)', backdropFilter:'blur(16px)' }}>
+           style={{ background:'rgba(20,10,2,0.98)', borderBottom:'1px solid rgba(249,115,22,0.18)', backdropFilter:'blur(20px)', boxShadow:'0 2px 16px rgba(0,0,0,0.4)' }}>
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="p-2 rounded-lg text-white transition"
@@ -81,13 +81,14 @@ export const Sidebar = ({ isOpen, setIsOpen, openProfile, setOpenProfile }) => {
           ${isOpen ? "translate-x-0 w-56" : "-translate-x-full md:translate-x-0"}
         `}
         style={{
-          background: 'linear-gradient(180deg, #0e0800 0%, #090500 100%)',
-          borderRight: '1px solid rgba(249,115,22,0.10)',
+          background: 'linear-gradient(180deg, #1e1008 0%, #130900 35%, #090500 100%)',
+          borderRight: '1px solid rgba(249,115,22,0.18)',
+          boxShadow: '4px 0 28px rgba(0,0,0,0.45)',
         }}
       >
         {/* ── header ── */}
         <div className="flex items-center h-16 px-4 flex-shrink-0"
-             style={{ borderBottom:'1px solid rgba(249,115,22,0.10)' }}>
+             style={{ borderBottom:'1px solid rgba(249,115,22,0.14)', background:'rgba(249,115,22,0.03)' }}>
           <div className="mr-auto flex items-center gap-2.5 overflow-hidden"
                style={{ maxWidth: collapsed ? 0 : 160, opacity: collapsed ? 0 : 1, transition: 'max-width 0.3s ease-in-out, opacity 0.2s ease-in-out' }}>
             <div style={{
@@ -124,7 +125,7 @@ export const Sidebar = ({ isOpen, setIsOpen, openProfile, setOpenProfile }) => {
               >
                 <p className="section-label text-[10px] font-bold uppercase tracking-[0.18em] px-3 mb-2"
                    style={{
-                     color:'rgba(249,115,22,0.45)',
+                     color:'rgba(249,115,22,0.55)',
                      maxHeight: collapsed ? 0 : 20,
                      opacity: collapsed ? 0 : 1,
                      overflow: 'hidden',
@@ -160,7 +161,7 @@ export const Sidebar = ({ isOpen, setIsOpen, openProfile, setOpenProfile }) => {
                       onMouseEnter={e => {
                         if (!e.currentTarget.classList.contains('active')) {
                           e.currentTarget.style.background = 'rgba(249,115,22,0.08)';
-                          e.currentTarget.style.color = '#e5e7eb';
+                          e.currentTarget.style.color = '#f5e6d8';
                         }
                       }}
                       onMouseLeave={e => {
@@ -176,9 +177,9 @@ export const Sidebar = ({ isOpen, setIsOpen, openProfile, setOpenProfile }) => {
                             size={18}
                             style={{
                               flexShrink: 0,
-                              color: isActive ? '#60a5fa' : 'inherit',
+                              color: isActive ? '#fb923c' : 'inherit',
                               transition: 'color 0.2s',
-                              filter: isActive ? 'drop-shadow(0 0 6px rgba(96,165,250,0.5))' : 'none',
+                              filter: isActive ? 'drop-shadow(0 0 6px rgba(249,115,22,0.55))' : 'none',
                             }}
                           />
                           <span className="text-sm font-medium truncate" style={{
@@ -212,7 +213,7 @@ export const Sidebar = ({ isOpen, setIsOpen, openProfile, setOpenProfile }) => {
 
         {/* ── user profile ── */}
         <div className="flex-shrink-0 relative p-3 pb-8 md:pb-3 mb-10 md:mb-0"
-             style={{ borderTop:'1px solid rgba(249,115,22,0.10)' }}
+             style={{ borderTop:'1px solid rgba(249,115,22,0.14)' }}
              ref={dropdownRef}>
 
           <button
