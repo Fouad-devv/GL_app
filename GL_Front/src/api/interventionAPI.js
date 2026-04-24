@@ -51,9 +51,7 @@ const useInterventionAPI = () => {
     uploadPhoto: (interventionId, file) => {
       const formData = new FormData();
       formData.append('file', file);
-      return axiosPrivate.post(`/api/interventions/${interventionId}/photos`, formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
+      return axiosPrivate.post(`/api/interventions/${interventionId}/photos`, formData);
     },
 
     getPhotoData: (photoId) =>

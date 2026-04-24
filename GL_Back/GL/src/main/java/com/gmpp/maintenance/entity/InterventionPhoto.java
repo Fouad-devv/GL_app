@@ -27,7 +27,6 @@ public class InterventionPhoto {
     @Column(nullable = false)
     private String contentType;
 
-    @Lob
     @Column(name = "data", nullable = false, columnDefinition = "bytea")
     private byte[] data;
 
