@@ -955,7 +955,6 @@
 
 @media (max-width: 1024px) {
   .hero-grid { grid-template-columns: 1fr; gap: 52px; }
-  .hero-right { order: -1; }
   .svg-panel { max-width: 520px; margin: 0 auto; }
 }
 @media (max-width: 900px) {
