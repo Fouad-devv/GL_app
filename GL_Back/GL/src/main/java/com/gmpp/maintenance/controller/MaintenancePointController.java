@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/maintenance-points")
 @RequiredArgsConstructor
-@PreAuthorize("hasAnyRole('admin', 'responsable de maintenance')")
+@PreAuthorize("hasAnyRole('admin', 'responsable de maintenance', 'technicien', 'chef d''equipe')")
 public class MaintenancePointController {
 
     private final MaintenancePointService maintenancePointService;

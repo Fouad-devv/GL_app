@@ -23,7 +23,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/interventions")
 @RequiredArgsConstructor
-@PreAuthorize("hasAnyRole('admin', 'technicien')")
+@PreAuthorize("hasAnyRole('admin', 'technicien', 'responsable de maintenance', 'chef d''equipe')")
 public class InterventionController {
 
     private final InterventionService interventionService;

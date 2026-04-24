@@ -14,7 +14,7 @@ export const NAV_SECTIONS = [
     items: [
       { to: "/machines",      label: "Machines",           icon: FiCpu,       roles: [] },
       { to: "/maintenance",   label: "Points Maintenance", icon: FiClipboard, roles: ["admin", "responsable de maintenance", "chef d'equipe"] },
-      { to: "/interventions", label: "Interventions",      icon: FiTool,      roles: ["admin", "technicien", "chef d'equipe"] },
+      { to: "/interventions", label: "Interventions",      icon: FiTool,      roles: ["admin", "technicien", "chef d'equipe", "responsable de maintenance"] },
       { to: "/planning",      label: "Planning",           icon: FiCalendar,  roles: [] },
     ],
   },
