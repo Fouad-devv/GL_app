@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import {
   FiArrowLeft, FiEdit2, FiCalendar, FiClock, FiUser,
   FiTool, FiDollarSign, FiFileText, FiActivity,
-  FiCamera, FiUpload, FiTrash2, FiX, FiImage, FiChevronLeft, FiChevronRight,
+  FiUpload, FiTrash2, FiX, FiImage, FiChevronLeft, FiChevronRight, FiZoomIn,
 } from 'react-icons/fi';
 import { formatDate } from '../../../utils/dateUtils';
 import useInterventionAPI from '../../../api/interventionAPI';
@@ -56,8 +56,7 @@ const PhotoSection = ({ interventionId }) => {
   const [confirmDel, setConfirmDel] = useState(null); // photo id to delete
   const [error, setError]           = useState(null);
 
-  const fileInputRef   = useRef();
-  const cameraInputRef = useRef();
+  const fileInputRef = useRef();
 
   /* Load photo list then fetch each blob */
   const loadPhotos = useCallback(async () => {
@@ -135,39 +134,19 @@ const PhotoSection = ({ interventionId }) => {
         <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">
           Photos ({photos.length})
         </p>
-        <div className="flex gap-2">
-          {/* Upload from gallery */}
-          <button
-            onClick={() => fileInputRef.current?.click()}
-            disabled={uploading}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-blue-700 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition disabled:opacity-50"
-          >
-            <FiUpload size={13} /> Importer
-          </button>
-          {/* Take photo (camera on mobile) */}
-          <button
-            onClick={() => cameraInputRef.current?.click()}
-            disabled={uploading}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-white bg-blue-600 border border-blue-600 rounded-lg hover:bg-blue-700 transition disabled:opacity-50"
-          >
-            <FiCamera size={13} /> Prendre photo
-          </button>
-        </div>
+        <button
+          onClick={() => fileInputRef.current?.click()}
+          disabled={uploading}
+          className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-blue-700 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition disabled:opacity-50"
+        >
+          <FiUpload size={13} /> Importer une photo
+        </button>
       </div>
 
-      {/* Hidden file inputs */}
       <input
         ref={fileInputRef}
         type="file"
         accept="image/*"
-        className="hidden"
-        onChange={handleFileChange}
-      />
-      <input
-        ref={cameraInputRef}
-        type="file"
-        accept="image/*"
-        capture="environment"
         className="hidden"
         onChange={handleFileChange}
       />
@@ -186,14 +165,14 @@ const PhotoSection = ({ interventionId }) => {
       {photos.length === 0 && !uploading ? (
         <div className="bg-white rounded-2xl border border-dashed border-gray-200 py-10 flex flex-col items-center gap-2 text-gray-400">
           <FiImage size={32} className="text-gray-300" />
-          <p className="text-sm">Aucune photo — importez ou prenez une photo</p>
+          <p className="text-sm">Aucune photo — importez une image</p>
         </div>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
           {photos.map((photo, idx) => (
             <div
               key={photo.id}
-              className="relative group rounded-xl overflow-hidden border border-gray-100 shadow-sm bg-gray-50 aspect-square cursor-pointer"
+              className="relative group rounded-xl overflow-hidden border border-gray-100 shadow-sm bg-gray-50 aspect-square cursor-zoom-in"
               onClick={() => setLightbox(idx)}
             >
               {blobUrls[photo.id] ? (
@@ -209,16 +188,16 @@ const PhotoSection = ({ interventionId }) => {
               )}
 
               {/* Hover overlay */}
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition flex items-end justify-between p-2 opacity-0 group-hover:opacity-100">
-                <p className="text-white text-xs font-medium truncate max-w-[70%] drop-shadow">
-                  {photo.fileName}
-                </p>
-                <button
-                  onClick={(e) => { e.stopPropagation(); setConfirmDel(photo.id); }}
-                  className="w-7 h-7 rounded-full bg-red-500 flex items-center justify-center hover:bg-red-600 transition"
-                >
-                  <FiTrash2 size={12} className="text-white" />
-                </button>
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all flex items-center justify-center opacity-0 group-hover:opacity-100">
+                <div className="absolute top-2 right-2">
+                  <button
+                    onClick={(e) => { e.stopPropagation(); setConfirmDel(photo.id); }}
+                    className="w-7 h-7 rounded-full bg-red-500 flex items-center justify-center hover:bg-red-600 transition"
+                  >
+                    <FiTrash2 size={12} className="text-white" />
+                  </button>
+                </div>
+                <FiZoomIn size={28} className="text-white drop-shadow-lg" />
               </div>
             </div>
           ))}
@@ -228,52 +207,60 @@ const PhotoSection = ({ interventionId }) => {
       {/* Lightbox */}
       {lightbox !== null && photos[lightbox] && (
         <div
-          className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center"
+          style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(0,0,0,0.93)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
           onClick={() => setLightbox(null)}
         >
+          {/* Close */}
           <button
             onClick={(e) => { e.stopPropagation(); setLightbox(null); }}
-            className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition"
+            style={{ position: 'absolute', top: 16, right: 16, width: 40, height: 40, borderRadius: '50%', background: 'rgba(255,255,255,0.15)', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff' }}
           >
             <FiX size={20} />
           </button>
 
+          {/* Prev */}
           {photos.length > 1 && (
-            <>
-              <button
-                onClick={(e) => { e.stopPropagation(); moveLightbox(-1); }}
-                className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition"
-              >
-                <FiChevronLeft size={22} />
-              </button>
-              <button
-                onClick={(e) => { e.stopPropagation(); moveLightbox(1); }}
-                className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition"
-              >
-                <FiChevronRight size={22} />
-              </button>
-            </>
+            <button
+              onClick={(e) => { e.stopPropagation(); moveLightbox(-1); }}
+              style={{ position: 'absolute', left: 16, top: '50%', transform: 'translateY(-50%)', width: 44, height: 44, borderRadius: '50%', background: 'rgba(255,255,255,0.15)', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff' }}
+            >
+              <FiChevronLeft size={24} />
+            </button>
           )}
 
-          <div className="flex flex-col items-center gap-3 px-16 max-w-4xl w-full" onClick={(e) => e.stopPropagation()}>
+          {/* Next */}
+          {photos.length > 1 && (
+            <button
+              onClick={(e) => { e.stopPropagation(); moveLightbox(1); }}
+              style={{ position: 'absolute', right: 16, top: '50%', transform: 'translateY(-50%)', width: 44, height: 44, borderRadius: '50%', background: 'rgba(255,255,255,0.15)', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff' }}
+            >
+              <FiChevronRight size={24} />
+            </button>
+          )}
+
+          {/* Image */}
+          <div
+            style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16, padding: '0 72px', maxWidth: '100vw' }}
+            onClick={(e) => e.stopPropagation()}
+          >
             {blobUrls[photos[lightbox].id] && (
               <img
                 src={blobUrls[photos[lightbox].id]}
                 alt={photos[lightbox].fileName}
-                className="max-h-[80vh] max-w-full rounded-xl object-contain shadow-2xl"
+                style={{ maxHeight: '82vh', maxWidth: '90vw', borderRadius: 12, objectFit: 'contain', boxShadow: '0 25px 60px rgba(0,0,0,0.6)' }}
               />
             )}
-            <div className="flex items-center gap-4">
-              <p className="text-white/70 text-sm">{photos[lightbox].fileName}</p>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+              <span style={{ color: 'rgba(255,255,255,0.6)', fontSize: 13 }}>{photos[lightbox].fileName}</span>
               <button
                 onClick={() => setConfirmDel(photos[lightbox].id)}
-                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-white bg-red-500/80 rounded-lg hover:bg-red-500 transition"
+                style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '6px 14px', fontSize: 12, fontWeight: 600, color: '#fff', background: 'rgba(239,68,68,0.8)', border: 'none', borderRadius: 8, cursor: 'pointer' }}
               >
                 <FiTrash2 size={12} /> Supprimer
               </button>
             </div>
             {photos.length > 1 && (
-              <p className="text-white/40 text-xs">{lightbox + 1} / {photos.length}</p>
+              <span style={{ color: 'rgba(255,255,255,0.35)', fontSize: 12 }}>{lightbox + 1} / {photos.length}</span>
             )}
           </div>
         </div>
