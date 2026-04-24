@@ -60,11 +60,11 @@ export const Sidebar = ({ isOpen, setIsOpen, openProfile, setOpenProfile }) => {
 
       {/* ── mobile top bar ── */}
       <div className="fixed flex items-center gap-3 w-full z-50 md:hidden px-4 py-3"
-           style={{ background:'rgba(15,18,30,0.95)', borderBottom:'1px solid rgba(59,130,246,0.12)', backdropFilter:'blur(16px)' }}>
+           style={{ background:'rgba(13,8,0,0.97)', borderBottom:'1px solid rgba(249,115,22,0.12)', backdropFilter:'blur(16px)' }}>
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="p-2 rounded-lg text-white transition"
-          style={{ background:'rgba(59,130,246,0.2)', border:'1px solid rgba(59,130,246,0.3)' }}
+          style={{ background:'rgba(249,115,22,0.2)', border:'1px solid rgba(249,115,22,0.35)' }}
         >
           {isOpen ? <FiX size={18} /> : <FiMenu size={18} />}
         </button>
@@ -81,21 +81,21 @@ export const Sidebar = ({ isOpen, setIsOpen, openProfile, setOpenProfile }) => {
           ${isOpen ? "translate-x-0 w-56" : "-translate-x-full md:translate-x-0"}
         `}
         style={{
-          background: 'linear-gradient(180deg, #0e1120 0%, #0a0d18 100%)',
-          borderRight: '1px solid rgba(59,130,246,0.10)',
+          background: 'linear-gradient(180deg, #0e0800 0%, #090500 100%)',
+          borderRight: '1px solid rgba(249,115,22,0.10)',
         }}
       >
         {/* ── header ── */}
         <div className="flex items-center h-16 px-4 flex-shrink-0"
-             style={{ borderBottom:'1px solid rgba(59,130,246,0.10)' }}>
+             style={{ borderBottom:'1px solid rgba(249,115,22,0.10)' }}>
           <div className="mr-auto flex items-center gap-2.5 overflow-hidden"
                style={{ maxWidth: collapsed ? 0 : 160, opacity: collapsed ? 0 : 1, transition: 'max-width 0.3s ease-in-out, opacity 0.2s ease-in-out' }}>
             <div style={{
               width:30, height:30, borderRadius:7, flexShrink:0,
-              background:'linear-gradient(135deg,#3b82f6,#1d4ed8)',
+              background:'linear-gradient(135deg,#f97316,#ea580c)',
               display:'flex', alignItems:'center', justifyContent:'center',
               fontWeight:800, fontSize:13, color:'#fff',
-              boxShadow:'0 4px 12px rgba(59,130,246,0.4)',
+              boxShadow:'0 4px 12px rgba(249,115,22,0.45)',
             }}>G</div>
             <span className="text-lg font-extrabold tracking-widest logo-text whitespace-nowrap">GMPP</span>
           </div>
@@ -103,7 +103,7 @@ export const Sidebar = ({ isOpen, setIsOpen, openProfile, setOpenProfile }) => {
             onClick={() => setCollapsed(c => !c)}
             className="collapse-btn hidden md:flex items-center justify-center w-8 h-8 rounded-lg ml-auto"
             style={{ color:'#4b5563' }}
-            onMouseEnter={e => { e.currentTarget.style.color='#93c5fd'; e.currentTarget.style.background='rgba(59,130,246,0.12)'; }}
+            onMouseEnter={e => { e.currentTarget.style.color='#fb923c'; e.currentTarget.style.background='rgba(249,115,22,0.12)'; }}
             onMouseLeave={e => { e.currentTarget.style.color='#4b5563'; e.currentTarget.style.background='transparent'; }}
             title={collapsed ? "Agrandir" : "Réduire"}
           >
@@ -124,7 +124,7 @@ export const Sidebar = ({ isOpen, setIsOpen, openProfile, setOpenProfile }) => {
               >
                 <p className="section-label text-[10px] font-bold uppercase tracking-[0.18em] px-3 mb-2"
                    style={{
-                     color:'rgba(59,130,246,0.45)',
+                     color:'rgba(249,115,22,0.45)',
                      maxHeight: collapsed ? 0 : 20,
                      opacity: collapsed ? 0 : 1,
                      overflow: 'hidden',
@@ -150,16 +150,16 @@ export const Sidebar = ({ isOpen, setIsOpen, openProfile, setOpenProfile }) => {
                         gap: collapsed ? 0 : 12,
                         transition: 'gap 0.3s ease-in-out',
                         background: isActive
-                          ? 'linear-gradient(135deg, rgba(59,130,246,0.25), rgba(37,99,235,0.15))'
+                          ? 'linear-gradient(135deg, rgba(249,115,22,0.22), rgba(234,88,12,0.12))'
                           : 'transparent',
-                        color: isActive ? '#93c5fd' : '#6b7280',
-                        boxShadow: isActive ? 'inset 0 0 0 1px rgba(59,130,246,0.2)' : 'none',
+                        color: isActive ? '#fb923c' : '#6b5040',
+                        boxShadow: isActive ? 'inset 0 0 0 1px rgba(249,115,22,0.22)' : 'none',
                         animationDelay: `${(si * 4 + ii) * 0.05}s`,
                         animationFillMode: 'both',
                       })}
                       onMouseEnter={e => {
                         if (!e.currentTarget.classList.contains('active')) {
-                          e.currentTarget.style.background = 'rgba(59,130,246,0.08)';
+                          e.currentTarget.style.background = 'rgba(249,115,22,0.08)';
                           e.currentTarget.style.color = '#e5e7eb';
                         }
                       }}
@@ -194,7 +194,7 @@ export const Sidebar = ({ isOpen, setIsOpen, openProfile, setOpenProfile }) => {
                           {/* active indicator dot */}
                           <span style={{
                             marginLeft:'auto', width:6, height:6, borderRadius:'50%',
-                            background:'#3b82f6', boxShadow:'0 0 8px #3b82f6', flexShrink:0,
+                            background:'#f97316', boxShadow:'0 0 8px #f97316', flexShrink:0,
                             maxWidth: collapsed || !isActive ? 0 : 6,
                             opacity: collapsed || !isActive ? 0 : 1,
                             overflow: 'hidden',
@@ -212,7 +212,7 @@ export const Sidebar = ({ isOpen, setIsOpen, openProfile, setOpenProfile }) => {
 
         {/* ── user profile ── */}
         <div className="flex-shrink-0 relative p-3 pb-8 md:pb-3 mb-10 md:mb-0"
-             style={{ borderTop:'1px solid rgba(59,130,246,0.10)' }}
+             style={{ borderTop:'1px solid rgba(249,115,22,0.10)' }}
              ref={dropdownRef}>
 
           <button
@@ -222,18 +222,18 @@ export const Sidebar = ({ isOpen, setIsOpen, openProfile, setOpenProfile }) => {
               justifyContent: collapsed ? 'center' : 'flex-start',
               gap: collapsed ? 0 : 12,
               transition: 'gap 0.3s ease-in-out, background 0.2s, border-color 0.2s',
-              background: openProfile ? 'rgba(59,130,246,0.1)' : 'transparent',
+              background: openProfile ? 'rgba(249,115,22,0.1)' : 'transparent',
               border: '1px solid transparent',
-              borderColor: openProfile ? 'rgba(59,130,246,0.2)' : 'transparent',
+              borderColor: openProfile ? 'rgba(249,115,22,0.22)' : 'transparent',
             }}
           >
             {/* avatar */}
             <div className="avatar-ring" style={{
               width:36, height:36, borderRadius:'50%',
-              background:'linear-gradient(135deg,#3b82f6,#1d4ed8)',
+              background:'linear-gradient(135deg,#f97316,#ea580c)',
               display:'flex', alignItems:'center', justifyContent:'center',
               color:'#fff', fontWeight:700, fontSize:14, flexShrink:0,
-              boxShadow:'0 4px 14px rgba(59,130,246,0.35)',
+              boxShadow:'0 4px 14px rgba(249,115,22,0.35)',
               transition:'box-shadow 0.25s',
             }}>
               {initial}
@@ -271,10 +271,10 @@ export const Sidebar = ({ isOpen, setIsOpen, openProfile, setOpenProfile }) => {
           <div
             className={`profile-dropdown ${openProfile ? 'open' : ''} absolute z-50 w-56`}
             style={{
-              background:'linear-gradient(145deg, #131929, #0e1120)',
-              border:'1px solid rgba(59,130,246,0.18)',
+              background:'linear-gradient(145deg, #1a0e02, #120900)',
+              border:'1px solid rgba(249,115,22,0.18)',
               borderRadius:16,
-              boxShadow:'0 24px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(59,130,246,0.05)',
+              boxShadow:'0 24px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(249,115,22,0.05)',
               padding:16,
               ...(collapsed
                 ? { left:'calc(100% + 12px)', bottom:8 }
@@ -286,13 +286,13 @@ export const Sidebar = ({ isOpen, setIsOpen, openProfile, setOpenProfile }) => {
           >
             {/* user info */}
             <div className="flex items-center gap-3 mb-4 pb-4"
-                 style={{ borderBottom:'1px solid rgba(59,130,246,0.1)' }}>
+                 style={{ borderBottom:'1px solid rgba(249,115,22,0.1)' }}>
               <div style={{
                 width:42, height:42, borderRadius:'50%',
-                background:'linear-gradient(135deg,#3b82f6,#1d4ed8)',
+                background:'linear-gradient(135deg,#f97316,#ea580c)',
                 display:'flex', alignItems:'center', justifyContent:'center',
                 color:'#fff', fontWeight:700, fontSize:16,
-                boxShadow:'0 4px 14px rgba(59,130,246,0.4)',
+                boxShadow:'0 4px 14px rgba(249,115,22,0.4)',
               }}>
                 {initial}
               </div>

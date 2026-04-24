@@ -28,8 +28,8 @@
   100% { background-position:  200% center; }
 }
 @keyframes glow-ring {
-  0%,100% { box-shadow: 0 0 0 0 rgba(59,130,246,0); }
-  50%      { box-shadow: 0 0 0 4px rgba(59,130,246,0.18); }
+  0%,100% { box-shadow: 0 0 0 0 rgba(249,115,22,0); }
+  50%      { box-shadow: 0 0 0 4px rgba(249,115,22,0.22); }
 }
 
 .sidebar-panel { animation: sidebar-slide-in 0.35s cubic-bezier(0.22,1,0.36,1) both; }
@@ -45,7 +45,7 @@
   position: absolute; left: 0; top: 50%;
   transform: translateY(-50%) scaleY(0);
   width: 3px; height: 60%; border-radius: 0 2px 2px 0;
-  background: #3b82f6;
+  background: #f97316;
   transition: transform 0.2s cubic-bezier(0.22,1,0.36,1), opacity 0.2s;
   opacity: 0;
 }
@@ -64,7 +64,7 @@
 .profile-btn {
   transition: background 0.2s, box-shadow 0.2s;
 }
-.profile-btn:hover { box-shadow: 0 0 0 1px rgba(59,130,246,0.25); }
+.profile-btn:hover { box-shadow: 0 0 0 1px rgba(249,115,22,0.28); }
 .profile-btn:hover .avatar-ring { animation: glow-ring 1.2s ease-in-out infinite; }
 
 .avatar-ring {
@@ -101,7 +101,7 @@
 .collapse-btn:hover { transform: scale(1.1); }
 
 .logo-text {
-  background: linear-gradient(135deg, #fff 30%, #93c5fd);
+  background: linear-gradient(135deg, #fff 30%, #fdba74);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
