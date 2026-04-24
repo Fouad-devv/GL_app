@@ -222,6 +222,16 @@ public class InterventionService {
         return builder.build();
     }
 
+    @Transactional
+    public int markOverdueInterventions() {
+        return interventionRepository.markOverdueAsLate(
+            InterventionStatus.PLANIFIEE,
+            InterventionStatus.EN_RETARD,
+            LocalDate.now(),
+            LocalDateTime.now()
+        );
+    }
+
     public Long countInterventionsByStatus(InterventionStatus status) {
         return interventionRepository.countByStatus(status);
     }

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useKeycloak } from '@react-keycloak/web';
+import { FiRefreshCw } from 'react-icons/fi';
 import { Card } from '../../components/Card';
 import { Table } from '../../components/Table';
 import { Modal } from '../../components/Modal';
@@ -11,6 +12,7 @@ import useMachineAPI from '../../api/machineAPI';
 import useUserAPI from '../../api/userAPI';
 import useMaintenancePointAPI from '../../api/maintenancePointAPI';
 import { formatDate } from '../../utils/dateUtils';
+import { getStatusBadgeColor, getStatusLabel } from '../../utils/formatUtils';
 import { InterventionsToolbar } from './components/InterventionsToolbar';
 import { InterventionForm } from './components/InterventionForm';
 
@@ -23,12 +25,9 @@ const COLUMNS = [
   {
     key: 'status', label: 'Statut', width: '120px',
     render: (status) => (
-      <span className={`px-2 py-1 rounded text-xs font-medium ${
-        status === 'PLANIFIEE' ? 'bg-blue-100 text-blue-800' :
-        status === 'EN_COURS'  ? 'bg-yellow-100 text-yellow-800' :
-        status === 'TERMINEE'  ? 'bg-green-100 text-green-800' :
-        'bg-red-100 text-red-800'
-      }`}>{status}</span>
+      <span className={`px-2 py-1 rounded text-xs font-medium ${getStatusBadgeColor(status)}`}>
+        {getStatusLabel(status)}
+      </span>
     ),
   },
 ];
@@ -198,9 +197,17 @@ export const Interventions = () => {
 
   return (
     <div className="p-4 md:p-6 mt-15 md:mt-0">
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-900">Interventions de Maintenance</h1>
-        <p className="text-gray-600 mt-2">Suivez et gérez toutes les interventions</p>
+      <div className="mb-6 flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">Interventions de Maintenance</h1>
+          <p className="text-gray-600 mt-2">Suivez et gérez toutes les interventions</p>
+        </div>
+        <button
+          onClick={() => window.location.reload()}
+          className="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-xl shadow-sm hover:bg-gray-50 hover:border-gray-300 hover:shadow transition flex-shrink-0 mt-1"
+        >
+          <FiRefreshCw size={14} /> Actualiser
+        </button>
       </div>
 
       {error   && <Alert type="error"   message={error}   onClose={() => setError(null)} />}

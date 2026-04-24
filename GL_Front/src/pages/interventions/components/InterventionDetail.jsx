@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
   FiArrowLeft, FiEdit2, FiCalendar, FiClock, FiUser,
   FiTool, FiDollarSign, FiFileText, FiActivity,
+  FiCamera, FiUpload, FiTrash2, FiX, FiImage, FiChevronLeft, FiChevronRight,
 } from 'react-icons/fi';
 import { formatDate } from '../../../utils/dateUtils';
 import useInterventionAPI from '../../../api/interventionAPI';
@@ -11,17 +12,18 @@ import { LoadingOverlay } from '../../../components/LoadingSpinner';
 import { Alert } from '../../../components/Alert';
 
 const STATUS_THEME = {
-  PLANIFIEE: { bg: '#eff6ff', border: '#bfdbfe', text: '#1d4ed8', label: 'Planifiée' },
-  EN_COURS:  { bg: '#fefce8', border: '#fde68a', text: '#b45309', label: 'En cours'  },
-  TERMINEE:  { bg: '#f0fdf4', border: '#bbf7d0', text: '#15803d', label: 'Terminée'  },
-  ANNULEE:   { bg: '#fef2f2', border: '#fecaca', text: '#b91c1c', label: 'Annulée'   },
+  PLANIFIEE: { bg: '#eff6ff', border: '#bfdbfe', text: '#1d4ed8', label: 'Planifiée'  },
+  EN_COURS:  { bg: '#fefce8', border: '#fde68a', text: '#b45309', label: 'En cours'   },
+  TERMINEE:  { bg: '#f0fdf4', border: '#bbf7d0', text: '#15803d', label: 'Terminée'   },
+  ANNULEE:   { bg: '#fef2f2', border: '#fecaca', text: '#b91c1c', label: 'Annulée'    },
+  EN_RETARD: { bg: '#fff7ed', border: '#fed7aa', text: '#c2410c', label: 'En retard'  },
 };
 
 const Field = ({ icon: Icon, label, value, accent }) => {
   if (!value && value !== 0) return null;
   return (
     <div className="flex items-start gap-3 py-3 border-b border-gray-100 last:border-0">
-      <div className="w-9 h-9 rounded-xl bg-gray-50 flex items-center justify-center flex-shrink-0">
+      <div className="w-9 h-9 rounded-xl bg-gray-50 flex items-center justify-content-center flex-shrink-0 flex items-center justify-center">
         <Icon className="text-gray-400" />
       </div>
       <div className="flex-1 min-w-0">
@@ -43,6 +45,268 @@ const Section = ({ title, children }) => (
   </div>
 );
 
+/* ── Photo section ─────────────────────────────────────────────────────── */
+const PhotoSection = ({ interventionId }) => {
+  const interventionAPI = useInterventionAPI();
+
+  const [photos, setPhotos]         = useState([]);
+  const [blobUrls, setBlobUrls]     = useState({});
+  const [uploading, setUploading]   = useState(false);
+  const [lightbox, setLightbox]     = useState(null); // index into photos array
+  const [confirmDel, setConfirmDel] = useState(null); // photo id to delete
+  const [error, setError]           = useState(null);
+
+  const fileInputRef   = useRef();
+  const cameraInputRef = useRef();
+
+  /* Load photo list then fetch each blob */
+  const loadPhotos = useCallback(async () => {
+    try {
+      const res = await interventionAPI.getPhotos(interventionId);
+      const list = res.data || [];
+      setPhotos(list);
+
+      // Fetch blobs for each photo
+      const urlMap = {};
+      await Promise.all(list.map(async (p) => {
+        try {
+          const blobRes = await interventionAPI.getPhotoData(p.id);
+          urlMap[p.id] = URL.createObjectURL(blobRes.data);
+        } catch {
+          urlMap[p.id] = null;
+        }
+      }));
+      setBlobUrls(urlMap);
+    } catch {
+      /* silently ignore — photos are optional */
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [interventionId]);
+
+  useEffect(() => {
+    loadPhotos();
+    return () => {
+      // Revoke object URLs on unmount to free memory
+      Object.values(blobUrls).forEach((u) => u && URL.revokeObjectURL(u));
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loadPhotos]);
+
+  const handleFileChange = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    e.target.value = '';
+    if (!file.type.startsWith('image/')) {
+      setError('Seules les images sont acceptées.');
+      return;
+    }
+    try {
+      setUploading(true);
+      setError(null);
+      await interventionAPI.uploadPhoto(interventionId, file);
+      await loadPhotos();
+    } catch {
+      setError("Erreur lors de l'envoi de la photo.");
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleDelete = async (photoId) => {
+    try {
+      await interventionAPI.deletePhoto(photoId);
+      URL.revokeObjectURL(blobUrls[photoId]);
+      setBlobUrls((prev) => { const n = { ...prev }; delete n[photoId]; return n; });
+      setPhotos((prev) => prev.filter((p) => p.id !== photoId));
+      if (lightbox !== null) setLightbox(null);
+    } catch {
+      setError('Erreur lors de la suppression.');
+    } finally {
+      setConfirmDel(null);
+    }
+  };
+
+  const moveLightbox = (dir) =>
+    setLightbox((i) => (i + dir + photos.length) % photos.length);
+
+  return (
+    <div className="mb-6">
+      <div className="flex items-center justify-between mb-3">
+        <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">
+          Photos ({photos.length})
+        </p>
+        <div className="flex gap-2">
+          {/* Upload from gallery */}
+          <button
+            onClick={() => fileInputRef.current?.click()}
+            disabled={uploading}
+            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-blue-700 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition disabled:opacity-50"
+          >
+            <FiUpload size={13} /> Importer
+          </button>
+          {/* Take photo (camera on mobile) */}
+          <button
+            onClick={() => cameraInputRef.current?.click()}
+            disabled={uploading}
+            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-white bg-blue-600 border border-blue-600 rounded-lg hover:bg-blue-700 transition disabled:opacity-50"
+          >
+            <FiCamera size={13} /> Prendre photo
+          </button>
+        </div>
+      </div>
+
+      {/* Hidden file inputs */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        className="hidden"
+        onChange={handleFileChange}
+      />
+      <input
+        ref={cameraInputRef}
+        type="file"
+        accept="image/*"
+        capture="environment"
+        className="hidden"
+        onChange={handleFileChange}
+      />
+
+      {error && (
+        <Alert type="error" message={error} onClose={() => setError(null)} className="mb-3" />
+      )}
+
+      {uploading && (
+        <div className="flex items-center gap-2 text-sm text-blue-600 mb-3">
+          <div className="w-4 h-4 border-2 border-blue-300 border-t-blue-600 rounded-full animate-spin" />
+          Envoi en cours…
+        </div>
+      )}
+
+      {photos.length === 0 && !uploading ? (
+        <div className="bg-white rounded-2xl border border-dashed border-gray-200 py-10 flex flex-col items-center gap-2 text-gray-400">
+          <FiImage size={32} className="text-gray-300" />
+          <p className="text-sm">Aucune photo — importez ou prenez une photo</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+          {photos.map((photo, idx) => (
+            <div
+              key={photo.id}
+              className="relative group rounded-xl overflow-hidden border border-gray-100 shadow-sm bg-gray-50 aspect-square cursor-pointer"
+              onClick={() => setLightbox(idx)}
+            >
+              {blobUrls[photo.id] ? (
+                <img
+                  src={blobUrls[photo.id]}
+                  alt={photo.fileName}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center">
+                  <FiImage className="text-gray-300" size={28} />
+                </div>
+              )}
+
+              {/* Hover overlay */}
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition flex items-end justify-between p-2 opacity-0 group-hover:opacity-100">
+                <p className="text-white text-xs font-medium truncate max-w-[70%] drop-shadow">
+                  {photo.fileName}
+                </p>
+                <button
+                  onClick={(e) => { e.stopPropagation(); setConfirmDel(photo.id); }}
+                  className="w-7 h-7 rounded-full bg-red-500 flex items-center justify-center hover:bg-red-600 transition"
+                >
+                  <FiTrash2 size={12} className="text-white" />
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Lightbox */}
+      {lightbox !== null && photos[lightbox] && (
+        <div
+          className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center"
+          onClick={() => setLightbox(null)}
+        >
+          <button
+            onClick={(e) => { e.stopPropagation(); setLightbox(null); }}
+            className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition"
+          >
+            <FiX size={20} />
+          </button>
+
+          {photos.length > 1 && (
+            <>
+              <button
+                onClick={(e) => { e.stopPropagation(); moveLightbox(-1); }}
+                className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition"
+              >
+                <FiChevronLeft size={22} />
+              </button>
+              <button
+                onClick={(e) => { e.stopPropagation(); moveLightbox(1); }}
+                className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition"
+              >
+                <FiChevronRight size={22} />
+              </button>
+            </>
+          )}
+
+          <div className="flex flex-col items-center gap-3 px-16 max-w-4xl w-full" onClick={(e) => e.stopPropagation()}>
+            {blobUrls[photos[lightbox].id] && (
+              <img
+                src={blobUrls[photos[lightbox].id]}
+                alt={photos[lightbox].fileName}
+                className="max-h-[80vh] max-w-full rounded-xl object-contain shadow-2xl"
+              />
+            )}
+            <div className="flex items-center gap-4">
+              <p className="text-white/70 text-sm">{photos[lightbox].fileName}</p>
+              <button
+                onClick={() => setConfirmDel(photos[lightbox].id)}
+                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-white bg-red-500/80 rounded-lg hover:bg-red-500 transition"
+              >
+                <FiTrash2 size={12} /> Supprimer
+              </button>
+            </div>
+            {photos.length > 1 && (
+              <p className="text-white/40 text-xs">{lightbox + 1} / {photos.length}</p>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Delete confirmation dialog */}
+      {confirmDel !== null && (
+        <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl shadow-xl p-6 max-w-sm w-full">
+            <h3 className="font-bold text-gray-900 mb-2">Supprimer la photo ?</h3>
+            <p className="text-sm text-gray-500 mb-5">Cette action est irréversible.</p>
+            <div className="flex gap-3 justify-end">
+              <button
+                onClick={() => setConfirmDel(null)}
+                className="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition"
+              >
+                Annuler
+              </button>
+              <button
+                onClick={() => handleDelete(confirmDel)}
+                className="px-4 py-2 text-sm font-medium text-white bg-red-500 rounded-lg hover:bg-red-600 transition"
+              >
+                Supprimer
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+/* ── Main component ────────────────────────────────────────────────────── */
 export const InterventionDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -179,6 +443,9 @@ export const InterventionDetail = () => {
         <Field icon={FiCalendar} label="Créé le"    value={intervention.createdAt ? formatDate(intervention.createdAt) : null} />
         <Field icon={FiCalendar} label="Modifié le" value={intervention.updatedAt ? formatDate(intervention.updatedAt) : null} />
       </Section>
+
+      {/* Photos */}
+      <PhotoSection interventionId={id} />
 
     </div>
   );

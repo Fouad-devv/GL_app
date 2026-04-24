@@ -43,6 +43,24 @@ const useInterventionAPI = () => {
 
     assignTechnician: (interventionId, technicianId) =>
       axiosPrivate.patch(`/api/interventions/${interventionId}/assign-technician/${technicianId}`),
+
+    // Photos
+    getPhotos: (interventionId) =>
+      axiosPrivate.get(`/api/interventions/${interventionId}/photos`),
+
+    uploadPhoto: (interventionId, file) => {
+      const formData = new FormData();
+      formData.append('file', file);
+      return axiosPrivate.post(`/api/interventions/${interventionId}/photos`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+    },
+
+    getPhotoData: (photoId) =>
+      axiosPrivate.get(`/api/interventions/photos/${photoId}/data`, { responseType: 'blob' }),
+
+    deletePhoto: (photoId) =>
+      axiosPrivate.delete(`/api/interventions/photos/${photoId}`),
   };
 };
 

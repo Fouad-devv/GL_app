@@ -4,11 +4,14 @@ import com.gmpp.maintenance.entity.Intervention;
 import com.gmpp.maintenance.entity.MaintenancePoint;
 import com.gmpp.maintenance.enums.InterventionStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -48,4 +51,14 @@ public interface InterventionRepository extends JpaRepository<Intervention, Long
 
     @Query("SELECT COALESCE(AVG(i.durationMinutes), 0) FROM Intervention i WHERE i.durationMinutes IS NOT NULL AND i.durationMinutes > 0")
     Double avgDurationMinutes();
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Intervention i SET i.status = :newStatus, i.updatedAt = :now WHERE i.status = :oldStatus AND i.plannedDate < :today")
+    int markOverdueAsLate(
+        @Param("oldStatus") InterventionStatus oldStatus,
+        @Param("newStatus") InterventionStatus newStatus,
+        @Param("today") LocalDate today,
+        @Param("now") LocalDateTime now
+    );
 }

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { FiRefreshCw } from 'react-icons/fi';
 import { Card } from '../../components/Card';
 import { Button, ButtonGroup } from '../../components/Button';
 import { Alert } from '../../components/Alert';
@@ -61,8 +62,18 @@ export const AddUser = () => {
     <div className="p-4 md:p-6 mt-15 md:mt-0 flex justify-center">
       <div className="w-[1300px]">
         <div className="mb-6">
-          <h1 className="text-3xl font-bold text-gray-900">Créer un nouvel utilisateur</h1>
-          <p className="text-gray-600 mt-2">Ajoutez un nouveau technicien ou responsable au système</p>
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">Créer un nouvel utilisateur</h1>
+              <p className="text-gray-600 mt-2">Ajoutez un nouveau technicien ou responsable au système</p>
+            </div>
+            <button
+              onClick={() => window.location.reload()}
+              className="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-xl shadow-sm hover:bg-gray-50 hover:border-gray-300 hover:shadow transition flex-shrink-0 mt-1"
+            >
+              <FiRefreshCw size={14} /> Actualiser
+            </button>
+          </div>
         </div>
 
         {error   && <Alert type="error"   message={error}   onClose={() => setError(null)} />}

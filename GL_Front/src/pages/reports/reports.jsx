@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { FiActivity, FiCalendar, FiCpu, FiUser, FiBarChart2, FiCheckCircle, FiServer } from 'react-icons/fi';
+import { FiActivity, FiCalendar, FiCpu, FiUser, FiBarChart2, FiCheckCircle, FiServer, FiRefreshCw } from 'react-icons/fi';
 import { Alert } from '../../components/Alert';
 import { LoadingOverlay } from '../../components/LoadingSpinner';
 import useReportAPI from '../../api/reportAPI.js';
@@ -94,9 +94,17 @@ export const Reports = () => {
 
   return (
     <div className="p-4 md:p-6 mt-15 md:mt-0 max-w-7xl mx-auto">
-      <div className="mb-7">
-        <h1 className="text-2xl font-bold text-gray-900">Rapports</h1>
-        <p className="text-sm text-gray-500 mt-1">Générez et exportez vos rapports au format PDF ou Excel</p>
+      <div className="mb-7 flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">Rapports</h1>
+          <p className="text-sm text-gray-500 mt-1">Générez et exportez vos rapports au format PDF ou Excel</p>
+        </div>
+        <button
+          onClick={() => window.location.reload()}
+          className="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-xl shadow-sm hover:bg-gray-50 hover:border-gray-300 hover:shadow transition flex-shrink-0 mt-1"
+        >
+          <FiRefreshCw size={14} /> Actualiser
+        </button>
       </div>
 
       {error   && <Alert type="error"   message={error}   onClose={() => setError(null)} />}
