@@ -75,10 +75,10 @@ const STATS = [
 ];
 
 const MODULES = [
-  { icon: '⚙️', color: '#3b82f6', bg: 'rgba(59,130,246,0.1)',   title: 'Machines',    desc: 'Gérez votre parc industriel avec historique complet' },
-  { icon: '🔧', color: '#0ea5e9', bg: 'rgba(14,165,233,0.1)',   title: 'Maintenance', desc: 'Points et fréquences de maintenance personnalisés' },
+  { icon: '⚙️', color: '#f97316', bg: 'rgba(249,115,22,0.1)',   title: 'Machines',    desc: 'Gérez votre parc industriel avec historique complet' },
+  { icon: '🔧', color: '#f59e0b', bg: 'rgba(245,158,11,0.1)',   title: 'Maintenance', desc: 'Points et fréquences de maintenance personnalisés' },
   { icon: '📅', color: '#8b5cf6', bg: 'rgba(139,92,246,0.1)',   title: 'Planning',    desc: 'Calendrier interactif et planification automatique' },
-  { icon: '📊', color: '#60a5fa', bg: 'rgba(96,165,250,0.1)',   title: 'Rapports',    desc: 'Export PDF, Excel, CSV avec KPIs détaillés' },
+  { icon: '📊', color: '#fb923c', bg: 'rgba(251,146,60,0.1)',   title: 'Rapports',    desc: 'Export PDF, Excel, CSV avec KPIs détaillés' },
   { icon: '👥', color: '#10b981', bg: 'rgba(16,185,129,0.1)',   title: 'Équipe',      desc: 'Gestion des techniciens et affectations' },
   { icon: '📈', color: '#a78bfa', bg: 'rgba(167,139,250,0.1)',  title: 'Dashboard',   desc: 'Indicateurs clés et alertes en temps réel' },
 ];
@@ -96,9 +96,9 @@ const FEATURES = [
 
 const PILLS = [
   { icon: <FiCheckCircle />, color: '#10b981', text: 'Gestion complète machines & points de maintenance' },
-  { icon: <FiCalendar />,    color: '#60a5fa', text: 'Planification automatique & intelligente' },
+  { icon: <FiCalendar />,    color: '#fb923c', text: 'Planification automatique & intelligente' },
   { icon: <FiBarChart2 />,   color: '#a78bfa', text: 'Tableaux de bord & rapports détaillés' },
-  { icon: <FiUsers />,       color: '#0ea5e9', text: 'Gestion techniciens & interventions' },
+  { icon: <FiUsers />,       color: '#f59e0b', text: 'Gestion techniciens & interventions' },
 ];
 
 const TYPEWRITER_WORDS = ['maintenance', 'performance', 'fiabilité', 'productivité'];
@@ -108,41 +108,41 @@ const IndustrialSVG = () => (
   <svg viewBox="0 0 480 420" fill="none" xmlns="http://www.w3.org/2000/svg" className="hero-svg" aria-hidden="true">
     {Array.from({ length: 9 }, (_, i) => (
       <line key={`hg-${i}`} x1="20" y1={40 + i * 40} x2="460" y2={40 + i * 40}
-        stroke="rgba(59,130,246,0.05)" strokeWidth="1" />
+        stroke="rgba(249,115,22,0.05)" strokeWidth="1" />
     ))}
     {Array.from({ length: 12 }, (_, i) => (
       <line key={`vg-${i}`} x1={20 + i * 40} y1="20" x2={20 + i * 40} y2="400"
-        stroke="rgba(59,130,246,0.05)" strokeWidth="1" />
+        stroke="rgba(249,115,22,0.05)" strokeWidth="1" />
     ))}
 
-    <rect x="120" y="160" width="240" height="160" rx="8" fill="rgba(10,22,52,0.95)"
-      stroke="rgba(59,130,246,0.3)" strokeWidth="1.5" />
-    <rect x="130" y="140" width="220" height="28" rx="4" fill="rgba(29,78,216,0.15)"
-      stroke="rgba(59,130,246,0.35)" strokeWidth="1" />
-    <text x="240" y="159" textAnchor="middle" fill="rgba(96,165,250,0.75)"
+    <rect x="120" y="160" width="240" height="160" rx="8" fill="rgba(19,9,2,0.95)"
+      stroke="rgba(249,115,22,0.3)" strokeWidth="1.5" />
+    <rect x="130" y="140" width="220" height="28" rx="4" fill="rgba(194,65,12,0.15)"
+      stroke="rgba(249,115,22,0.35)" strokeWidth="1" />
+    <text x="240" y="159" textAnchor="middle" fill="rgba(251,146,60,0.75)"
       fontFamily="monospace" fontSize="9" letterSpacing="3">GMPP CONTROL</text>
 
-    <rect x="145" y="178" width="140" height="90" rx="4" fill="rgba(2,6,23,0.85)"
-      stroke="rgba(59,130,246,0.35)" strokeWidth="1" />
+    <rect x="145" y="178" width="140" height="90" rx="4" fill="rgba(8,4,1,0.9)"
+      stroke="rgba(249,115,22,0.3)" strokeWidth="1" />
     {Array.from({length:4},(_,i)=>(
       <line key={`sg-${i}`} x1="145" y1={193+i*22} x2="285" y2={193+i*22}
-        stroke="rgba(59,130,246,0.06)" strokeWidth="0.5"/>
+        stroke="rgba(249,115,22,0.06)" strokeWidth="0.5"/>
     ))}
-    <rect x="155" y="230" width="10" height="30" rx="2" fill="rgba(59,130,246,0.7)" className="svg-bar svg-bar-1"/>
-    <rect x="170" y="220" width="10" height="40" rx="2" fill="rgba(96,165,250,0.7)" className="svg-bar svg-bar-2"/>
-    <rect x="185" y="210" width="10" height="50" rx="2" fill="rgba(14,165,233,0.7)" className="svg-bar svg-bar-3"/>
-    <rect x="200" y="225" width="10" height="35" rx="2" fill="rgba(59,130,246,0.7)" className="svg-bar svg-bar-4"/>
-    <rect x="215" y="215" width="10" height="45" rx="2" fill="rgba(96,165,250,0.7)" className="svg-bar svg-bar-5"/>
-    <rect x="230" y="205" width="10" height="55" rx="2" fill="rgba(14,165,233,0.7)" className="svg-bar svg-bar-6"/>
-    <rect x="245" y="220" width="10" height="40" rx="2" fill="rgba(59,130,246,0.7)" className="svg-bar svg-bar-7"/>
-    <rect x="260" y="210" width="10" height="50" rx="2" fill="rgba(96,165,250,0.7)" className="svg-bar svg-bar-8"/>
+    <rect x="155" y="230" width="10" height="30" rx="2" fill="rgba(249,115,22,0.7)" className="svg-bar svg-bar-1"/>
+    <rect x="170" y="220" width="10" height="40" rx="2" fill="rgba(251,146,60,0.7)" className="svg-bar svg-bar-2"/>
+    <rect x="185" y="210" width="10" height="50" rx="2" fill="rgba(245,158,11,0.7)" className="svg-bar svg-bar-3"/>
+    <rect x="200" y="225" width="10" height="35" rx="2" fill="rgba(249,115,22,0.7)" className="svg-bar svg-bar-4"/>
+    <rect x="215" y="215" width="10" height="45" rx="2" fill="rgba(251,146,60,0.7)" className="svg-bar svg-bar-5"/>
+    <rect x="230" y="205" width="10" height="55" rx="2" fill="rgba(245,158,11,0.7)" className="svg-bar svg-bar-6"/>
+    <rect x="245" y="220" width="10" height="40" rx="2" fill="rgba(249,115,22,0.7)" className="svg-bar svg-bar-7"/>
+    <rect x="260" y="210" width="10" height="50" rx="2" fill="rgba(251,146,60,0.7)" className="svg-bar svg-bar-8"/>
     <polyline points="155,215 172,204 189,210 206,196 223,200 240,188 257,193 274,185"
       stroke="rgba(16,185,129,0.85)" strokeWidth="1.5" fill="none" className="svg-line-anim"/>
 
     <g className="gear-rotate-slow" style={{ transformOrigin: '100px 240px' }}>
-      <circle cx="100" cy="240" r="38" stroke="rgba(59,130,246,0.45)" strokeWidth="2" fill="rgba(10,22,52,0.6)" />
-      <circle cx="100" cy="240" r="24" stroke="rgba(59,130,246,0.25)" strokeWidth="1.5" fill="rgba(10,22,52,0.8)" />
-      <circle cx="100" cy="240" r="8"  fill="rgba(96,165,250,0.35)" />
+      <circle cx="100" cy="240" r="38" stroke="rgba(249,115,22,0.45)" strokeWidth="2" fill="rgba(19,9,2,0.6)" />
+      <circle cx="100" cy="240" r="24" stroke="rgba(249,115,22,0.25)" strokeWidth="1.5" fill="rgba(19,9,2,0.8)" />
+      <circle cx="100" cy="240" r="8"  fill="rgba(251,146,60,0.35)" />
       {Array.from({length:12},(_,i)=>{
         const angle = (i/12)*Math.PI*2;
         const ix = 100 + Math.cos(angle)*35, iy = 240 + Math.sin(angle)*35;
@@ -150,21 +150,21 @@ const IndustrialSVG = () => (
         const nx = 100 + Math.cos(angle + 0.22)*38, ny = 240 + Math.sin(angle + 0.22)*38;
         const mx = 100 + Math.cos(angle - 0.22)*38, my = 240 + Math.sin(angle - 0.22)*38;
         return <polygon key={i} points={`${ix},${iy} ${nx},${ny} ${ox},${oy} ${mx},${my}`}
-          fill="rgba(59,130,246,0.55)" stroke="rgba(59,130,246,0.2)" strokeWidth="0.5"/>;
+          fill="rgba(249,115,22,0.55)" stroke="rgba(249,115,22,0.2)" strokeWidth="0.5"/>;
       })}
       {Array.from({length:4},(_,i)=>{
         const angle = (i/4)*Math.PI*2;
         return <line key={`sp-${i}`}
           x1={100+Math.cos(angle)*9} y1={240+Math.sin(angle)*9}
           x2={100+Math.cos(angle)*22} y2={240+Math.sin(angle)*22}
-          stroke="rgba(96,165,250,0.45)" strokeWidth="2"/>;
+          stroke="rgba(251,146,60,0.45)" strokeWidth="2"/>;
       })}
     </g>
 
     <g className="gear-rotate-fast" style={{ transformOrigin: '62px 197px' }}>
-      <circle cx="62" cy="197" r="22" stroke="rgba(14,165,233,0.45)" strokeWidth="1.5" fill="rgba(10,22,52,0.6)" />
-      <circle cx="62" cy="197" r="13" stroke="rgba(14,165,233,0.25)" strokeWidth="1" fill="rgba(10,22,52,0.8)" />
-      <circle cx="62" cy="197" r="5"  fill="rgba(14,165,233,0.35)" />
+      <circle cx="62" cy="197" r="22" stroke="rgba(245,158,11,0.5)" strokeWidth="1.5" fill="rgba(19,9,2,0.6)" />
+      <circle cx="62" cy="197" r="13" stroke="rgba(245,158,11,0.28)" strokeWidth="1" fill="rgba(19,9,2,0.8)" />
+      <circle cx="62" cy="197" r="5"  fill="rgba(245,158,11,0.4)" />
       {Array.from({length:8},(_,i)=>{
         const angle = (i/8)*Math.PI*2;
         const ix = 62 + Math.cos(angle)*20, iy = 197 + Math.sin(angle)*20;
@@ -172,7 +172,7 @@ const IndustrialSVG = () => (
         const nx = 62 + Math.cos(angle+0.28)*22, ny = 197 + Math.sin(angle+0.28)*22;
         const mx = 62 + Math.cos(angle-0.28)*22, my = 197 + Math.sin(angle-0.28)*22;
         return <polygon key={i} points={`${ix},${iy} ${nx},${ny} ${ox},${oy} ${mx},${my}`}
-          fill="rgba(14,165,233,0.55)" stroke="rgba(14,165,233,0.15)" strokeWidth="0.5"/>;
+          fill="rgba(245,158,11,0.55)" stroke="rgba(245,158,11,0.15)" strokeWidth="0.5"/>;
       })}
     </g>
 
@@ -191,49 +191,49 @@ const IndustrialSVG = () => (
       })}
     </g>
 
-    <line x1="138" y1="240" x2="120" y2="240" stroke="rgba(59,130,246,0.35)" strokeWidth="3" strokeLinecap="round"/>
+    <line x1="138" y1="240" x2="120" y2="240" stroke="rgba(249,115,22,0.35)" strokeWidth="3" strokeLinecap="round"/>
     <line x1="360" y1="240" x2="360" y2="250" stroke="rgba(139,92,246,0.35)" strokeWidth="3" strokeLinecap="round"/>
     <path d="M360,250 Q370,250 370,240" stroke="rgba(139,92,246,0.35)" strokeWidth="3" fill="none" strokeLinecap="round"/>
-    <path d="M100,202 Q100,160 140,140" stroke="rgba(14,165,233,0.2)" strokeWidth="1" fill="none" strokeDasharray="4 3"/>
+    <path d="M100,202 Q100,160 140,140" stroke="rgba(245,158,11,0.2)" strokeWidth="1" fill="none" strokeDasharray="4 3"/>
 
     <circle cx="305" cy="188" r="5" fill="#10b981" className="svg-led-pulse"/>
-    <circle cx="320" cy="188" r="5" fill="#60a5fa" className="svg-led-pulse" style={{animationDelay:'0.4s'}}/>
+    <circle cx="320" cy="188" r="5" fill="#fb923c" className="svg-led-pulse" style={{animationDelay:'0.4s'}}/>
     <circle cx="335" cy="188" r="5" fill="#f59e0b" className="svg-led-pulse" style={{animationDelay:'0.8s'}}/>
 
-    <rect x="300" y="202" width="46" height="14" rx="3" fill="rgba(59,130,246,0.12)" stroke="rgba(59,130,246,0.25)" strokeWidth="1"/>
-    <text x="323" y="213" textAnchor="middle" fill="rgba(96,165,250,0.65)" fontFamily="monospace" fontSize="7">START</text>
-    <rect x="300" y="222" width="46" height="14" rx="3" fill="rgba(14,165,233,0.08)" stroke="rgba(14,165,233,0.2)" strokeWidth="1"/>
-    <text x="323" y="233" textAnchor="middle" fill="rgba(14,165,233,0.65)" fontFamily="monospace" fontSize="7">REPORT</text>
+    <rect x="300" y="202" width="46" height="14" rx="3" fill="rgba(249,115,22,0.12)" stroke="rgba(249,115,22,0.28)" strokeWidth="1"/>
+    <text x="323" y="213" textAnchor="middle" fill="rgba(251,146,60,0.75)" fontFamily="monospace" fontSize="7">START</text>
+    <rect x="300" y="222" width="46" height="14" rx="3" fill="rgba(245,158,11,0.08)" stroke="rgba(245,158,11,0.22)" strokeWidth="1"/>
+    <text x="323" y="233" textAnchor="middle" fill="rgba(245,158,11,0.7)" fontFamily="monospace" fontSize="7">REPORT</text>
     <rect x="300" y="242" width="46" height="14" rx="3" fill="rgba(139,92,246,0.08)" stroke="rgba(139,92,246,0.2)" strokeWidth="1"/>
     <text x="323" y="253" textAnchor="middle" fill="rgba(167,139,250,0.65)" fontFamily="monospace" fontSize="7">CONFIG</text>
 
-    <rect x="100" y="320" width="280" height="12" rx="4" fill="rgba(29,78,216,0.12)" stroke="rgba(59,130,246,0.18)" strokeWidth="1"/>
-    <rect x="140" y="332" width="200" height="6" rx="3" fill="rgba(59,130,246,0.08)"/>
+    <rect x="100" y="320" width="280" height="12" rx="4" fill="rgba(194,65,12,0.12)" stroke="rgba(249,115,22,0.18)" strokeWidth="1"/>
+    <rect x="140" y="332" width="200" height="6" rx="3" fill="rgba(249,115,22,0.08)"/>
 
     <circle r="3" fill="rgba(16,185,129,0.9)" className="svg-packet-1">
       <animateMotion dur="3s" repeatCount="indefinite" path="M145,268 L285,268"/>
     </circle>
-    <circle r="2.5" fill="rgba(96,165,250,0.9)" className="svg-packet-2">
+    <circle r="2.5" fill="rgba(251,146,60,0.9)" className="svg-packet-2">
       <animateMotion dur="4s" repeatCount="indefinite" begin="-1.5s" path="M285,220 L145,220"/>
     </circle>
 
-    <path d="M20,30 L40,30 L40,50" stroke="rgba(59,130,246,0.25)" strokeWidth="1" fill="none"/>
-    <path d="M460,30 L440,30 L440,50" stroke="rgba(59,130,246,0.25)" strokeWidth="1" fill="none"/>
-    <path d="M20,390 L40,390 L40,370" stroke="rgba(59,130,246,0.25)" strokeWidth="1" fill="none"/>
-    <path d="M460,390 L440,390 L440,370" stroke="rgba(59,130,246,0.25)" strokeWidth="1" fill="none"/>
+    <path d="M20,30 L40,30 L40,50" stroke="rgba(249,115,22,0.25)" strokeWidth="1" fill="none"/>
+    <path d="M460,30 L440,30 L440,50" stroke="rgba(249,115,22,0.25)" strokeWidth="1" fill="none"/>
+    <path d="M20,390 L40,390 L40,370" stroke="rgba(249,115,22,0.25)" strokeWidth="1" fill="none"/>
+    <path d="M460,390 L440,390 L440,370" stroke="rgba(249,115,22,0.25)" strokeWidth="1" fill="none"/>
 
     <g className="svg-float-1">
-      <rect x="310" y="100" width="100" height="28" rx="6" fill="rgba(10,22,52,0.95)" stroke="rgba(16,185,129,0.35)" strokeWidth="1"/>
+      <rect x="310" y="100" width="100" height="28" rx="6" fill="rgba(19,9,2,0.95)" stroke="rgba(16,185,129,0.35)" strokeWidth="1"/>
       <circle cx="324" cy="114" r="4" fill="#10b981" className="svg-led-pulse"/>
       <text x="334" y="118" fill="rgba(52,211,153,0.9)" fontFamily="monospace" fontSize="9">98% uptime</text>
     </g>
     <g className="svg-float-2">
-      <rect x="30" y="290" width="90" height="28" rx="6" fill="rgba(10,22,52,0.95)" stroke="rgba(59,130,246,0.35)" strokeWidth="1"/>
-      <circle cx="44" cy="304" r="4" fill="#3b82f6" className="svg-led-pulse" style={{animationDelay:'0.5s'}}/>
-      <text x="53" y="308" fill="rgba(96,165,250,0.9)" fontFamily="monospace" fontSize="9">Live KPIs</text>
+      <rect x="30" y="290" width="90" height="28" rx="6" fill="rgba(19,9,2,0.95)" stroke="rgba(249,115,22,0.38)" strokeWidth="1"/>
+      <circle cx="44" cy="304" r="4" fill="#f97316" className="svg-led-pulse" style={{animationDelay:'0.5s'}}/>
+      <text x="53" y="308" fill="rgba(251,146,60,0.9)" fontFamily="monospace" fontSize="9">Live KPIs</text>
     </g>
     <g className="svg-float-3">
-      <rect x="330" y="355" width="108" height="28" rx="6" fill="rgba(10,22,52,0.95)" stroke="rgba(139,92,246,0.35)" strokeWidth="1"/>
+      <rect x="330" y="355" width="108" height="28" rx="6" fill="rgba(19,9,2,0.95)" stroke="rgba(139,92,246,0.35)" strokeWidth="1"/>
       <circle cx="344" cy="369" r="4" fill="#8b5cf6" className="svg-led-pulse" style={{animationDelay:'1s'}}/>
       <text x="354" y="373" fill="rgba(167,139,250,0.9)" fontFamily="monospace" fontSize="9">AI Planning</text>
     </g>
@@ -251,8 +251,8 @@ const NetworkSVG = () => (
       [80,440],[450,460],[820,430]
     ].map(([cx,cy],i)=>(
       <g key={i}>
-        <circle cx={cx} cy={cy} r="4" fill="rgba(59,130,246,0.5)" className="net-node"/>
-        <circle cx={cx} cy={cy} r="10" fill="none" stroke="rgba(59,130,246,0.1)"
+        <circle cx={cx} cy={cy} r="4" fill="rgba(249,115,22,0.5)" className="net-node"/>
+        <circle cx={cx} cy={cy} r="10" fill="none" stroke="rgba(249,115,22,0.1)"
           strokeWidth="1" className="net-ring"/>
       </g>
     ))}
@@ -266,13 +266,13 @@ const NetworkSVG = () => (
       [[150,350],[80,440]],[[350,380],[450,460]],[[750,340],[820,430]],
     ].map(([[x1,y1],[x2,y2]],i)=>(
       <line key={i} x1={x1} y1={y1} x2={x2} y2={y2}
-        stroke="rgba(59,130,246,0.07)" strokeWidth="1"/>
+        stroke="rgba(249,115,22,0.07)" strokeWidth="1"/>
     ))}
-    <circle r="3" fill="rgba(96,165,250,0.7)">
+    <circle r="3" fill="rgba(251,146,60,0.7)">
       <animateMotion dur="4s" repeatCount="indefinite"
         path="M100,80 L300,60 L500,90 L700,75 L850,110"/>
     </circle>
-    <circle r="2.5" fill="rgba(14,165,233,0.7)">
+    <circle r="2.5" fill="rgba(245,158,11,0.7)">
       <animateMotion dur="5s" repeatCount="indefinite" begin="-2s"
         path="M50,200 L200,230 L400,210 L600,240 L800,220"/>
     </circle>
@@ -313,7 +313,7 @@ export const Public = () => {
 
   if (!initialized) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#020817' }}>
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#080401' }}>
         <div style={{ textAlign: 'center' }}>
           <div className="p-loading-spinner" />
           <p style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 12, color: '#475569', marginTop: 12 }}>Initialisation…</p>
@@ -427,7 +427,7 @@ export const Public = () => {
                   </span>
                 </button>
                 <div className="cta-hint">
-                  <FiShield style={{ color: '#3b82f6', fontSize: 13, flexShrink: 0 }} />
+                  <FiShield style={{ color: '#f97316', fontSize: 13, flexShrink: 0 }} />
                   <span className="cta-hint-text">Accès sécurisé via SSO · Keycloak</span>
                 </div>
               </div>
