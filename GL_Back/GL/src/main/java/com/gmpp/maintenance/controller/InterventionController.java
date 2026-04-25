@@ -124,8 +124,9 @@ public class InterventionController {
     @GetMapping("/photos/{photoId}/data")
     public ResponseEntity<byte[]> getPhotoData(@PathVariable Long photoId) {
         InterventionPhoto photo = photoService.getPhotoData(photoId);
+        String safeName = photo.getFileName().replaceAll("[^a-zA-Z0-9._-]", "_");
         return ResponseEntity.ok()
-            .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + photo.getFileName() + "\"")
+            .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + safeName + "\"")
             .contentType(MediaType.parseMediaType(photo.getContentType()))
             .body(photo.getData());
     }

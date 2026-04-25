@@ -3,7 +3,7 @@ import axios from "axios";
 import { useKeycloak } from "@react-keycloak/web";
 
 const axiosPrivate = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000',
 });
 
 const useAxiosPrivate = () => {
@@ -14,10 +14,12 @@ const useAxiosPrivate = () => {
       if (!keycloak?.authenticated) return config;
 
       try {
-        await keycloak.updateToken(30); // refresh if needed
+        await keycloak.updateToken(30);
         config.headers.Authorization = `Bearer ${keycloak.token}`;
       } catch (err) {
-        console.error("Token refresh failed", err);
+        console.error("Token refresh failed — logging out", err);
+        keycloak.logout();
+        return Promise.reject(err);
       }
 
       return config;

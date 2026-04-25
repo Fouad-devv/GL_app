@@ -5,9 +5,9 @@ services:
     image: postgres:16
     container_name: postgres-GL-Project
     environment:
-      POSTGRES_DB: postgres
-      POSTGRES_USER: GLProject
-      POSTGRES_PASSWORD: GLProject
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - "5432:5432"
     volumes:
@@ -20,12 +20,12 @@ services:
     container_name: GL_Keycloak
     command: start-dev
     environment:
-      KEYCLOAK_ADMIN: fouad
-      KEYCLOAK_ADMIN_PASSWORD: fouad
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
       KC_DB: postgres
-      KC_DB_URL: jdbc:postgresql://postgres:5432/postgres
-      KC_DB_USERNAME: GLProject
-      KC_DB_PASSWORD: GLProject
+      KC_DB_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB}
+      KC_DB_USERNAME: ${POSTGRES_USER}
+      KC_DB_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - "8081:8080"
     volumes:
