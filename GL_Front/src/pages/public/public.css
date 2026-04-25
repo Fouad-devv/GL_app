@@ -705,12 +705,12 @@
   --primary-dk:  #9a3412;
   --amber:       #b45309;
   --green:       #059669;
-  --bg:          #f8f6f2;
-  --bg-2:        #efecea;
-  --surface:     #ffffff;
-  --surface-2:   #faf9f7;
-  --border:      rgba(20,14,8,0.07);
-  --border-glow: rgba(194,65,12,0.18);
+  --bg:          #ece0cc;        /* warm orange-parchment */
+  --bg-2:        #e3d5bc;
+  --surface:     #fdf6eb;        /* orange-cream surface */
+  --surface-2:   #f9eedb;
+  --border:      rgba(20,14,8,0.10);
+  --border-glow: rgba(194,65,12,0.25);
   --muted:       #7c6e64;
   --text:        #0f0c09;
   --text-dim:    #3c3028;
@@ -718,38 +718,43 @@
 }
 
 /* ── Background ── */
-.p-root.light .network-bg { opacity: 0.12; }
+.p-root.light .network-bg { opacity: 0.28; }
 
 .p-root.light .bg-dots {
-  background-image: radial-gradient(rgba(20,14,8,0.055) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(194,65,12,0.12) 1px, transparent 1px);
 }
 .p-root.light .bg-dots::after {
-  background: radial-gradient(ellipse 85% 60% at 50% 0%, transparent 20%, #f8f6f2 88%);
+  background: radial-gradient(ellipse 85% 60% at 50% 0%, transparent 20%, #ece0cc 88%);
 }
 
-.p-root.light .orb-1 { background: radial-gradient(circle, rgba(249,115,22,0.1)  0%, transparent 60%); }
-.p-root.light .orb-2 { background: radial-gradient(circle, rgba(245,158,11,0.07) 0%, transparent 60%); }
-.p-root.light .orb-3 { background: radial-gradient(circle, rgba(234,88,12,0.05)  0%, transparent 60%); }
-.p-root.light .orb-4 { opacity: 0; }
+.p-root.light .orb-1 { background: radial-gradient(circle, rgba(249,115,22,0.38) 0%, transparent 60%); }
+.p-root.light .orb-2 { background: radial-gradient(circle, rgba(245,158,11,0.24) 0%, transparent 60%); }
+.p-root.light .orb-3 { background: radial-gradient(circle, rgba(234,88,12,0.18)  0%, transparent 60%); }
+.p-root.light .orb-4 { background: radial-gradient(circle, rgba(249,115,22,0.12) 0%, transparent 60%); opacity: 1; }
 
-/* Beams: keep animation, use light-adapted colours */
+/* Beams: noticeably more visible in light mode */
 .p-root.light .beam {
-  background: linear-gradient(90deg, transparent, rgba(194,65,12,0.07), rgba(234,88,12,0.13), transparent);
+  background: linear-gradient(90deg, transparent, rgba(194,65,12,0.20), rgba(234,88,12,0.38), transparent);
+  height: 1.5px;
 }
-/* Particles: colour already set by CSS var override; keep them subtle */
-.p-root.light .particle { background: #ea580c; }
+
+/* Particles: darker colour + override inline opacity for contrast */
+.p-root.light .particle {
+  background: #9a3412;
+  opacity: 0.45 !important;
+}
 
 /* ── Scrollbar ── */
-.p-root.light ::-webkit-scrollbar-track { background: #efecea; }
+.p-root.light ::-webkit-scrollbar-track { background: #e3d5bc; }
 .p-root.light ::-webkit-scrollbar-thumb { background: rgba(20,14,8,0.13); border-radius: 3px; }
 .p-root.light ::-webkit-scrollbar-thumb:hover { background: rgba(194,65,12,0.28); }
 
 /* ── Nav — floats above the parchment bg ── */
 .p-root.light .p-nav {
-  background: rgba(252,250,247,0.96);
-  border-bottom: 1px solid rgba(20,14,8,0.07);
-  backdrop-filter: blur(24px) saturate(150%);
-  box-shadow: 0 1px 0 rgba(255,255,255,0.9), 0 2px 16px rgba(0,0,0,0.04);
+  background: rgba(237,226,208,0.96);
+  border-bottom: 1px solid rgba(194,65,12,0.14);
+  backdrop-filter: blur(24px) saturate(160%);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.55), 0 2px 20px rgba(194,65,12,0.08);
 }
 .p-root.light .nav-logo-text {
   background: linear-gradient(135deg, #0f0c09 55%, #c2410c 100%);
@@ -789,8 +794,8 @@
 
 /* ── Hero ── */
 .p-root.light .eyebrow {
-  background: rgba(194,65,12,0.07);
-  border-color: rgba(194,65,12,0.18);
+  background: rgba(194,65,12,0.10);
+  border-color: rgba(194,65,12,0.24);
   color: #9a3412;
 }
 .p-root.light .eyebrow-dot { background: #c2410c; box-shadow: 0 0 6px rgba(194,65,12,0.55); }
@@ -807,16 +812,16 @@
 
 .p-root.light .hero-desc { color: #4a3c30; font-size: 16.5px; }
 
-/* ── Pills — white cards with orange left accent stripe ── */
+/* ── Pills — warm off-white cards with orange left accent stripe ── */
 .p-root.light .pill {
-  background: #ffffff;
-  border-color: rgba(20,14,8,0.07);
-  box-shadow: -3px 0 0 rgba(194,65,12,0.18), 0 1px 4px rgba(0,0,0,0.05);
+  background: #fdf6eb;
+  border-color: rgba(194,65,12,0.12);
+  box-shadow: -3px 0 0 rgba(194,65,12,0.30), 0 1px 6px rgba(0,0,0,0.07);
 }
 .p-root.light .pill:hover {
-  background: #fffaf7;
-  border-color: rgba(194,65,12,0.15);
-  box-shadow: -3px 0 0 #c2410c, 0 6px 20px rgba(0,0,0,0.08);
+  background: #fef2e2;
+  border-color: rgba(194,65,12,0.22);
+  box-shadow: -3px 0 0 #c2410c, 0 6px 22px rgba(194,65,12,0.12);
   transform: translateX(6px);
 }
 .p-root.light .pill-text { color: #261d15; font-weight: 500; }
@@ -834,11 +839,11 @@
 
 /* ── Mini KPI row ── */
 .p-root.light .mini-kpi-row {
-  border-color: rgba(20,14,8,0.07);
-  background: #ffffff;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.04);
+  border-color: rgba(194,65,12,0.16);
+  background: #fdf6eb;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06), 0 6px 22px rgba(194,65,12,0.08);
 }
-.p-root.light .mini-kpi + .mini-kpi::before { background: rgba(20,14,8,0.07); }
+.p-root.light .mini-kpi + .mini-kpi::before { background: rgba(194,65,12,0.14); }
 .p-root.light .mini-kpi-num {
   background: linear-gradient(135deg, #c2410c 0%, #b45309 100%);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
@@ -877,7 +882,7 @@
 
 /* ── Section divider ── */
 .p-root.light .section-divider {
-  background: linear-gradient(90deg, transparent, rgba(194,65,12,0.15), rgba(180,83,9,0.1), transparent);
+  background: linear-gradient(90deg, transparent, rgba(194,65,12,0.22), rgba(180,83,9,0.16), transparent);
 }
 
 /* ── Modules section ── */
@@ -889,33 +894,34 @@
 }
 .p-root.light .section-sub { color: #4a3c30; }
 
-/* Cards: white on parchment, real shadow lift, color accent on hover */
+/* Cards: warm off-white, clear shadow lift, orange-tinted hover glow */
 .p-root.light .mod-card {
-  background: #ffffff;
-  border: 1px solid rgba(20,14,8,0.07);
-  box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 4px 14px rgba(0,0,0,0.04);
+  background: #fdf6eb;
+  border: 1px solid rgba(194,65,12,0.12);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(194,65,12,0.07);
 }
 .p-root.light .mod-card:hover {
-  border-color: rgba(194,65,12,0.14);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.04), 0 16px 48px rgba(0,0,0,0.1);
+  background: #fef2e2;
+  border-color: rgba(194,65,12,0.22);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.06), 0 20px 54px rgba(194,65,12,0.18), 0 0 0 1px rgba(194,65,12,0.10);
   transform: translateY(-6px);
 }
 .p-root.light .mod-title { color: #0f0c09; font-size: 16.5px; }
 .p-root.light .mod-desc  { color: #544840; line-height: 1.75; }
 
-/* ── CTA band — warm, inviting, not flat stone ── */
+/* ── CTA band — rich warm amber, clearly distinct from page background ── */
 .p-root.light .cta-band {
   background: linear-gradient(160deg,
-    rgba(255,247,237,1) 0%,
-    rgba(255,253,248,1) 50%,
-    rgba(255,243,224,1) 100%
+    #fdecd5 0%,
+    #fef5e4 45%,
+    #fdecd5 100%
   );
-  border-top: 1px solid rgba(194,65,12,0.1);
-  border-bottom: 1px solid rgba(194,65,12,0.1);
+  border-top: 1px solid rgba(194,65,12,0.16);
+  border-bottom: 1px solid rgba(194,65,12,0.16);
 }
 .p-root.light .cta-band::before {
   background: radial-gradient(ellipse 60% 75% at 50% 50%,
-    rgba(249,115,22,0.06), transparent);
+    rgba(249,115,22,0.10), transparent);
 }
 .p-root.light .cta-band h3 { color: #0f0c09; }
 .p-root.light .cta-band p  { color: #3c3028; }
@@ -926,22 +932,22 @@
   box-shadow: 0 4px 16px rgba(194,65,12,0.1);
 }
 .p-root.light .cta-feature-chip {
-  background: rgba(255,255,255,0.75);
-  border: 1px solid rgba(20,14,8,0.09);
+  background: rgba(253,249,243,0.85);
+  border: 1px solid rgba(20,14,8,0.10);
   color: #544840;
   backdrop-filter: blur(8px);
 }
 .p-root.light .cta-feature-chip:hover {
-  border-color: rgba(194,65,12,0.22);
-  background: rgba(255,255,255,0.95);
+  border-color: rgba(194,65,12,0.25);
+  background: rgba(253,249,243,1);
   color: #9a3412;
 }
 
 /* ── Footer ── */
 .p-root.light .p-footer {
-  border-top: 1px solid rgba(20,14,8,0.07);
-  background: rgba(239,236,234,0.85);
-  backdrop-filter: blur(8px);
+  border-top: 1px solid rgba(194,65,12,0.16);
+  background: rgba(210,196,174,0.94);
+  backdrop-filter: blur(10px);
 }
 .p-root.light .footer-copy { color: #7c6e64; }
 .p-root.light .footer-mark {
