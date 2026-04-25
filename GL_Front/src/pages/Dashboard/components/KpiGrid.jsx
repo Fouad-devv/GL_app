@@ -65,7 +65,7 @@ const KpiCard = ({ card, kpis, delay }) => {
 
   return (
     <div
-      className="kpi-card bg-white rounded-2xl p-5"
+      className="kpi-card bg-white rounded-2xl p-4"
       style={{
         border: '1px solid rgba(0,0,0,0.06)',
         borderTop: `3px solid ${accent}`,
@@ -73,15 +73,15 @@ const KpiCard = ({ card, kpis, delay }) => {
         animation: `dash-up 0.5s cubic-bezier(0.22,1,0.36,1) ${delay}ms both`,
       }}
     >
-      <div className="flex items-start justify-between gap-3 mb-4">
-        <div className="rounded-xl p-2.5 flex-shrink-0" style={{ background: iconBg }}>
-          <Icon size={18} style={{ color: accent }} />
+      <div className="flex items-start justify-between gap-3 mb-3">
+        <div className="rounded-lg p-2 flex-shrink-0" style={{ background: iconBg }}>
+          <Icon size={16} style={{ color: accent }} />
         </div>
       </div>
-      <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider leading-4 mb-1.5">
+      <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider leading-4 mb-1">
         {title}
       </p>
-      <p className="text-3xl font-bold leading-none" style={{ color: val }}>
+      <p className="text-2xl font-bold leading-none" style={{ color: val }}>
         {fmt(count)}
       </p>
     </div>
