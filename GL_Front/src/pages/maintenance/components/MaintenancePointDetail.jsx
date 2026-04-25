@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useDocumentTitle } from '../../../hooks/useDocumentTitle';
 import { FiArrowLeft, FiEdit2, FiTool, FiMapPin, FiClock, FiPackage, FiCalendar, FiAlertCircle, FiUser } from 'react-icons/fi';
 import { formatDate } from '../../../utils/dateUtils';
 import useMaintenancePointAPI from '../../../api/maintenancePointAPI';
@@ -66,6 +67,7 @@ export const MaintenancePointDetail = () => {
   const [interventions, setInterventions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  useDocumentTitle(point ? point.name : 'Point de Maintenance');
 
   useEffect(() => {
     const load = async () => {

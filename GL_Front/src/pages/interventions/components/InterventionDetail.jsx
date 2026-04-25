@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useDocumentTitle } from '../../../hooks/useDocumentTitle';
 import {
   FiArrowLeft, FiEdit2, FiCalendar, FiClock, FiUser,
   FiTool, FiDollarSign, FiFileText, FiActivity,
@@ -304,6 +305,7 @@ export const InterventionDetail = () => {
   const [maintenancePoint, setMaintenancePoint] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  useDocumentTitle(intervention ? `Intervention #${intervention.id}` : 'Intervention');
 
   useEffect(() => {
     const load = async () => {

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { FiRefreshCw } from 'react-icons/fi';
+import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 import { Card } from '../../components/Card';
 import { Alert } from '../../components/Alert';
 import { LoadingOverlay } from '../../components/LoadingSpinner';
@@ -10,6 +11,7 @@ import { PlanningStats } from './components/PlanningStats';
 import { InterventionDetailModal } from './components/InterventionDetailModal';
 
 export const Planning = () => {
+  useDocumentTitle('Planning');
   const planningAPI = usePlanningAPI();
 
   const [currentDate, setCurrentDate]                   = useState(new Date());

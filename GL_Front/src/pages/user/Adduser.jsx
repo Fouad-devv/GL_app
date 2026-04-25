@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 import { FiRefreshCw } from 'react-icons/fi';
 import { Card } from '../../components/Card';
 import { Button, ButtonGroup } from '../../components/Button';
@@ -18,6 +19,7 @@ const EMPTY_FORM = {
 };
 
 export const AddUser = () => {
+  useDocumentTitle('Nouvel Utilisateur');
   const [loading, setLoading]   = useState(false);
   const [error, setError]       = useState(null);
   const [success, setSuccess]   = useState(null);

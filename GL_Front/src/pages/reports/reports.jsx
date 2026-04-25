@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { FiActivity, FiCalendar, FiCpu, FiUser, FiBarChart2, FiCheckCircle, FiServer, FiRefreshCw } from 'react-icons/fi';
+import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 import { Alert } from '../../components/Alert';
 import { LoadingOverlay } from '../../components/LoadingSpinner';
 import useReportAPI from '../../api/reportAPI.js';
@@ -24,6 +25,7 @@ const PARAM_REPORTS = [
 ];
 
 export const Reports = () => {
+  useDocumentTitle('Rapports');
   const reportAPI  = useReportAPI();
   const machineAPI = useMachineAPI();
   const userAPI    = useUserAPI();

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 import { FiRefreshCw } from 'react-icons/fi';
 import { Card } from '../../components/Card';
 import { Table } from '../../components/Table';
@@ -26,6 +27,7 @@ const COLUMNS = [
 ];
 
 export const Users = () => {
+  useDocumentTitle('Utilisateurs');
   const navigate = useNavigate();
   const userAPI  = useUserAPI();
 

@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useKeycloak } from '@react-keycloak/web';
+import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 import { Alert } from '../../components/Alert';
 import { LoadingOverlay } from '../../components/LoadingSpinner';
 import useDashboardAPI from '../../api/dashboardAPI.js';
@@ -19,6 +20,7 @@ const reveal = (delay = 0) => ({
 });
 
 export const Dashboard = () => {
+  useDocumentTitle('Tableau de Bord');
   const { keycloak } = useKeycloak();
   const [loading, setLoading]   = useState(true);
   const [error, setError]       = useState(null);

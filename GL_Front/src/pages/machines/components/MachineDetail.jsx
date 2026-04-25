@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useDocumentTitle } from '../../../hooks/useDocumentTitle';
 import {
   FiArrowLeft, FiEdit2, FiMapPin, FiClock, FiTool,
   FiCalendar, FiActivity, FiChevronDown, FiChevronRight,
@@ -175,6 +176,7 @@ export const MachineDetail = () => {
   const [machine, setMachine]             = useState(null);
   const [points, setPoints]               = useState([]);
   const [interventions, setInterventions] = useState([]);
+  useDocumentTitle(machine ? machine.name : 'Machine');
   const [loading, setLoading]             = useState(true);
   const [error, setError]                 = useState(null);
 
