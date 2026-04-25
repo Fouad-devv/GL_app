@@ -63,8 +63,8 @@ services:
       KEYCLOAK_REALM: ${KEYCLOAK_REALM:-JL_Project}
       KEYCLOAK_ISSUER_URI: http://localhost:8081/realms/${KEYCLOAK_REALM:-JL_Project}
       KEYCLOAK_JWK_URI: http://keycloak:8080/realms/${KEYCLOAK_REALM:-JL_Project}/protocol/openid-connect/certs
-      KEYCLOAK_ADMIN_USERNAME: ${KEYCLOAK_ADMIN:-admin}
-      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-admin}
+      KEYCLOAK_ADMIN_USERNAME: ${KEYCLOAK_ADMIN:-fouad}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-fouad}
     ports:
       - "5000:5000"
     depends_on:
