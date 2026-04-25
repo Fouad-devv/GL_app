@@ -1,4 +1,5 @@
-import { FiCalendar, FiClock, FiTool } from 'react-icons/fi';
+import { FiCalendar, FiClock, FiTool, FiArrowRight } from 'react-icons/fi';
+import { useNavigate } from 'react-router-dom';
 import { formatDate } from '../../../utils/dateUtils';
 
 const STATUS_STYLE = {
@@ -22,8 +23,10 @@ const StatusBadge = ({ status }) => {
   );
 };
 
-export const UpcomingInterventionsTable = ({ interventions }) => (
-  <div
+export const UpcomingInterventionsTable = ({ interventions }) => {
+  const navigate = useNavigate();
+  return (
+    <div
     className="bg-white rounded-2xl p-6 mb-6"
     style={{
       border: '1px solid rgba(0,0,0,0.06)',
@@ -65,7 +68,7 @@ export const UpcomingInterventionsTable = ({ interventions }) => (
         <table className="w-full text-sm border-collapse">
           <thead>
             <tr style={{ borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
-              {['Machine', 'Point de maintenance', 'Date', 'Heure', 'Statut'].map(h => (
+              {['Machine', 'Point de maintenance', 'Date', 'Heure', 'Statut', ''].map(h => (
                 <th
                   key={h}
                   className="text-left text-[11px] font-semibold text-gray-400 uppercase tracking-wider px-3 py-3"
@@ -81,9 +84,10 @@ export const UpcomingInterventionsTable = ({ interventions }) => (
               return (
                 <tr
                   key={idx}
-                  className="transition-colors"
+                  className="transition-colors cursor-pointer"
                   style={{ borderBottom: '1px solid rgba(0,0,0,0.04)' }}
-                  onMouseEnter={e => e.currentTarget.style.background = '#f9fafb'}
+                  onClick={() => navigate(`/interventions/${iv.id}`)}
+                  onMouseEnter={e => e.currentTarget.style.background = 'rgba(249,115,22,0.04)'}
                   onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
                 >
                   <td className="px-3 py-3.5" style={{ borderLeft: `3px solid ${s.dot}` }}>
@@ -119,6 +123,10 @@ export const UpcomingInterventionsTable = ({ interventions }) => (
                   <td className="px-3 py-3.5">
                     <StatusBadge status={iv.status} />
                   </td>
+                  <td className="px-3 py-3.5 text-right">
+                    <FiArrowRight size={14} style={{ color: '#d1d5db', display: 'inline-block', transition: 'color 0.2s, transform 0.2s' }}
+                      className="group-hover:text-orange-400" />
+                  </td>
                 </tr>
               );
             })}
@@ -126,5 +134,6 @@ export const UpcomingInterventionsTable = ({ interventions }) => (
         </table>
       </div>
     )}
-  </div>
-);
+    </div>
+  );
+};

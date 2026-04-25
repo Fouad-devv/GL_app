@@ -67,13 +67,16 @@ export const Dashboard = () => {
 
   if (loading) return <LoadingOverlay visible={true} />;
 
+  const raw      = keycloak?.tokenParsed?.preferred_username || '';
+  const username = raw.includes('@') ? raw.split('@')[0] : raw;
+
   return (
     <div className="p-4 md:p-6 mt-15 md:mt-0 max-w-[1600px] mx-auto space-y-6">
 
       {/* Header */}
       <div style={reveal(0)}>
         <DashboardHeader
-          username={keycloak?.tokenParsed?.preferred_username}
+          username={username}
           onRefresh={load}
         />
         {error && <Alert type="error" message={error} closeable={false} />}

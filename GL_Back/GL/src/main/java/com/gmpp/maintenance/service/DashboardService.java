@@ -192,6 +192,7 @@ public class DashboardService {
                         map.put("maintenancePointName", mpName);
                     }
 
+                    map.put("id", intervention.getId());
                     map.put("plannedDate", intervention.getPlannedDate());
                     map.put("plannedTime", intervention.getPlannedTime());
                     map.put("status", intervention.getStatus());
