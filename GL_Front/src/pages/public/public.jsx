@@ -1,7 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 import { useKeycloak } from '@react-keycloak/web';
 import { useEffect, useRef, useState } from 'react';
-import { FiCheckCircle, FiBarChart2, FiCalendar, FiUsers, FiArrowRight, FiShield, FiActivity, FiSun, FiMoon, FiZap, FiCpu } from 'react-icons/fi';
+import {
+  FiCheckCircle, FiBarChart2, FiCalendar, FiUsers, FiArrowRight,
+  FiShield, FiActivity, FiSun, FiMoon, FiZap, FiCpu,
+  FiTool, FiServer, FiPieChart, FiLayers,
+} from 'react-icons/fi';
 import './public.css';
 
 /* ─── Counter hook ───────────────────────────────────────────────────────── */
@@ -92,12 +96,12 @@ const STATS = [
 ];
 
 const MODULES = [
-  { icon: '⚙️', color: '#f97316', bg: 'rgba(249,115,22,0.1)',   title: 'Machines',    desc: 'Gérez votre parc industriel avec historique complet' },
-  { icon: '🔧', color: '#f59e0b', bg: 'rgba(245,158,11,0.1)',   title: 'Maintenance', desc: 'Points et fréquences de maintenance personnalisés' },
-  { icon: '📅', color: '#8b5cf6', bg: 'rgba(139,92,246,0.1)',   title: 'Planning',    desc: 'Calendrier interactif et planification automatique' },
-  { icon: '📊', color: '#fb923c', bg: 'rgba(251,146,60,0.1)',   title: 'Rapports',    desc: 'Export PDF, Excel, CSV avec KPIs détaillés' },
-  { icon: '👥', color: '#10b981', bg: 'rgba(16,185,129,0.1)',   title: 'Équipe',      desc: 'Gestion des techniciens et affectations' },
-  { icon: '📈', color: '#a78bfa', bg: 'rgba(167,139,250,0.1)',  title: 'Dashboard',   desc: 'Indicateurs clés et alertes en temps réel' },
+  { icon: FiServer,    color: '#f97316', bg: 'rgba(249,115,22,0.08)',   title: 'Machines',    desc: 'Gérez votre parc industriel avec historique complet' },
+  { icon: FiTool,      color: '#f59e0b', bg: 'rgba(245,158,11,0.08)',   title: 'Maintenance', desc: 'Points et fréquences de maintenance personnalisés' },
+  { icon: FiCalendar,  color: '#8b5cf6', bg: 'rgba(139,92,246,0.08)',   title: 'Planning',    desc: 'Calendrier interactif et planification automatique' },
+  { icon: FiPieChart,  color: '#fb923c', bg: 'rgba(251,146,60,0.08)',   title: 'Rapports',    desc: 'Export PDF, Excel, CSV avec KPIs détaillés' },
+  { icon: FiUsers,     color: '#10b981', bg: 'rgba(16,185,129,0.08)',   title: 'Équipe',      desc: 'Gestion des techniciens et affectations' },
+  { icon: FiActivity,  color: '#a78bfa', bg: 'rgba(167,139,250,0.08)',  title: 'Dashboard',   desc: 'Indicateurs clés et alertes en temps réel' },
 ];
 
 const FEATURES = [
@@ -570,8 +574,12 @@ export const Public = () => {
                 >
                   <div className="mod-spotlight" />
                   <div className="mod-glow" style={{ '--mod-color': m.color }} />
-                  <div className="mod-icon-wrap" style={{ background: m.bg }}>
-                    <span className="mod-icon-inner" style={{ fontSize: 22 }}>{m.icon}</span>
+                  <div className="mod-icon-wrap" style={{
+                    background: m.bg,
+                    border: `1px solid ${m.color}28`,
+                    boxShadow: `0 4px 18px ${m.color}18`,
+                  }}>
+                    <m.icon size={22} style={{ color: m.color, flexShrink: 0 }} />
                   </div>
                   <div className="mod-title">{m.title}</div>
                   <div className="mod-desc">{m.desc}</div>

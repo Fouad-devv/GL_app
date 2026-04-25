@@ -615,18 +615,21 @@
 .mod-card:hover .mod-glow { opacity: 1; }
 
 .mod-card:hover {
-  transform: translateY(-6px);
-  border-color: rgba(249,115,22,0.2);
-  box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(249,115,22,0.07);
+  transform: translateY(-7px);
+  border-color: rgba(255,255,255,0.08);
+  box-shadow: 0 24px 64px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.05);
 }
 
 .mod-icon-wrap {
-  width: 46px; height: 46px; border-radius: 12px;
+  width: 50px; height: 50px; border-radius: 13px;
   display: flex; align-items: center; justify-content: center;
-  margin-bottom: 18px; transition: transform 0.3s;
+  margin-bottom: 20px;
+  transition: transform 0.35s cubic-bezier(0.22,1,0.36,1), box-shadow 0.3s;
+  position: relative;
 }
-.mod-card:hover .mod-icon-wrap { transform: scale(1.08) rotate(-3deg); }
-.mod-icon-inner { display: block; }
+.mod-card:hover .mod-icon-wrap {
+  transform: scale(1.1) rotate(-4deg);
+}
 
 .mod-title { font-weight: 700; font-size: 16px; margin-bottom: 8px; letter-spacing: -0.015em; }
 .mod-desc  { color: var(--text-dim); font-size: 13px; line-height: 1.7; }
