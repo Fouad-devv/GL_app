@@ -68,6 +68,16 @@ export const Sidebar = ({ isOpen, setIsOpen, openProfile, setOpenProfile }) => {
         >
           {isOpen ? <FiX size={18} /> : <FiMenu size={18} />}
         </button>
+        <div className="sidebar-logo-mark">
+          <svg width="16" height="16" viewBox="0 0 18 18" fill="none">
+            <circle cx="9" cy="9" r="3" fill="white"/>
+            {Array.from({length:6},(_,i)=>{
+              const a=(i/6)*Math.PI*2;
+              return <rect key={i} x="8.2" y="1" width="1.6" height="3" rx="0.8" fill="white"
+                transform={`rotate(${a*(180/Math.PI)} 9 9)`}/>;
+            })}
+          </svg>
+        </div>
         <span className="text-lg font-extrabold tracking-widest logo-text">GMPP</span>
       </div>
 
@@ -91,13 +101,16 @@ export const Sidebar = ({ isOpen, setIsOpen, openProfile, setOpenProfile }) => {
              style={{ borderBottom:'1px solid rgba(249,115,22,0.14)', background:'rgba(249,115,22,0.03)' }}>
           <div className="mr-auto flex items-center gap-2.5 overflow-hidden"
                style={{ maxWidth: collapsed ? 0 : 160, opacity: collapsed ? 0 : 1, transition: 'max-width 0.3s ease-in-out, opacity 0.2s ease-in-out' }}>
-            <div style={{
-              width:30, height:30, borderRadius:7, flexShrink:0,
-              background:'linear-gradient(135deg,#f97316,#ea580c)',
-              display:'flex', alignItems:'center', justifyContent:'center',
-              fontWeight:800, fontSize:13, color:'#fff',
-              boxShadow:'0 4px 12px rgba(249,115,22,0.45)',
-            }}>G</div>
+            <div className="sidebar-logo-mark">
+              <svg width="17" height="17" viewBox="0 0 18 18" fill="none">
+                <circle cx="9" cy="9" r="3" fill="white"/>
+                {Array.from({length:6},(_,i)=>{
+                  const a=(i/6)*Math.PI*2;
+                  return <rect key={i} x="8.2" y="1" width="1.6" height="3" rx="0.8" fill="white"
+                    transform={`rotate(${a*(180/Math.PI)} 9 9)`}/>;
+                })}
+              </svg>
+            </div>
             <span className="text-lg font-extrabold tracking-widest logo-text whitespace-nowrap">GMPP</span>
           </div>
           <button

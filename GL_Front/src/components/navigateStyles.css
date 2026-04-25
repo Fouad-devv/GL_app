@@ -106,6 +106,18 @@
   -webkit-text-fill-color: transparent;
 }
 
+.sidebar-logo-mark {
+  width: 34px; height: 34px; border-radius: 9px; flex-shrink: 0;
+  background: linear-gradient(145deg, #f97316 0%, #ea580c 100%);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 0 0 1px rgba(249,115,22,0.35), 0 4px 20px rgba(249,115,22,0.4);
+  transition: box-shadow 0.3s, transform 0.35s cubic-bezier(0.22,1,0.36,1);
+}
+.sidebar-logo-mark:hover {
+  box-shadow: 0 0 0 1px rgba(249,115,22,0.6), 0 4px 28px rgba(249,115,22,0.55);
+  transform: rotate(18deg);
+}
+
 .section-label {
   animation: fade-up 0.3s ease both;
   transition: opacity 0.2s;
