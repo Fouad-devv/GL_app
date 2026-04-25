@@ -1,4 +1,5 @@
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { FiCpu } from 'react-icons/fi';
 
 const STATUSES = [
   { key: 'operational', label: 'En service',     color: '#10b981' },
@@ -44,11 +45,21 @@ export const MachineStatusChart = ({ machines }) => {
   if (!total) return null;
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
-      <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Parc machines</p>
-      <div className="flex items-center gap-1 mb-4">
+    <div
+      className="bg-white rounded-2xl p-6"
+      style={{
+        border: '1px solid rgba(0,0,0,0.06)',
+        borderTop: '3px solid #10b981',
+        boxShadow: '0 1px 4px rgba(0,0,0,0.05)',
+      }}
+    >
+      <div className="flex items-center gap-2 mb-1">
+        <FiCpu size={13} style={{ color: '#10b981' }} />
+        <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Parc machines</p>
+      </div>
+      <div className="flex items-baseline gap-1.5 mb-2">
         <span className="text-2xl font-bold text-gray-900">{total}</span>
-        <span className="text-sm text-gray-400 mt-1">machines</span>
+        <span className="text-sm text-gray-400">machines</span>
       </div>
 
       <ResponsiveContainer width="100%" height={220}>
@@ -68,8 +79,8 @@ export const MachineStatusChart = ({ machines }) => {
           </Pie>
           <Tooltip content={<CustomTooltip />} />
           <Legend
-            iconType="circle" iconSize={9}
-            formatter={v => <span style={{ fontSize: 12, color: '#6b7280' }}>{v}</span>}
+            iconType="circle" iconSize={8}
+            formatter={v => <span style={{ fontSize: 11, color: '#6b7280' }}>{v}</span>}
           />
         </PieChart>
       </ResponsiveContainer>

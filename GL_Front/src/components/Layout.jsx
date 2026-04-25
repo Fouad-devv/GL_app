@@ -13,7 +13,12 @@ export const Layout = ({ children, isOpen, setIsOpen, openProfile, setOpenProfil
         setOpenProfile={setOpenProfile}
       />
       <div
-        className="flex-1 overflow-auto bg-gray-50"
+        className="flex-1 overflow-auto"
+        style={{
+          background: '#faf5ec',
+          backgroundImage: 'radial-gradient(rgba(194,65,12,0.12) 1px, transparent 1px)',
+          backgroundSize: '32px 32px',
+        }}
         onClick={() => { if (isOpen || openProfile) closeSidebar(); }}
       >
         <div key={pathname} className="animate-fadeInPage">

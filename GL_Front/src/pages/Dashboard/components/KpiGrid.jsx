@@ -1,61 +1,97 @@
+import { useState, useEffect } from 'react';
 import { FiCheckCircle, FiClock, FiAlertTriangle, FiDollarSign } from 'react-icons/fi';
 
 const CARDS = [
   {
     key: 'completedInterventions',
     title: 'Interventions terminées',
-    fmt: v => v ?? 0,
+    fmt: v => Math.round(v ?? 0),
     icon: FiCheckCircle,
-    theme: { border: '#10b981', icon: '#10b981', bg: '#ecfdf5', val: '#065f46' },
+    accent: '#10b981',
+    iconBg: '#ecfdf5',
+    val: '#065f46',
   },
   {
     key: 'avgInterventionTime',
     title: 'Durée moyenne (min)',
-    fmt: v => v ?? 0,
+    fmt: v => Math.round(v ?? 0),
     icon: FiClock,
-    theme: { border: '#8b5cf6', icon: '#8b5cf6', bg: '#f5f3ff', val: '#4c1d95' },
+    accent: '#8b5cf6',
+    iconBg: '#f5f3ff',
+    val: '#4c1d95',
   },
   {
     key: 'delayedInterventions',
     title: 'Interventions en retard',
-    fmt: v => v ?? 0,
+    fmt: v => Math.round(v ?? 0),
     icon: FiAlertTriangle,
-    theme: { border: '#ef4444', icon: '#ef4444', bg: '#fef2f2', val: '#991b1b' },
+    accent: '#ef4444',
+    iconBg: '#fef2f2',
+    val: '#991b1b',
   },
   {
     key: 'monthlyCost',
     title: 'Coûts du mois',
-    fmt: v => v != null ? `${Number(v).toLocaleString('fr-MA')} MAD` : '0 MAD',
+    fmt: v => `${Math.round(v ?? 0).toLocaleString('fr-MA')} MAD`,
     icon: FiDollarSign,
-    theme: { border: '#06b6d4', icon: '#06b6d4', bg: '#ecfeff', val: '#164e63' },
+    accent: '#06b6d4',
+    iconBg: '#ecfeff',
+    val: '#164e63',
   },
 ];
 
-const KpiCard = ({ card, kpis }) => {
-  const { title, fmt, icon: Icon, theme } = card;
-  const value = fmt(kpis?.[card.key]);
+function useCounter(target, duration = 950) {
+  const [val, setVal] = useState(0);
+  useEffect(() => {
+    if (!target) { setVal(0); return; }
+    const start = performance.now();
+    let raf;
+    const tick = (now) => {
+      const t = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - t, 3);
+      setVal(t >= 1 ? target : Math.round(eased * target));
+      if (t < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [target, duration]);
+  return val;
+}
+
+const KpiCard = ({ card, kpis, delay }) => {
+  const { title, fmt, icon: Icon, accent, iconBg, val } = card;
+  const rawVal = Number(kpis?.[card.key] ?? 0);
+  const count  = useCounter(rawVal);
+
   return (
     <div
-      className="bg-white rounded-2xl p-5 hover:shadow-md transition-shadow duration-200"
-      style={{ border: `1px solid ${theme.border}22`, borderLeft: `4px solid ${theme.border}` }}
+      className="kpi-card bg-white rounded-2xl p-5"
+      style={{
+        border: '1px solid rgba(0,0,0,0.06)',
+        borderTop: `3px solid ${accent}`,
+        boxShadow: '0 1px 4px rgba(0,0,0,0.05)',
+        animation: `dash-up 0.5s cubic-bezier(0.22,1,0.36,1) ${delay}ms both`,
+      }}
     >
-      <div className="flex items-start justify-between gap-3">
-        <div className="flex-1 min-w-0">
-          <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider leading-4">{title}</p>
-          <p className="text-3xl font-bold mt-2 leading-none truncate" style={{ color: theme.val }}>
-            {value}
-          </p>
-        </div>
-        <div className="rounded-xl p-2.5 flex-shrink-0" style={{ background: theme.bg }}>
-          <Icon style={{ color: theme.icon, fontSize: 20 }} />
+      <div className="flex items-start justify-between gap-3 mb-4">
+        <div className="rounded-xl p-2.5 flex-shrink-0" style={{ background: iconBg }}>
+          <Icon size={18} style={{ color: accent }} />
         </div>
       </div>
+      <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider leading-4 mb-1.5">
+        {title}
+      </p>
+      <p className="text-3xl font-bold leading-none" style={{ color: val }}>
+        {fmt(count)}
+      </p>
     </div>
   );
 };
 
 export const KpiGrid = ({ kpis }) => (
-  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 md:gap-y-15 gap-x-7">
-    {CARDS.map(card => <KpiCard key={card.key} card={card} kpis={kpis} />)}
+  <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    {CARDS.map((card, i) => (
+      <KpiCard key={card.key} card={card} kpis={kpis} delay={i * 70} />
+    ))}
   </div>
 );

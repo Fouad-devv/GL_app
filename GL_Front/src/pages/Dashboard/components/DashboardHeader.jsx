@@ -7,35 +7,28 @@ const frDate = () =>
 
 export const DashboardHeader = ({ username, onRefresh }) => (
   <div
-    className="mb-8 rounded-2xl overflow-hidden"
+    className="mb-5 rounded-2xl overflow-hidden h-[145px]"
     style={{
-      background: 'linear-gradient(135deg, #241305 0%, #160c02 45%, #0c0601 100%)',
-      border: '1px solid rgba(249,115,22,0.18)',
-      borderTop: '2px solid rgba(249,115,22,0.75)',
-      boxShadow: '0 6px 36px rgba(0,0,0,0.55), 0 0 0 1px rgba(249,115,22,0.06)',
-      position: 'relative',
+      background: '#ffffff',
+      border: '1px solid rgba(0,0,0,0.08)',
+      borderTop: '3px solid #f97316',
+      boxShadow: '0 1px 4px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04)',
     }}
   >
-    {/* radial glow — top-left corner */}
-    <div style={{
-      position: 'absolute', inset: 0, pointerEvents: 'none', borderRadius: 'inherit',
-      background: 'radial-gradient(ellipse 65% 100% at 0% 0%, rgba(249,115,22,0.1) 0%, transparent 70%)',
-    }} />
-
-    <div className="px-7 py-6 flex items-center justify-between" style={{ position: 'relative' }}>
+    <div className="px-7 py-6 flex items-center justify-between">
       <div>
         <div className="flex items-center gap-2 mb-2">
-          <FiCalendar style={{ color: 'rgba(251,146,60,0.65)', fontSize: 13 }} />
-          <span className="text-xs font-medium capitalize" style={{ color: 'rgba(251,146,60,0.65)' }}>
+          <FiCalendar style={{ color: '#f97316', fontSize: 13 }} />
+          <span className="text-xs font-medium capitalize" style={{ color: '#f97316' }}>
             {frDate()}
           </span>
         </div>
-        <h1 className="text-2xl font-bold tracking-tight" style={{ color: '#f5ede8' }}>
+        <h1 className="text-2xl font-bold tracking-tight" style={{ color: '#111827' }}>
           Tableau de Bord
         </h1>
-        <p className="text-sm mt-1" style={{ color: 'rgba(251,146,60,0.55)' }}>
+        <p className="text-sm mt-1" style={{ color: '#6b7280' }}>
           Bienvenue,&nbsp;
-          <span className="font-semibold" style={{ color: '#fb923c' }}>{username ?? '—'}</span>
+          <span className="font-semibold" style={{ color: '#ea580c' }}>{username ?? '—'}</span>
         </p>
       </div>
 
@@ -44,20 +37,17 @@ export const DashboardHeader = ({ username, onRefresh }) => (
           onClick={onRefresh}
           className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold"
           style={{
-            background: 'rgba(249,115,22,0.14)',
-            border: '1px solid rgba(249,115,22,0.3)',
-            color: '#fb923c',
-            backdropFilter: 'blur(8px)',
+            background: 'rgba(249,115,22,0.08)',
+            border: '1px solid rgba(249,115,22,0.22)',
+            color: '#ea580c',
           }}
           onMouseEnter={e => {
-            e.currentTarget.style.background = 'rgba(249,115,22,0.24)';
-            e.currentTarget.style.borderColor = 'rgba(249,115,22,0.55)';
-            e.currentTarget.style.boxShadow = '0 0 16px rgba(249,115,22,0.2)';
+            e.currentTarget.style.background = 'rgba(249,115,22,0.15)';
+            e.currentTarget.style.borderColor = 'rgba(249,115,22,0.45)';
           }}
           onMouseLeave={e => {
-            e.currentTarget.style.background = 'rgba(249,115,22,0.14)';
-            e.currentTarget.style.borderColor = 'rgba(249,115,22,0.3)';
-            e.currentTarget.style.boxShadow = 'none';
+            e.currentTarget.style.background = 'rgba(249,115,22,0.08)';
+            e.currentTarget.style.borderColor = 'rgba(249,115,22,0.22)';
           }}
         >
           <FiRefreshCw size={14} />
@@ -65,11 +55,5 @@ export const DashboardHeader = ({ username, onRefresh }) => (
         </button>
       )}
     </div>
-
-    {/* bottom accent line */}
-    <div style={{
-      height: 1,
-      background: 'linear-gradient(90deg, rgba(249,115,22,0.5), rgba(245,158,11,0.25), transparent)',
-    }} />
   </div>
 );

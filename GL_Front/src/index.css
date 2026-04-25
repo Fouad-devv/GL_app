@@ -29,16 +29,16 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: #ecdfc8;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #888;
+  background: rgba(194,65,12,0.28);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: rgba(194,65,12,0.50);
 }
 
 /* Smooth Transitions */
@@ -171,5 +171,59 @@ h3 {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
 }
 
+/* ── Dashboard premium animations ────────────────────────────────── */
+@keyframes dash-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
 
+@keyframes dash-shimmer {
+  from { transform: translateX(-150%) skewX(-16deg); }
+  to   { transform: translateX(260%) skewX(-16deg); }
+}
+
+@keyframes alert-in {
+  from { opacity: 0; transform: translateX(-14px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+
+.kpi-card {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.22s ease, box-shadow 0.22s ease,
+              background-color 0.2s ease, border-color 0.2s ease !important;
+}
+
+.kpi-card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 45%;
+  height: 100%;
+  background: linear-gradient(105deg, transparent, rgba(255,255,255,0.52), transparent);
+  transform: translateX(-150%) skewX(-16deg);
+  pointer-events: none;
+}
+
+.kpi-card:hover {
+  transform: translateY(-3px) scale(1.012);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1) !important;
+}
+
+.kpi-card:hover::after {
+  animation: dash-shimmer 0.52s ease-out forwards;
+}
+
+.stat-card {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.22s ease, box-shadow 0.22s ease,
+              background-color 0.2s ease, border-color 0.2s ease !important;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08) !important;
+}
 

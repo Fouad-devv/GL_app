@@ -14,6 +14,10 @@ import { UpcomingInterventionsTable } from './components/UpcomingInterventionsTa
 
 const settle = r => r.status === 'fulfilled' ? r.value.data : null;
 
+const reveal = (delay = 0) => ({
+  animation: `dash-up 0.55s cubic-bezier(0.22,1,0.36,1) ${delay}ms both`,
+});
+
 export const Dashboard = () => {
   const { keycloak } = useKeycloak();
   const [loading, setLoading]   = useState(true);
@@ -46,10 +50,10 @@ export const Dashboard = () => {
       setAlerts(settle(alertR) ?? []);
       setUpcoming(settle(upR) ?? []);
       setMachines({
-        operational:  settle(opR)   ?? 0,
+        operational:  settle(opR)    ?? 0,
         maintenance:  settle(maintR) ?? 0,
-        repair:       settle(repR)  ?? 0,
-        outOfService: settle(oosR)  ?? 0,
+        repair:       settle(repR)   ?? 0,
+        outOfService: settle(oosR)   ?? 0,
       });
     } catch (e) {
       console.error(e);
@@ -64,36 +68,47 @@ export const Dashboard = () => {
   if (loading) return <LoadingOverlay visible={true} />;
 
   return (
-    <div className="p-4 md:p-6 mt-15 md:mt-0 max-w-[1600px] mx-auto">
-      <DashboardHeader
-        username={keycloak?.tokenParsed?.preferred_username}
-        onRefresh={load}
-      />
+    <div className="p-4 md:p-6 mt-15 md:mt-0 max-w-[1600px] mx-auto space-y-6">
 
-      {error && <Alert type="error" message={error} closeable={false} />}
+      {/* Header */}
+      <div style={reveal(0)}>
+        <DashboardHeader
+          username={keycloak?.tokenParsed?.preferred_username}
+          onRefresh={load}
+        />
+        {error && <Alert type="error" message={error} closeable={false} />}
+      </div>
 
-      {/* KPI + Performance row */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5 mb-8">
-        <div className="lg:col-span-2">
-          <KpiGrid kpis={kpis} />
-        </div>
+      {/* KPI row — 4 cards across */}
+      <div style={reveal(60)}>
+        <KpiGrid kpis={kpis} />
+      </div>
+
+      {/* Charts + Gauges — 3 equal columns */}
+      <div
+        style={reveal(120)}
+        className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5"
+      >
+        <MachineStatusChart machines={machines} />
+        <InterventionStatusChart stats={stats} />
         <PerformanceGauges kpis={kpis} stats={stats} />
       </div>
 
-      {/* Alerts */}
-      <AlertsSection alerts={alerts} />
-
-      {/* 2-column charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-8">
-        <MachineStatusChart machines={machines} />
-        <InterventionStatusChart stats={stats} />
+      {/* Summary stats — 3 cards */}
+      <div style={reveal(180)}>
+        <InterventionStats stats={stats} />
       </div>
 
-      {/* Summary stats */}
-      <InterventionStats stats={stats} />
+      {/* Alerts */}
+      <div style={reveal(210)}>
+        <AlertsSection alerts={alerts} />
+      </div>
 
-      {/* Upcoming table */}
-      <UpcomingInterventionsTable interventions={upcoming} />
+      {/* Upcoming interventions table */}
+      <div style={reveal(240)}>
+        <UpcomingInterventionsTable interventions={upcoming} />
+      </div>
+
     </div>
   );
 };

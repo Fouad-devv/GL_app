@@ -153,7 +153,7 @@ export const Sidebar = ({ isOpen, setIsOpen, openProfile, setOpenProfile }) => {
                         background: isActive
                           ? 'linear-gradient(135deg, rgba(249,115,22,0.22), rgba(234,88,12,0.12))'
                           : 'transparent',
-                        color: isActive ? '#fb923c' : '#6b5040',
+                        color: isActive ? '#fb923c' : '#a8896e',
                         boxShadow: isActive ? 'inset 0 0 0 1px rgba(249,115,22,0.22)' : 'none',
                         animationDelay: `${(si * 4 + ii) * 0.05}s`,
                         animationFillMode: 'both',
@@ -161,13 +161,13 @@ export const Sidebar = ({ isOpen, setIsOpen, openProfile, setOpenProfile }) => {
                       onMouseEnter={e => {
                         if (!e.currentTarget.classList.contains('active')) {
                           e.currentTarget.style.background = 'rgba(249,115,22,0.08)';
-                          e.currentTarget.style.color = '#f5e6d8';
+                          e.currentTarget.style.color = '#fde8cc';
                         }
                       }}
                       onMouseLeave={e => {
                         if (!e.currentTarget.classList.contains('active')) {
                           e.currentTarget.style.background = 'transparent';
-                          e.currentTarget.style.color = '#6b7280';
+                          e.currentTarget.style.color = '#a8896e';
                         }
                       }}
                     >
