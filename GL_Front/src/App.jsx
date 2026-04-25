@@ -7,7 +7,7 @@ import { Layout } from './components/Layout';
 
 // pages
 import { Public } from './pages/public/public';
-import { Dashboard } from './pages/dashboard/dashboard';
+import { Dashboard } from './pages/Dashboard/Dashboard';
 import { AddUser } from './pages/user/Adduser';
 import { Maintenance } from './pages/maintenance/maintenance';
 import { MaintenancePointDetail } from './pages/maintenance/components/MaintenancePointDetail';
