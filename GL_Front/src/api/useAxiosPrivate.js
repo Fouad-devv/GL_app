@@ -3,7 +3,7 @@ import axios from "axios";
 import { useKeycloak } from "@react-keycloak/web";
 
 const axiosPrivate = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000',
+  baseURL: import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:5000',
 });
 
 const useAxiosPrivate = () => {
