@@ -34,6 +34,10 @@ services:
       KC_DB_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-postgres}
       KC_DB_USERNAME: ${POSTGRES_USER:-GLProject}
       KC_DB_PASSWORD: ${POSTGRES_PASSWORD:-GLProject}
+      KC_HOSTNAME: localhost
+      KC_HOSTNAME_PORT: "8081"
+      KC_HOSTNAME_STRICT: "false"
+      KC_HOSTNAME_STRICT_BACKCHANNEL: "false"
     ports:
       - "8081:8080"
     volumes:
@@ -55,9 +59,9 @@ services:
       DB_USERNAME: ${POSTGRES_USER:-GLProject}
       DB_PASSWORD: ${POSTGRES_PASSWORD:-GLProject}
       KEYCLOAK_SERVER_URL: http://keycloak:8080
-      KEYCLOAK_REALM: ${KEYCLOAK_REALM:-GL_Project}
-      KEYCLOAK_ISSUER_URI: http://keycloak:8080/realms/${KEYCLOAK_REALM:-GL_Project}
-      KEYCLOAK_JWK_URI: http://keycloak:8080/realms/${KEYCLOAK_REALM:-GL_Project}/protocol/openid-connect/certs
+      KEYCLOAK_REALM: ${KEYCLOAK_REALM:-JL_Project}
+      KEYCLOAK_ISSUER_URI: http://localhost:8081/realms/${KEYCLOAK_REALM:-JL_Project}
+      KEYCLOAK_JWK_URI: http://keycloak:8080/realms/${KEYCLOAK_REALM:-JL_Project}/protocol/openid-connect/certs
       KEYCLOAK_ADMIN_USERNAME: ${KEYCLOAK_ADMIN:-admin}
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-admin}
     ports:
@@ -78,7 +82,7 @@ services:
       dockerfile: Dockerfile
       args:
         VITE_KEYCLOAK_URL: ${VITE_KEYCLOAK_URL:-http://localhost:8081}
-        VITE_KEYCLOAK_REALM: ${KEYCLOAK_REALM:-GL_Project}
+        VITE_KEYCLOAK_REALM: ${KEYCLOAK_REALM:-JL_Project}
         VITE_KEYCLOAK_CLIENT_ID: ${VITE_KEYCLOAK_CLIENT_ID:-FrontJL}
         VITE_API_BASE_URL: ""
     container_name: GL_Frontend

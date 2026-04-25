@@ -1,0 +1,639 @@
+[ {
+  "id" : "5d198ec8-b3de-4d30-8f1b-eb520a5ca370",
+  "username" : "ahmed@gmail.com",
+  "firstName" : "ahmed",
+  "email" : "ahmed@gmail.com",
+  "emailVerified" : false,
+  "userProfileMetadata" : {
+    "attributes" : [ {
+      "name" : "locale",
+      "displayName" : "locale",
+      "required" : false,
+      "readOnly" : false,
+      "validators" : { },
+      "multivalued" : false
+    }, {
+      "name" : "username",
+      "displayName" : "${username}",
+      "required" : true,
+      "readOnly" : true,
+      "validators" : {
+        "username-prohibited-characters" : {
+          "ignore.empty.value" : true
+        },
+        "multivalued" : {
+          "max" : "1"
+        },
+        "length" : {
+          "max" : 255,
+          "ignore.empty.value" : true,
+          "min" : 3
+        },
+        "up-username-not-idn-homograph" : {
+          "ignore.empty.value" : true
+        }
+      },
+      "multivalued" : false
+    }, {
+      "name" : "email",
+      "displayName" : "${email}",
+      "required" : false,
+      "readOnly" : false,
+      "validators" : {
+        "multivalued" : {
+          "max" : "1"
+        },
+        "length" : {
+          "max" : 255,
+          "ignore.empty.value" : true
+        },
+        "email" : {
+          "ignore.empty.value" : true
+        }
+      },
+      "multivalued" : false
+    }, {
+      "name" : "firstName",
+      "displayName" : "${firstName}",
+      "required" : false,
+      "readOnly" : false,
+      "validators" : {
+        "person-name-prohibited-characters" : {
+          "ignore.empty.value" : true
+        },
+        "multivalued" : {
+          "max" : "1"
+        },
+        "length" : {
+          "max" : 255,
+          "ignore.empty.value" : true
+        }
+      },
+      "multivalued" : false
+    }, {
+      "name" : "lastName",
+      "displayName" : "${lastName}",
+      "required" : false,
+      "readOnly" : false,
+      "validators" : {
+        "person-name-prohibited-characters" : {
+          "ignore.empty.value" : true
+        },
+        "multivalued" : {
+          "max" : "1"
+        },
+        "length" : {
+          "max" : 255,
+          "ignore.empty.value" : true
+        }
+      },
+      "multivalued" : false
+    } ],
+    "groups" : [ {
+      "name" : "user-metadata",
+      "displayHeader" : "User metadata",
+      "displayDescription" : "Attributes, which refer to user metadata"
+    } ]
+  },
+  "enabled" : true,
+  "createdTimestamp" : 1775400454141,
+  "totp" : false,
+  "disableableCredentialTypes" : [ ],
+  "requiredActions" : [ ],
+  "notBefore" : 0,
+  "access" : {
+    "manage" : true
+  }
+}, {
+  "id" : "8160c838-3ac8-4e9a-a901-f2823c29c3fb",
+  "username" : "fouad@gmail.com",
+  "firstName" : "fouad",
+  "email" : "fouad@gmail.com",
+  "emailVerified" : false,
+  "userProfileMetadata" : {
+    "attributes" : [ {
+      "name" : "locale",
+      "displayName" : "locale",
+      "required" : false,
+      "readOnly" : false,
+      "validators" : { },
+      "multivalued" : false
+    }, {
+      "name" : "username",
+      "displayName" : "${username}",
+      "required" : true,
+      "readOnly" : true,
+      "validators" : {
+        "username-prohibited-characters" : {
+          "ignore.empty.value" : true
+        },
+        "multivalued" : {
+          "max" : "1"
+        },
+        "length" : {
+          "max" : 255,
+          "ignore.empty.value" : true,
+          "min" : 3
+        },
+        "up-username-not-idn-homograph" : {
+          "ignore.empty.value" : true
+        }
+      },
+      "multivalued" : false
+    }, {
+      "name" : "email",
+      "displayName" : "${email}",
+      "required" : false,
+      "readOnly" : false,
+      "validators" : {
+        "multivalued" : {
+          "max" : "1"
+        },
+        "length" : {
+          "max" : 255,
+          "ignore.empty.value" : true
+        },
+        "email" : {
+          "ignore.empty.value" : true
+        }
+      },
+      "multivalued" : false
+    }, {
+      "name" : "firstName",
+      "displayName" : "${firstName}",
+      "required" : false,
+      "readOnly" : false,
+      "validators" : {
+        "person-name-prohibited-characters" : {
+          "ignore.empty.value" : true
+        },
+        "multivalued" : {
+          "max" : "1"
+        },
+        "length" : {
+          "max" : 255,
+          "ignore.empty.value" : true
+        }
+      },
+      "multivalued" : false
+    }, {
+      "name" : "lastName",
+      "displayName" : "${lastName}",
+      "required" : false,
+      "readOnly" : false,
+      "validators" : {
+        "person-name-prohibited-characters" : {
+          "ignore.empty.value" : true
+        },
+        "multivalued" : {
+          "max" : "1"
+        },
+        "length" : {
+          "max" : 255,
+          "ignore.empty.value" : true
+        }
+      },
+      "multivalued" : false
+    } ],
+    "groups" : [ {
+      "name" : "user-metadata",
+      "displayHeader" : "User metadata",
+      "displayDescription" : "Attributes, which refer to user metadata"
+    } ]
+  },
+  "enabled" : true,
+  "createdTimestamp" : 1775400399395,
+  "totp" : false,
+  "disableableCredentialTypes" : [ ],
+  "requiredActions" : [ ],
+  "notBefore" : 0,
+  "access" : {
+    "manage" : true
+  }
+}, {
+  "id" : "b3fa3791-0a75-41e3-87ba-0938a8118d94",
+  "username" : "ilyas@gmail.com",
+  "firstName" : "ilyas",
+  "email" : "ilyas@gmail.com",
+  "emailVerified" : false,
+  "userProfileMetadata" : {
+    "attributes" : [ {
+      "name" : "locale",
+      "displayName" : "locale",
+      "required" : false,
+      "readOnly" : false,
+      "validators" : { },
+      "multivalued" : false
+    }, {
+      "name" : "username",
+      "displayName" : "${username}",
+      "required" : true,
+      "readOnly" : true,
+      "validators" : {
+        "username-prohibited-characters" : {
+          "ignore.empty.value" : true
+        },
+        "multivalued" : {
+          "max" : "1"
+        },
+        "length" : {
+          "max" : 255,
+          "ignore.empty.value" : true,
+          "min" : 3
+        },
+        "up-username-not-idn-homograph" : {
+          "ignore.empty.value" : true
+        }
+      },
+      "multivalued" : false
+    }, {
+      "name" : "email",
+      "displayName" : "${email}",
+      "required" : false,
+      "readOnly" : false,
+      "validators" : {
+        "multivalued" : {
+          "max" : "1"
+        },
+        "length" : {
+          "max" : 255,
+          "ignore.empty.value" : true
+        },
+        "email" : {
+          "ignore.empty.value" : true
+        }
+      },
+      "multivalued" : false
+    }, {
+      "name" : "firstName",
+      "displayName" : "${firstName}",
+      "required" : false,
+      "readOnly" : false,
+      "validators" : {
+        "person-name-prohibited-characters" : {
+          "ignore.empty.value" : true
+        },
+        "multivalued" : {
+          "max" : "1"
+        },
+        "length" : {
+          "max" : 255,
+          "ignore.empty.value" : true
+        }
+      },
+      "multivalued" : false
+    }, {
+      "name" : "lastName",
+      "displayName" : "${lastName}",
+      "required" : false,
+      "readOnly" : false,
+      "validators" : {
+        "person-name-prohibited-characters" : {
+          "ignore.empty.value" : true
+        },
+        "multivalued" : {
+          "max" : "1"
+        },
+        "length" : {
+          "max" : 255,
+          "ignore.empty.value" : true
+        }
+      },
+      "multivalued" : false
+    } ],
+    "groups" : [ {
+      "name" : "user-metadata",
+      "displayHeader" : "User metadata",
+      "displayDescription" : "Attributes, which refer to user metadata"
+    } ]
+  },
+  "enabled" : true,
+  "createdTimestamp" : 1775399151178,
+  "totp" : false,
+  "disableableCredentialTypes" : [ ],
+  "requiredActions" : [ ],
+  "notBefore" : 0,
+  "access" : {
+    "manage" : true
+  }
+}, {
+  "id" : "2229d13b-bb4a-47a6-b4a8-5229b4b101fd",
+  "username" : "imad",
+  "firstName" : "imad",
+  "lastName" : "imad",
+  "email" : "bananfouad9@gmail.com",
+  "emailVerified" : true,
+  "userProfileMetadata" : {
+    "attributes" : [ {
+      "name" : "locale",
+      "displayName" : "locale",
+      "required" : false,
+      "readOnly" : false,
+      "validators" : { },
+      "multivalued" : false
+    }, {
+      "name" : "username",
+      "displayName" : "${username}",
+      "required" : true,
+      "readOnly" : true,
+      "validators" : {
+        "username-prohibited-characters" : {
+          "ignore.empty.value" : true
+        },
+        "multivalued" : {
+          "max" : "1"
+        },
+        "length" : {
+          "max" : 255,
+          "ignore.empty.value" : true,
+          "min" : 3
+        },
+        "up-username-not-idn-homograph" : {
+          "ignore.empty.value" : true
+        }
+      },
+      "multivalued" : false
+    }, {
+      "name" : "email",
+      "displayName" : "${email}",
+      "required" : false,
+      "readOnly" : false,
+      "validators" : {
+        "multivalued" : {
+          "max" : "1"
+        },
+        "length" : {
+          "max" : 255,
+          "ignore.empty.value" : true
+        },
+        "email" : {
+          "ignore.empty.value" : true
+        }
+      },
+      "multivalued" : false
+    }, {
+      "name" : "firstName",
+      "displayName" : "${firstName}",
+      "required" : false,
+      "readOnly" : false,
+      "validators" : {
+        "person-name-prohibited-characters" : {
+          "ignore.empty.value" : true
+        },
+        "multivalued" : {
+          "max" : "1"
+        },
+        "length" : {
+          "max" : 255,
+          "ignore.empty.value" : true
+        }
+      },
+      "multivalued" : false
+    }, {
+      "name" : "lastName",
+      "displayName" : "${lastName}",
+      "required" : false,
+      "readOnly" : false,
+      "validators" : {
+        "person-name-prohibited-characters" : {
+          "ignore.empty.value" : true
+        },
+        "multivalued" : {
+          "max" : "1"
+        },
+        "length" : {
+          "max" : 255,
+          "ignore.empty.value" : true
+        }
+      },
+      "multivalued" : false
+    } ],
+    "groups" : [ {
+      "name" : "user-metadata",
+      "displayHeader" : "User metadata",
+      "displayDescription" : "Attributes, which refer to user metadata"
+    } ]
+  },
+  "enabled" : true,
+  "createdTimestamp" : 1771797935664,
+  "totp" : false,
+  "disableableCredentialTypes" : [ ],
+  "requiredActions" : [ ],
+  "notBefore" : 0,
+  "access" : {
+    "manage" : true
+  }
+}, {
+  "id" : "549bf9bc-77dc-40cf-8d93-a9c22c22697b",
+  "username" : "othman@gmail.com",
+  "firstName" : "Othman",
+  "email" : "othman@gmail.com",
+  "emailVerified" : false,
+  "userProfileMetadata" : {
+    "attributes" : [ {
+      "name" : "locale",
+      "displayName" : "locale",
+      "required" : false,
+      "readOnly" : false,
+      "validators" : { },
+      "multivalued" : false
+    }, {
+      "name" : "username",
+      "displayName" : "${username}",
+      "required" : true,
+      "readOnly" : true,
+      "validators" : {
+        "username-prohibited-characters" : {
+          "ignore.empty.value" : true
+        },
+        "multivalued" : {
+          "max" : "1"
+        },
+        "length" : {
+          "max" : 255,
+          "ignore.empty.value" : true,
+          "min" : 3
+        },
+        "up-username-not-idn-homograph" : {
+          "ignore.empty.value" : true
+        }
+      },
+      "multivalued" : false
+    }, {
+      "name" : "email",
+      "displayName" : "${email}",
+      "required" : false,
+      "readOnly" : false,
+      "validators" : {
+        "multivalued" : {
+          "max" : "1"
+        },
+        "length" : {
+          "max" : 255,
+          "ignore.empty.value" : true
+        },
+        "email" : {
+          "ignore.empty.value" : true
+        }
+      },
+      "multivalued" : false
+    }, {
+      "name" : "firstName",
+      "displayName" : "${firstName}",
+      "required" : false,
+      "readOnly" : false,
+      "validators" : {
+        "person-name-prohibited-characters" : {
+          "ignore.empty.value" : true
+        },
+        "multivalued" : {
+          "max" : "1"
+        },
+        "length" : {
+          "max" : 255,
+          "ignore.empty.value" : true
+        }
+      },
+      "multivalued" : false
+    }, {
+      "name" : "lastName",
+      "displayName" : "${lastName}",
+      "required" : false,
+      "readOnly" : false,
+      "validators" : {
+        "person-name-prohibited-characters" : {
+          "ignore.empty.value" : true
+        },
+        "multivalued" : {
+          "max" : "1"
+        },
+        "length" : {
+          "max" : 255,
+          "ignore.empty.value" : true
+        }
+      },
+      "multivalued" : false
+    } ],
+    "groups" : [ {
+      "name" : "user-metadata",
+      "displayHeader" : "User metadata",
+      "displayDescription" : "Attributes, which refer to user metadata"
+    } ]
+  },
+  "enabled" : true,
+  "createdTimestamp" : 1775404201301,
+  "totp" : false,
+  "disableableCredentialTypes" : [ ],
+  "requiredActions" : [ ],
+  "notBefore" : 0,
+  "access" : {
+    "manage" : true
+  }
+}, {
+  "id" : "3b183e30-f88e-40c3-8de3-1a0af6650434",
+  "username" : "salah@gmail.com",
+  "firstName" : "salah",
+  "lastName" : "salah",
+  "email" : "salah@gmail.com",
+  "emailVerified" : false,
+  "userProfileMetadata" : {
+    "attributes" : [ {
+      "name" : "locale",
+      "displayName" : "locale",
+      "required" : false,
+      "readOnly" : false,
+      "validators" : { },
+      "multivalued" : false
+    }, {
+      "name" : "username",
+      "displayName" : "${username}",
+      "required" : true,
+      "readOnly" : true,
+      "validators" : {
+        "username-prohibited-characters" : {
+          "ignore.empty.value" : true
+        },
+        "multivalued" : {
+          "max" : "1"
+        },
+        "length" : {
+          "max" : 255,
+          "ignore.empty.value" : true,
+          "min" : 3
+        },
+        "up-username-not-idn-homograph" : {
+          "ignore.empty.value" : true
+        }
+      },
+      "multivalued" : false
+    }, {
+      "name" : "email",
+      "displayName" : "${email}",
+      "required" : false,
+      "readOnly" : false,
+      "validators" : {
+        "multivalued" : {
+          "max" : "1"
+        },
+        "length" : {
+          "max" : 255,
+          "ignore.empty.value" : true
+        },
+        "email" : {
+          "ignore.empty.value" : true
+        }
+      },
+      "multivalued" : false
+    }, {
+      "name" : "firstName",
+      "displayName" : "${firstName}",
+      "required" : false,
+      "readOnly" : false,
+      "validators" : {
+        "person-name-prohibited-characters" : {
+          "ignore.empty.value" : true
+        },
+        "multivalued" : {
+          "max" : "1"
+        },
+        "length" : {
+          "max" : 255,
+          "ignore.empty.value" : true
+        }
+      },
+      "multivalued" : false
+    }, {
+      "name" : "lastName",
+      "displayName" : "${lastName}",
+      "required" : false,
+      "readOnly" : false,
+      "validators" : {
+        "person-name-prohibited-characters" : {
+          "ignore.empty.value" : true
+        },
+        "multivalued" : {
+          "max" : "1"
+        },
+        "length" : {
+          "max" : 255,
+          "ignore.empty.value" : true
+        }
+      },
+      "multivalued" : false
+    } ],
+    "groups" : [ {
+      "name" : "user-metadata",
+      "displayHeader" : "User metadata",
+      "displayDescription" : "Attributes, which refer to user metadata"
+    } ]
+  },
+  "enabled" : true,
+  "createdTimestamp" : 1775398985355,
+  "totp" : false,
+  "disableableCredentialTypes" : [ ],
+  "requiredActions" : [ ],
+  "notBefore" : 0,
+  "access" : {
+    "manage" : true
+  }
+} ]

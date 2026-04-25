@@ -1,0 +1,50 @@
+[ {
+  "id" : "714d5aa4-c9fc-4c9f-b8ff-31e440c16f5b",
+  "name" : "offline_access",
+  "description" : "${role_offline-access}",
+  "composite" : false,
+  "clientRole" : false,
+  "containerId" : "9a2931c8-7eb4-4687-a215-167712ff7239"
+}, {
+  "id" : "7ea3d07d-fff0-497a-8e43-861fef7933fe",
+  "name" : "uma_authorization",
+  "description" : "${role_uma_authorization}",
+  "composite" : false,
+  "clientRole" : false,
+  "containerId" : "9a2931c8-7eb4-4687-a215-167712ff7239"
+}, {
+  "id" : "74819fb3-feee-4187-a990-7ca1c050ce62",
+  "name" : "admin",
+  "description" : "",
+  "composite" : false,
+  "clientRole" : false,
+  "containerId" : "9a2931c8-7eb4-4687-a215-167712ff7239"
+}, {
+  "id" : "206a83a7-0cf5-497f-b1be-b652e7813ef7",
+  "name" : "responsable de maintenance",
+  "description" : "",
+  "composite" : false,
+  "clientRole" : false,
+  "containerId" : "9a2931c8-7eb4-4687-a215-167712ff7239"
+}, {
+  "id" : "83137451-8f44-495f-82be-660a0730668d",
+  "name" : "chef d'equipe",
+  "description" : "",
+  "composite" : false,
+  "clientRole" : false,
+  "containerId" : "9a2931c8-7eb4-4687-a215-167712ff7239"
+}, {
+  "id" : "61f7f2db-b728-4e04-a01d-991ada1aeb6e",
+  "name" : "technicien",
+  "description" : "",
+  "composite" : false,
+  "clientRole" : false,
+  "containerId" : "9a2931c8-7eb4-4687-a215-167712ff7239"
+}, {
+  "id" : "c03b2142-f062-4f6e-ac15-da1b8afbbcf8",
+  "name" : "default-roles-jl_project",
+  "description" : "${role_default-roles}",
+  "composite" : true,
+  "clientRole" : false,
+  "containerId" : "9a2931c8-7eb4-4687-a215-167712ff7239"
+} ]
