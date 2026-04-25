@@ -28,6 +28,8 @@ services:
       KC_DB_PASSWORD: GLProject
     ports:
       - "8081:8080"
+    volumes:
+      - ./keycloak-theme/gmpp:/opt/keycloak/themes/gmpp
     depends_on:
       - postgres
     networks:
