@@ -7,7 +7,7 @@ const frDate = () =>
 
 export const DashboardHeader = ({ username, onRefresh }) => (
   <div
-    className="mb-5 rounded-2xl overflow-hidden h-[145px]"
+    className="mb-3 rounded-2xl overflow-hidden h-[145px]"
     style={{
       background: '#ffffff',
       border: '1px solid rgba(0,0,0,0.08)',
