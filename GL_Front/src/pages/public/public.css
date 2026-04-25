@@ -150,6 +150,22 @@
   50%     { transform: translateY(-5px) rotate(12deg); }
 }
 
+@keyframes shimmer-card {
+  0%   { left: -60%; opacity: 0; }
+  8%   { opacity: 1; }
+  100% { left: 120%; opacity: 0; }
+}
+
+@keyframes pulse-ring {
+  0%   { transform: scale(1);    opacity: 0.6; }
+  100% { transform: scale(1.38); opacity: 0;   }
+}
+
+@keyframes gradient-sweep {
+  0%   { background-position: 0%   center; }
+  100% { background-position: 200% center; }
+}
+
 /* ══════════════════════════════════════════════════════════════════════════════
    ROOT
 ══════════════════════════════════════════════════════════════════════════════ */
@@ -583,10 +599,12 @@
 .mod-card:hover .mod-accent { opacity: 1; }
 
 .mod-shimmer {
-  position: absolute; top: 0; left: 0; right: 0;
-  height: 1px; opacity: 0; transition: opacity 0.3s;
+  position: absolute; top: 0; left: -60%;
+  width: 45%; height: 100%; transform: skewX(-12deg);
+  background: linear-gradient(105deg, transparent, rgba(255,255,255,0.07), transparent);
+  opacity: 0; pointer-events: none;
 }
-.mod-card:hover .mod-shimmer { opacity: 1; }
+.mod-card:hover .mod-shimmer { animation: shimmer-card 0.65s ease-out; }
 
 .mod-glow {
   position: absolute; inset: 0; border-radius: 16px;
@@ -693,6 +711,83 @@
 .footer-copy {
   font-family: 'JetBrains Mono', monospace;
   font-size: 11px; color: var(--muted);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   PREMIUM EFFECTS
+══════════════════════════════════════════════════════════════════════════════ */
+
+/* ─── Scroll progress bar ─── */
+.scroll-progress {
+  position: fixed; top: 0; left: 0; height: 2px; z-index: 200;
+  background: linear-gradient(90deg, #ea580c, #f97316, #f59e0b);
+  box-shadow: 0 0 12px rgba(249,115,22,0.8), 0 0 4px rgba(249,115,22,0.5);
+  pointer-events: none;
+  transition: width 0.08s linear;
+}
+
+/* ─── Card outer: perspective container + scroll-reveal wrapper ─── */
+.mod-card-outer {
+  perspective: 1000px;
+  opacity: 0; transform: translateY(32px); filter: blur(6px);
+  transition:
+    opacity   0.75s cubic-bezier(0.22,1,0.36,1) var(--reveal-delay, 0s),
+    transform 0.75s cubic-bezier(0.22,1,0.36,1) var(--reveal-delay, 0s),
+    filter    0.55s ease                         var(--reveal-delay, 0s);
+}
+.modules-grid.revealed .mod-card-outer { opacity: 1; transform: none; filter: none; }
+
+/* ─── Section head staggered reveal ─── */
+.section-head .section-tag,
+.section-head .section-h2,
+.section-head .section-sub {
+  opacity: 0; transform: translateY(22px); filter: blur(5px);
+  transition:
+    opacity   0.7s  cubic-bezier(0.22,1,0.36,1),
+    transform 0.7s  cubic-bezier(0.22,1,0.36,1),
+    filter    0.55s;
+}
+.section-head.revealed .section-tag { opacity: 1; transform: none; filter: none; }
+.section-head.revealed .section-h2  { opacity: 1; transform: none; filter: none; transition-delay: 0.12s; }
+.section-head.revealed .section-sub { opacity: 1; transform: none; filter: none; transition-delay: 0.24s; }
+
+/* ─── CTA band reveal ─── */
+.cta-reveal {
+  opacity: 0; transform: translateY(28px); filter: blur(6px);
+  transition:
+    opacity   0.85s cubic-bezier(0.22,1,0.36,1),
+    transform 0.85s cubic-bezier(0.22,1,0.36,1),
+    filter    0.65s;
+}
+.cta-reveal.revealed { opacity: 1; transform: none; filter: none; }
+
+/* ─── Mouse spotlight on cards ─── */
+.mod-spotlight {
+  position: absolute; inset: 0; border-radius: inherit;
+  background: radial-gradient(260px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+    rgba(249,115,22,0.11), transparent 60%);
+  opacity: 0; transition: opacity 0.25s; pointer-events: none; z-index: 0;
+}
+.mod-card:hover .mod-spotlight { opacity: 1; }
+
+/* ─── CTA button dual pulse rings ─── */
+.btn-ring {
+  position: absolute; inset: -4px; border-radius: 13px;
+  border: 1.5px solid rgba(249,115,22,0.45);
+  animation: pulse-ring 2.4s cubic-bezier(0.22,1,0.36,1) infinite;
+  pointer-events: none;
+}
+.btn-ring-2 { animation-delay: 1.2s; }
+
+/* ─── SVG panel 3D parent perspective ─── */
+.hero-right { perspective: 1400px; }
+
+/* ─── Section h2 animated gradient sweep ─── */
+.section-h2 span {
+  background: linear-gradient(95deg, #fb923c 0%, #f59e0b 40%, #fb923c 80%);
+  background-size: 200% auto;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  animation: gradient-sweep 5s linear infinite;
 }
 
 /* ══════════════════════════════════════════════════════════════════════════════
@@ -953,6 +1048,25 @@
 .p-root.light .footer-mark {
   background: linear-gradient(135deg, #f97316, #ea580c);
   box-shadow: 0 0 12px rgba(234,88,12,0.26);
+}
+
+/* ── Premium effects — light mode overrides ── */
+.p-root.light .scroll-progress {
+  background: linear-gradient(90deg, #9a3412, #c2410c, #ea580c);
+  box-shadow: 0 0 10px rgba(194,65,12,0.6), 0 0 4px rgba(194,65,12,0.35);
+}
+.p-root.light .mod-spotlight {
+  background: radial-gradient(260px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+    rgba(194,65,12,0.14), transparent 60%);
+}
+.p-root.light .btn-ring {
+  border-color: rgba(194,65,12,0.45);
+}
+.p-root.light .section-h2 span {
+  background: linear-gradient(95deg, #c2410c 0%, #b45309 40%, #c2410c 80%);
+  background-size: 200% auto;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  animation: gradient-sweep 5s linear infinite;
 }
 
 /* ══════════════════════════════════════════════════════════════════════════════

@@ -56,6 +56,23 @@ function useTypewriter(words, speed = 80, pause = 2200) {
   return display;
 }
 
+/* ─── Scroll-reveal hook ─────────────────────────────────────────────────── */
+function useReveal(threshold = 0.15, enabled = true) {
+  const ref = useRef(null);
+  const [on, setOn] = useState(false);
+  useEffect(() => {
+    if (!enabled) return;
+    const el = ref.current; if (!el) return;
+    const io = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) { setOn(true); io.disconnect(); } },
+      { threshold }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [enabled]);  // re-runs once keycloak is initialized and real DOM is mounted
+  return [ref, on];
+}
+
 /* ─── Particles (stable, generated once) ────────────────────────────────── */
 const PARTICLES = Array.from({ length: 20 }, (_, i) => ({
   id:       i,
@@ -311,6 +328,65 @@ export const Public = () => {
   const typewriterText = useTypewriter(TYPEWRITER_WORDS);
   const [hoveredMod, setHoveredMod] = useState(null);
 
+  // Scroll progress
+  const [scrollPct, setScrollPct] = useState(0);
+  useEffect(() => {
+    const onScroll = () => {
+      const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+      setScrollPct(Math.min((scrollTop / (scrollHeight - clientHeight)) * 100, 100));
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  // Scroll reveals — pass `initialized` so the observer is only set up
+  // after Keycloak finishes and the real DOM (with refs) is mounted
+  const [sectHeadRef, sectHeadOn] = useReveal(0.25, initialized);
+  const [modulesRef,  modulesOn]  = useReveal(0.05, initialized);
+  const [ctaRef,      ctaOn]      = useReveal(0.2,  initialized);
+
+  // SVG panel 3D tilt on hero mouse-move
+  const svgPanelRef = useRef(null);
+  const handleHeroMouseMove = (e) => {
+    const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
+    const x = (e.clientX - left - width / 2) / width;
+    const y = (e.clientY - top - height / 2) / height;
+    if (svgPanelRef.current) {
+      svgPanelRef.current.style.transform =
+        `rotateX(${y * -5}deg) rotateY(${x * 5}deg) translateY(-4px)`;
+    }
+  };
+  const handleHeroMouseLeave = () => {
+    if (svgPanelRef.current) {
+      svgPanelRef.current.style.transition =
+        'transform 0.65s cubic-bezier(0.22,1,0.36,1), box-shadow 0.4s';
+      svgPanelRef.current.style.transform = '';
+      setTimeout(() => {
+        if (svgPanelRef.current) svgPanelRef.current.style.transition = '';
+      }, 650);
+    }
+  };
+
+  // Card spotlight + 3D tilt
+  const handleCardMouseMove = (e) => {
+    const el = e.currentTarget;
+    const { left, top, width, height } = el.getBoundingClientRect();
+    const x = (e.clientX - left) / width;
+    const y = (e.clientY - top) / height;
+    el.style.setProperty('--spot-x', `${x * 100}%`);
+    el.style.setProperty('--spot-y', `${y * 100}%`);
+    el.style.transform =
+      `translateY(-8px) rotateX(${(y - 0.5) * -10}deg) rotateY(${(x - 0.5) * 10}deg)`;
+  };
+  const handleCardMouseLeave = (e, i) => {
+    const el = e.currentTarget;
+    el.style.transition =
+      'transform 0.55s cubic-bezier(0.22,1,0.36,1), border-color 0.3s, box-shadow 0.3s';
+    el.style.transform = '';
+    setTimeout(() => { el.style.transition = ''; }, 560);
+    setHoveredMod(null);
+  };
+
   if (!initialized) {
     return (
       <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#080401' }}>
@@ -324,6 +400,7 @@ export const Public = () => {
 
   return (
     <div className={`p-root${lightMode ? ' light' : ''}`}>
+      <div className="scroll-progress" style={{ width: `${scrollPct}%` }} />
 
       {/* ── Network SVG background ── */}
       <div className="network-bg">
@@ -384,7 +461,7 @@ export const Public = () => {
       <main style={{ position: 'relative', zIndex: 1 }}>
 
         {/* ══ HERO ══════════════════════════════════════════════════════════ */}
-        <section className="hero">
+        <section className="hero" onMouseMove={handleHeroMouseMove} onMouseLeave={handleHeroMouseLeave}>
           <div className="hero-grid">
 
             {/* Left col */}
@@ -422,6 +499,8 @@ export const Public = () => {
 
               <div className="cta-row anim-up" style={{ animationDelay: '0.5s' }}>
                 <button className="btn-primary" onClick={handleLogin}>
+                  <div className="btn-ring" />
+                  <div className="btn-ring btn-ring-2" />
                   <span className="btn-inner">
                     Se connecter <FiArrowRight className="btn-arrow" />
                   </span>
@@ -444,7 +523,7 @@ export const Public = () => {
 
             {/* Right col — SVG panel */}
             <div className="hero-right anim-right" style={{ animationDelay: '0.3s' }}>
-              <div className="svg-panel">
+              <div className="svg-panel" ref={svgPanelRef}>
                 <div className="svg-panel-header">
                   <span className="svg-panel-title">
                     <FiCpu size={11}/> Tableau de contrôle interactif
@@ -472,7 +551,7 @@ export const Public = () => {
 
         {/* ══ MODULES ════════════════════════════════════════════════════════ */}
         <section className="modules-section">
-          <div className="section-head">
+          <div className={`section-head${sectHeadOn ? ' revealed' : ''}`} ref={sectHeadRef}>
             <div className="section-tag">◈ Architecture modulaire</div>
             <h2 className="section-h2">Modules <span>disponibles</span></h2>
             <p className="section-sub">
@@ -480,26 +559,29 @@ export const Public = () => {
             </p>
           </div>
 
-          <div className="modules-grid">
+          <div className={`modules-grid${modulesOn ? ' revealed' : ''}`} ref={modulesRef}>
             {MODULES.map((m, i) => (
-              <div
-                key={i}
-                className="mod-card"
-                onMouseEnter={() => setHoveredMod(i)}
-                onMouseLeave={() => setHoveredMod(null)}
-              >
-                <div className="mod-glow" style={{ '--mod-color': m.color }} />
-                <div className="mod-icon-wrap" style={{ background: m.bg }}>
-                  <span className="mod-icon-inner" style={{ fontSize: 22 }}>{m.icon}</span>
+              <div key={i} className="mod-card-outer" style={{ '--reveal-delay': `${i * 0.08}s` }}>
+                <div
+                  className="mod-card"
+                  onMouseEnter={() => setHoveredMod(i)}
+                  onMouseMove={handleCardMouseMove}
+                  onMouseLeave={(e) => handleCardMouseLeave(e, i)}
+                >
+                  <div className="mod-spotlight" />
+                  <div className="mod-glow" style={{ '--mod-color': m.color }} />
+                  <div className="mod-icon-wrap" style={{ background: m.bg }}>
+                    <span className="mod-icon-inner" style={{ fontSize: 22 }}>{m.icon}</span>
+                  </div>
+                  <div className="mod-title">{m.title}</div>
+                  <div className="mod-desc">{m.desc}</div>
+                  <div className="mod-link" style={{ color: m.color }}>
+                    <span>Explorer</span>
+                    <FiArrowRight size={12} />
+                  </div>
+                  <div className="mod-shimmer" />
+                  <div className="mod-accent" style={{ background: m.color }}/>
                 </div>
-                <div className="mod-title">{m.title}</div>
-                <div className="mod-desc">{m.desc}</div>
-                <div className="mod-link" style={{ color: m.color }}>
-                  <span>Explorer</span>
-                  <FiArrowRight size={12} />
-                </div>
-                <div className="mod-shimmer" style={{ background: `linear-gradient(90deg, ${m.color}, transparent)` }}/>
-                <div className="mod-accent" style={{ background: m.color }}/>
               </div>
             ))}
           </div>
@@ -507,13 +589,15 @@ export const Public = () => {
 
         {/* ══ CTA ════════════════════════════════════════════════════════════ */}
         <div className="cta-band">
-          <div className="cta-band-inner">
+          <div className={`cta-band-inner cta-reveal${ctaOn ? ' revealed' : ''}`} ref={ctaRef}>
             <div className="cta-band-icon">
               <FiZap size={26} />
             </div>
             <h3>Prêt à optimiser votre maintenance ?</h3>
             <p>Accédez à toutes les fonctionnalités de GMPP et prenez le contrôle total de votre parc industriel.</p>
             <button className="btn-primary" onClick={handleLogin} style={{ fontSize: 15, padding: '16px 40px' }}>
+              <div className="btn-ring" />
+              <div className="btn-ring btn-ring-2" />
               <span className="btn-inner">
                 Accéder à la plateforme <FiArrowRight className="btn-arrow" />
               </span>
