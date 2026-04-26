@@ -1,6 +1,10 @@
 package com.gmpp.maintenance.controller;
 
 import com.gmpp.maintenance.service.ReportService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ContentDisposition;
@@ -18,6 +22,7 @@ import java.time.format.DateTimeParseException;
 @RequestMapping("/reports")
 @RequiredArgsConstructor
 @PreAuthorize("hasAnyRole('admin', 'responsable de maintenance', 'technicien')")
+@Tag(name = "Rapports", description = "Export de rapports — formats disponibles : pdf, excel, csv")
 public class ReportController {
 
     private final ReportService reportService;
@@ -26,53 +31,75 @@ public class ReportController {
     // Core export endpoints — all accept ?format=pdf|excel|csv  (default: pdf)
     // ───────────────────────────────────────────────────────────────────────────
 
+    @Operation(summary = "Exporter la liste des machines")
+    @ApiResponse(responseCode = "200", description = "Fichier généré (pdf/excel/csv)")
     @GetMapping("/machines/export")
     public ResponseEntity<byte[]> exportMachines(
+            @Parameter(description = "Format de sortie : pdf, excel, csv (défaut : pdf)")
             @RequestParam(defaultValue = "pdf") String format) {
         return buildResponse(reportService.generateMachineListReport(format), "machines", format);
     }
 
+    @Operation(summary = "Exporter la liste des interventions")
+    @ApiResponse(responseCode = "200", description = "Fichier généré (pdf/excel/csv)")
     @GetMapping("/interventions/export")
     public ResponseEntity<byte[]> exportInterventions(
+            @Parameter(description = "Format de sortie : pdf, excel, csv (défaut : pdf)")
             @RequestParam(defaultValue = "pdf") String format) {
         return buildResponse(reportService.generateInterventionListReport(format), "interventions", format);
     }
 
+    @Operation(summary = "Exporter le rapport mensuel des interventions")
+    @ApiResponse(responseCode = "200", description = "Fichier généré (pdf/excel/csv)")
     @GetMapping("/interventions/monthly/{yearMonth}")
     public ResponseEntity<byte[]> exportMonthlyInterventions(
+            @Parameter(description = "Mois au format yyyy-MM (ex : 2025-06)")
             @PathVariable @DateTimeFormat(pattern = "yyyy-MM") YearMonth yearMonth,
+            @Parameter(description = "Format de sortie : pdf, excel, csv (défaut : pdf)")
             @RequestParam(defaultValue = "pdf") String format) {
         return buildResponse(
                 reportService.generateMonthlyInterventionReport(yearMonth, format),
                 "interventions-" + yearMonth, format);
     }
 
+    @Operation(summary = "Exporter l'historique d'une machine")
+    @ApiResponse(responseCode = "200", description = "Fichier généré (pdf/excel/csv)")
     @GetMapping("/machine/{machineId}/history")
     public ResponseEntity<byte[]> exportMachineHistory(
-            @PathVariable Long machineId,
+            @Parameter(description = "ID de la machine") @PathVariable Long machineId,
+            @Parameter(description = "Format de sortie : pdf, excel, csv (défaut : pdf)")
             @RequestParam(defaultValue = "pdf") String format) {
         return buildResponse(
                 reportService.generateMachineHistoryReport(machineId, format),
                 "machine-" + machineId + "-history", format);
     }
 
+    @Operation(summary = "Exporter le rapport d'activité d'un technicien")
+    @ApiResponse(responseCode = "200", description = "Fichier généré (pdf/excel/csv)")
     @GetMapping("/technician/{technicianId}/activity")
     public ResponseEntity<byte[]> exportTechnicianActivity(
-            @PathVariable Long technicianId,
+            @Parameter(description = "ID du technicien") @PathVariable Long technicianId,
+            @Parameter(description = "Format de sortie : pdf, excel, csv (défaut : pdf)")
             @RequestParam(defaultValue = "pdf") String format) {
         return buildResponse(
                 reportService.generateTechnicianActivityReport(technicianId, format),
                 "technician-" + technicianId + "-activity", format);
     }
 
+    @Operation(summary = "Exporter l'analyse de performance")
+    @ApiResponse(responseCode = "200", description = "Fichier généré (pdf/excel/csv)")
     @GetMapping("/performance")
     public ResponseEntity<byte[]> exportPerformanceAnalysis(
+            @Parameter(description = "Format de sortie : pdf, excel, csv (défaut : pdf)")
             @RequestParam(defaultValue = "pdf") String format) {
         return buildResponse(reportService.generatePerformanceAnalysisReport(format), "performance-analysis", format);
     }
 
+    @Operation(summary = "Exporter le rapport de conformité")
+    @ApiResponse(responseCode = "200", description = "Fichier généré (pdf/excel/csv)")
     @GetMapping("/compliance")
     public ResponseEntity<byte[]> exportComplianceReport(
+            @Parameter(description = "Format de sortie : pdf, excel, csv (défaut : pdf)")
             @RequestParam(defaultValue = "pdf") String format) {
         return buildResponse(reportService.generateComplianceReport(format), "compliance-report", format);
     }
@@ -81,64 +108,73 @@ public class ReportController {
     // Legacy/filter endpoints (kept for backward compat, always return CSV)
     // ───────────────────────────────────────────────────────────────────────────
 
+    @Operation(summary = "Historique des interventions (CSV, filtrable)",
+               description = "Endpoint legacy — retourne toujours du CSV.")
     @GetMapping("/interventions")
     public ResponseEntity<byte[]> getInterventionHistory(
-            @RequestParam(required = false) Long machineId,
-            @RequestParam(required = false) String startDate,
-            @RequestParam(required = false) String endDate) {
+            @Parameter(description = "Filtrer par machine (optionnel)") @RequestParam(required = false) Long machineId,
+            @Parameter(description = "Date de début yyyy-MM-dd (optionnel)") @RequestParam(required = false) String startDate,
+            @Parameter(description = "Date de fin yyyy-MM-dd (optionnel)") @RequestParam(required = false) String endDate) {
         byte[] data = reportService.generateInterventionHistoryReport(
                 machineId, parseDate(startDate), parseDate(endDate));
         return buildResponse(data, "intervention-history", "csv");
     }
 
+    @Operation(summary = "Performance des techniciens (CSV)", description = "Endpoint legacy — retourne toujours du CSV.")
     @GetMapping("/technician-performance")
     public ResponseEntity<byte[]> getTechnicianPerformance(
-            @RequestParam(required = false) Long technicianId,
-            @RequestParam(required = false) String startDate,
-            @RequestParam(required = false) String endDate) {
+            @Parameter(description = "ID du technicien (optionnel)") @RequestParam(required = false) Long technicianId,
+            @Parameter(description = "Date de début yyyy-MM-dd (optionnel)") @RequestParam(required = false) String startDate,
+            @Parameter(description = "Date de fin yyyy-MM-dd (optionnel)") @RequestParam(required = false) String endDate) {
         byte[] data = reportService.generateTechnicianPerformanceReport(
                 technicianId, parseDate(startDate), parseDate(endDate));
         return buildResponse(data, "technician-performance", "csv");
     }
 
+    @Operation(summary = "Rapport des consommables (CSV)", description = "Endpoint legacy — retourne toujours du CSV.")
     @GetMapping("/consumables")
     public ResponseEntity<byte[]> getConsumablesReport(
-            @RequestParam(required = false) String startDate,
-            @RequestParam(required = false) String endDate) {
+            @Parameter(description = "Date de début yyyy-MM-dd (optionnel)") @RequestParam(required = false) String startDate,
+            @Parameter(description = "Date de fin yyyy-MM-dd (optionnel)") @RequestParam(required = false) String endDate) {
         return buildResponse(
                 reportService.generateConsumablesReport(parseDate(startDate), parseDate(endDate)),
                 "consumables", "csv");
     }
 
+    @Operation(summary = "Disponibilité des machines (CSV)", description = "Endpoint legacy — retourne toujours du CSV.")
     @GetMapping("/machine-availability")
     public ResponseEntity<byte[]> getMachineAvailabilityReport(
-            @RequestParam(required = false) String startDate,
-            @RequestParam(required = false) String endDate) {
+            @Parameter(description = "Date de début yyyy-MM-dd (optionnel)") @RequestParam(required = false) String startDate,
+            @Parameter(description = "Date de fin yyyy-MM-dd (optionnel)") @RequestParam(required = false) String endDate) {
         return buildResponse(
                 reportService.generateMachineAvailabilityReport(parseDate(startDate), parseDate(endDate)),
                 "machine-availability", "csv");
     }
 
+    @Operation(summary = "Coûts de maintenance (CSV)", description = "Endpoint legacy — retourne toujours du CSV.")
     @GetMapping("/maintenance-costs")
     public ResponseEntity<byte[]> getMaintenanceCostsReport(
-            @RequestParam(required = false) String startDate,
-            @RequestParam(required = false) String endDate) {
+            @Parameter(description = "Date de début yyyy-MM-dd (optionnel)") @RequestParam(required = false) String startDate,
+            @Parameter(description = "Date de fin yyyy-MM-dd (optionnel)") @RequestParam(required = false) String endDate) {
         return buildResponse(
                 reportService.generateMaintenanceCostsReport(parseDate(startDate), parseDate(endDate)),
                 "maintenance-costs", "csv");
     }
 
+    @Operation(summary = "Rapport dashboard (CSV)", description = "Endpoint legacy — retourne toujours du CSV.")
     @GetMapping("/dashboard")
     public ResponseEntity<byte[]> getDashboardReport(
-            @RequestParam(required = false) String startDate,
-            @RequestParam(required = false) String endDate) {
+            @Parameter(description = "Date de début yyyy-MM-dd (optionnel)") @RequestParam(required = false) String startDate,
+            @Parameter(description = "Date de fin yyyy-MM-dd (optionnel)") @RequestParam(required = false) String endDate) {
         return buildResponse(
                 reportService.generateDashboardReport(parseDate(startDate), parseDate(endDate)),
                 "dashboard-report", "csv");
     }
 
+    @Operation(summary = "Export générique par type de données (CSV)", description = "Endpoint legacy — retourne toujours du CSV.")
     @GetMapping("/export")
-    public ResponseEntity<byte[]> exportData(@RequestParam String dataType) {
+    public ResponseEntity<byte[]> exportData(
+            @Parameter(description = "Type de données à exporter") @RequestParam String dataType) {
         return buildResponse(reportService.generateExportData(dataType), dataType, "csv");
     }
 
