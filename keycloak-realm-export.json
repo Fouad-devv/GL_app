@@ -1414,13 +1414,6 @@
   "identityProviderMappers" : [ ],
   "components" : {
     "org.keycloak.services.clientregistration.policy.ClientRegistrationPolicy" : [ {
-      "id" : "0f4a4c70-8bb8-4225-a27b-cfce8f66ae57",
-      "name" : "Allowed Registration Web Origins",
-      "providerId" : "registration-web-origins",
-      "subType" : "anonymous",
-      "subComponents" : { },
-      "config" : { }
-    }, {
       "id" : "ae0d6b89-6005-4c9e-92e1-7b6b622e61c3",
       "name" : "Full Scope Disabled",
       "providerId" : "scope",
@@ -1480,13 +1473,6 @@
       "config" : {
         "allowed-protocol-mapper-types" : [ "saml-user-attribute-mapper", "oidc-usermodel-attribute-mapper", "saml-user-property-mapper", "oidc-sha256-pairwise-sub-mapper", "saml-role-list-mapper", "oidc-address-mapper", "oidc-usermodel-property-mapper", "oidc-full-name-mapper" ]
       }
-    }, {
-      "id" : "685bbc13-c4ed-48da-a7d0-ac232270e5f8",
-      "name" : "Allowed Registration Web Origins",
-      "providerId" : "registration-web-origins",
-      "subType" : "authenticated",
-      "subComponents" : { },
-      "config" : { }
     }, {
       "id" : "94e06387-6634-4010-add2-6ead5e5c4675",
       "name" : "Allowed Protocol Mapper Types",
