@@ -34,10 +34,8 @@ services:
       KC_DB_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-postgres}
       KC_DB_USERNAME: ${POSTGRES_USER:-GLProject}
       KC_DB_PASSWORD: ${POSTGRES_PASSWORD:-GLProject}
-      KC_HOSTNAME: localhost
-      KC_HOSTNAME_PORT: "8081"
-      KC_HOSTNAME_STRICT: "false"
-      KC_HOSTNAME_STRICT_BACKCHANNEL: "false"
+      KC_HOSTNAME_URL: http://localhost:8081
+      KC_HOSTNAME_ADMIN_URL: http://localhost:8081
     ports:
       - "8081:8080"
     volumes:
