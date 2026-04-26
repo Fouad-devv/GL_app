@@ -9,7 +9,7 @@ COPY . .
 
 # Baked-in at build time — pass overrides via docker-compose build args
 ARG VITE_KEYCLOAK_URL=http://localhost:8081
-ARG VITE_KEYCLOAK_REALM=GL_Project
+ARG VITE_KEYCLOAK_REALM=JL_Project
 ARG VITE_KEYCLOAK_CLIENT_ID=FrontJL
 ARG VITE_API_BASE_URL=
 
