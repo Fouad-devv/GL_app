@@ -65,12 +65,16 @@ export const Dashboard = () => {
     }
   }, []);
 
+
   useEffect(() => { load(); }, [load]);
 
   if (loading) return <LoadingOverlay visible={true} />;
 
+
   const raw      = keycloak?.tokenParsed?.preferred_username || '';
   const username = raw.includes('@') ? raw.split('@')[0] : raw;
+
+
 
   return (
     <div className="p-4 md:p-6 mt-15 md:mt-0 max-w-[1600px] mx-auto space-y-6">
@@ -84,10 +88,12 @@ export const Dashboard = () => {
         {error && <Alert type="error" message={error} closeable={false} />}
       </div>
 
+
       {/* KPI row — 4 cards across */}
       <div style={reveal(60)}>
         <KpiGrid kpis={kpis} />
       </div>
+
 
       {/* Charts + Gauges — 3 equal columns */}
       <div
@@ -99,15 +105,18 @@ export const Dashboard = () => {
         <PerformanceGauges kpis={kpis} stats={stats} />
       </div>
 
+
       {/* Summary stats — 3 cards */}
       <div style={reveal(180)}>
         <InterventionStats stats={stats} />
       </div>
 
+
       {/* Alerts */}
       <div style={reveal(210)}>
         <AlertsSection alerts={alerts} />
       </div>
+
 
       {/* Upcoming interventions table */}
       <div style={reveal(240)}>
