@@ -36,7 +36,7 @@ public class KeycloakService {
     private String clientId;
 
     @Value("${keycloak.admin-username}")
-    private String adminUsername;
+    private String adminUsername;   // from app.properties
 
     @Value("${keycloak.admin-password}")
     private String adminPassword;
