@@ -100,9 +100,9 @@ services:
       context: ./GL_Front
       dockerfile: Dockerfile
       args:
-        VITE_KEYCLOAK_URL: ${VITE_KEYCLOAK_URL:-http://localhost:8081}
-        VITE_KEYCLOAK_REALM: ${KEYCLOAK_REALM:-JL_Project}
-        VITE_KEYCLOAK_CLIENT_ID: ${VITE_KEYCLOAK_CLIENT_ID:-FrontJL}
+        VITE_KEYCLOAK_URL: ${VITE_KEYCLOAK_URL}
+        VITE_KEYCLOAK_REALM: ${VITE_KEYCLOAK_REALM}
+        VITE_KEYCLOAK_CLIENT_ID: ${VITE_KEYCLOAK_CLIENT_ID}
         VITE_API_BASE_URL: ""
     container_name: GL_Frontend
     ports:
