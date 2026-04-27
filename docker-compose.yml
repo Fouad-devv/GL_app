@@ -24,7 +24,7 @@ services:
 
   # ── Keycloak ──────────────────────────────────────────────────────────────
   keycloak:
-    image: quay.io/keycloak/keycloak:26.2
+    image: quay.io/keycloak/keycloak:26.5
     container_name: GL_Keycloak
     command: start-dev --import-realm
     environment:
